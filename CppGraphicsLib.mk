@@ -1,5 +1,5 @@
 #
-# This makefile builds the camgraph support library. 
+# This makefile builds the CppGraphics support library. 
 #
 # Aug. 30, 2018
 
@@ -7,14 +7,14 @@ SHELL=/bin/sh
 
 # Location of SCC source files and Makescripts files
 
-SCC_Dir=..
+SCC_Dir=../
 MAKESCRIPTS_Dir=$(SCC_Dir)/MakeScripts
 
 # Parameters for library construction script 
 
 CXX     := g++
 LIB_DIR = ./lib
-SRC_DIR = ./src
+SRC_DIR = ./
 
 # Create library directory if it doesn't exist 
 
@@ -44,10 +44,10 @@ CXXFLAGS    =-g -Wall -fno-inline
 CXXDEFINES  +=-D_DEBUG 
 endif
 
-RELEASE_DIR  = ./_releaseCamgraph
-DEBUG_DIR    = ./_debugCamgraph
+RELEASE_DIR  = ./_releaseCppGraphics
+DEBUG_DIR    = ./_debugCppGraphics
 
-DEBUG_LIBRARY    = $(LIB_DIR)/libcamgraph_debug.a
-RELEASE_LIBRARY  = $(LIB_DIR)/libcamgraph.a 
+DEBUG_LIBRARY    = $(LIB_DIR)/libCppGraphics_debug.a
+RELEASE_LIBRARY  = $(LIB_DIR)/libCppGraphics.a 
 
 include $(MAKESCRIPTS_Dir)/CommonLibMake.mk
