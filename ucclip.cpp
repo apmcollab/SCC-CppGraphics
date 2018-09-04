@@ -215,11 +215,11 @@ double sx1, double sy1, double sx2, double sy2)
     double b1 = sx1 - px[0];
     double b2 = sy1 - py[0];
 
-    double s; double t;
+    double s; // double t;
     double det = w2*v1 - w1*v2;
 
     s = (1.0/det)*(w2*b1  - w1*b2);
-    t = (1.0/det)*(-v2*b1 + v1*b2);
+    //t = (1.0/det)*(-v2*b1 + v1*b2);
 
     xI = (1.0 - s)*px[0] + s*px[1];
     yI = (1.0 - s)*py[0] + s*py[1];
