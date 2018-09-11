@@ -1,5 +1,5 @@
 ## CppGraphics
-Classes supporting the construction of graphical output. These classes are based on the CAM graphics classes. 
+Beta revision of classes supporting the construction of graphical output. These classes are based on the CAM graphics classes. 
 
 
 ### Prerequisites
