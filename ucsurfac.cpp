@@ -580,6 +580,8 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per,
   vertex *I = p1;                // insertion points
 
   vertex *head, *tail, *nx2last; // for list of vertex to add to perim
+
+  head = 0; tail = 0; nx2last = 0;
   vertex *m;                     // for random tranversing
 
   vertex *p2, *f2;
