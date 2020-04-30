@@ -34,7 +34,18 @@
 using namespace std;
 
 #include <time.h>
-#include <math.h>
+#include <cmath>
+
+//
+// strcpy_s is not implemented as part of C++11 (arrgh) so this macro
+// inserts strcpy calls.
+//
+
+#ifdef _MSC_VER
+#define COPYSTR(dst,count,src) strcpy_s(dst,count,src)
+#else
+#define COPYSTR(dst,count,src) strcpy(dst,src)
+#endif
 //
 //******************************************************************************
 //                         UCdriver_ps(char *s)
@@ -636,7 +647,9 @@ void UCdriver_ps::do_font(const char *f, double s)
     {
       if(pres_font != 0) delete [] pres_font;
       pres_font = new char[strlen(f)+1];
-      strcpy(pres_font,f);
+
+      //strcpy(pres_font,f);
+      COPYSTR(pres_font,strlen(f)+1,f);
 
       pres_font_size = s;
 

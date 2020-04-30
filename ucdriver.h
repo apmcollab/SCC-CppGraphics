@@ -23,6 +23,16 @@
 #include <iostream>
 #include <cstdlib>
 
+//
+// strcpy_s is not implemented as part of C++11 (arrgh) so this macro
+// inserts strcpy calls.
+//
+
+#ifdef _MSC_VER
+#define COPYSTR(dst,count,src) strcpy_s(dst,count,src)
+#else
+#define COPYSTR(dst,count,src) strcpy(dst,src)
+#endif
 
 #define DEFAULT_INSTANCE  "graph.out"
 
@@ -73,12 +83,14 @@ UCdriver(const char *s = 0)
     if (s)
     {
       instance = new char[strlen(s) + 1];
-      strcpy(instance,s);
+      //strcpy(instance,s);
+      COPYSTR(instance,strlen(s) + 1,s);
     }
     else
     {
       instance = new char[strlen(DEFAULT_INSTANCE) + 1];
-      strcpy(instance,DEFAULT_INSTANCE);
+      //strcpy(instance,DEFAULT_INSTANCE);
+      COPYSTR(instance,strlen(DEFAULT_INSTANCE) + 1,DEFAULT_INSTANCE);
     }
     dTypeName = 0;
     setDriverTypeName("UCdriver");
@@ -109,7 +121,8 @@ virtual void setDriverTypeName(const char* dName)
     {
     dTypeName = new char[strlen(dName) + 1];
     }
-    strcpy(dTypeName,dName);
+    //strcpy(dTypeName,dName);
+    COPYSTR(dTypeName,strlen(dName) + 1,dName);
 }
 /**
     Returns the name of the graphics driver. 

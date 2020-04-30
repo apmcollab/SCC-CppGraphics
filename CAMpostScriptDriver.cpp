@@ -40,13 +40,13 @@ CAMpostScriptDriver::CAMpostScriptDriver()
     G = new CAMgraphics;
     outputFile = new char[9];
 
-    std::string oFile = "graph.ps";
-    strcpy(outputFile,"graph.ps");
-
-    //COPYSTR(outputFile,9,oFile.c_str());
+    // strcpy(outputFile,"graph.ps");
+    COPYSTR(outputFile,strlen("graph.ps") + 1,"graph.ps");
 
     dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
-    strcpy(dTypeName,"CAMpostScriptDriver");
+
+    // strcpy(dTypeName,"CAMpostScriptDriver");
+    COPYSTR(dTypeName,strlen("CAMpostScriptDriver") + 1,"CAMpostScriptDriver");
 
     open();
 }
@@ -56,11 +56,12 @@ CAMpostScriptDriver::CAMpostScriptDriver(const char* F)
     S = new CAMgraphicsState();
     G = new CAMgraphics;
     outputFile = new char[strlen(F) + 1];
-    strcpy(outputFile,F);
+    //strcpy(outputFile,F);
+    COPYSTR(outputFile,strlen(F) + 1,F);
 
     dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
-    strcpy(dTypeName,"CAMpostScriptDriver");
-
+    //strcpy(dTypeName,"CAMpostScriptDriver");
+    COPYSTR(dTypeName,strlen("CAMpostScriptDriver") + 1,"CAMpostScriptDriver");
     open();
 }
 

@@ -16,12 +16,23 @@
 //        
 //********************************************************************************
 //
-//#include <stdio.h>
-//#include <stdlib.h>
 #include <cstdio>
 #include <cmath>
 #include <iostream>
 using namespace std;
+
+
+//
+// strcpy_s is not implemented as part of C++11 (arrgh) so this macro
+// inserts strcpy calls.
+//
+
+#ifdef _MSC_VER
+#define COPYSTR(dst,count,src) strcpy_s(dst,count,src)
+#else
+#define COPYSTR(dst,count,src) strcpy(dst,src)
+#endif
+
 
 #include "ucplot.h"
 #include "ucclip.h"
@@ -86,7 +97,11 @@ UCplot::UCplot(const UCplot& A) : UC2dgraph(A)
 
     if(A.point_font != 0)
     { point_font = new char[strlen(A.point_font) + 1];
-      strcpy(point_font,A.point_font);}
+      strcpy(point_font,A.point_font);
+
+
+
+      }
     else
     {point_font = 0;} 
           
@@ -612,7 +627,8 @@ void UCplot::set_point_font(const char* f)
   if (f)
   {
     point_font = new char[strlen(f) + 1];
-    strcpy(point_font,f);
+    //strcpy(point_font,f);
+    COPYSTR(point_font,strlen(f) + 1,f);
   }
   else
     font = 0;

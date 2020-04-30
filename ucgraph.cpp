@@ -17,6 +17,17 @@
 using namespace std;
 
 //
+// strcpy_s is not implemented as part of C++11 (arrgh) so this macro
+// inserts strcpy calls.
+//
+
+#ifdef _MSC_VER
+#define COPYSTR(dst,count,src) strcpy_s(dst,count,src)
+#else
+#define COPYSTR(dst,count,src) strcpy(dst,src)
+#endif
+
+//
 //******************************************************************************
 //                         COPY CONSTRUCTOR
 //******************************************************************************
@@ -35,7 +46,9 @@ UCgraph::UCgraph(const UCgraph& A)
 //
     if(A.font != 0)
     { font = new char[strlen(A.font) + 1];
-      strcpy(font,A.font);}
+      //strcpy(font,A.font);
+      COPYSTR(font,strlen(A.font) + 1,A.font);
+    }
     else
     {font = 0;}
 //  
@@ -154,7 +167,8 @@ void UCgraph::set_font(const char* f)
   if (f)
   {
     font = new char[strlen(f) + 1];
-    strcpy(font,f);
+    //strcpy(font,f);
+    COPYSTR(font,strlen(f) + 1,f);
   }
   else
     font = 0;
@@ -169,7 +183,8 @@ char* UCgraph::get_font()
   if (font)
   {
     char* s = new char[strlen(font) + 1];
-    strcpy(s,font);
+    //strcpy(s,font);
+    COPYSTR(s,strlen(font) + 1,font);
     return s;
   }
   else

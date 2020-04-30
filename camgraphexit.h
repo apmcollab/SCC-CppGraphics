@@ -28,7 +28,7 @@ class __IMPEXP__ CAMgraphicsException
 
 	CAMgraphicsException();
 	CAMgraphicsException(const CAMgraphicsException& C);
-	CAMgraphicsException(char* msg);
+	CAMgraphicsException(const char* msg);
    ~CAMgraphicsException();
     
 	char* getMessage() const {return errorMessage;};
