@@ -896,7 +896,7 @@ void CAMgraphicsProcess::setContourLevel(double c_inc,double c_min, double c_max
    	Arg.callType = 95;
 
     Arg.d_Size   = 3;
-    double d[2];
+    double d[3];
     d[0] = c_inc; d[1] = c_min; d[2] = c_max;
     Arg.d = d;
 

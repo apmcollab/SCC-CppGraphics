@@ -628,9 +628,8 @@ std::string UCplot::get_point_font()
   if (point_font)
   {
     s = (std::string)(point_font);
-    return s;
   }
-
+  return s;
   /*
   if (point_font)
   {
