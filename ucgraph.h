@@ -45,12 +45,12 @@ public:
 //           
 //  Text Drawing routines  
 //
-    void draw_string(double x, double y, char *s, double size = 0);
-    void title(char *s, double size = 0);
+    void draw_string(double x, double y, const char *s, double size = 0);
+    void title(const char *s, double size = 0);
 //
 //  Text Style Manipulation Routines
 //
-    void   set_font(char *f);
+    void   set_font(const char *f);
     char*  get_font();    
     
     void   set_text_size(double s) { text_size = s; }    

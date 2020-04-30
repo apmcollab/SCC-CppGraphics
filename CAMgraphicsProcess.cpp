@@ -296,7 +296,7 @@ void CAMgraphicsProcess::surface(double *z, long m, long n, double* x, double* y
 
 };
 
-void CAMgraphicsProcess::drawString(double x, double y, char* S)
+void CAMgraphicsProcess::drawString(double x, double y, const char* S)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
@@ -311,7 +311,7 @@ void CAMgraphicsProcess::drawString(double x, double y, char* S)
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::drawString(double x, double y, char* S, double size)
+void CAMgraphicsProcess::drawString(double x, double y, const char* S, double size)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
@@ -326,7 +326,7 @@ void CAMgraphicsProcess::drawString(double x, double y, char* S, double size)
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::title(char* S)
+void CAMgraphicsProcess::title(const char* S)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
@@ -338,7 +338,7 @@ void CAMgraphicsProcess::title(char* S)
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::title(char* S, double size)
+void CAMgraphicsProcess::title(const char* S, double size)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
@@ -350,7 +350,7 @@ void CAMgraphicsProcess::title(char* S, double size)
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::labelX(char* S)
+void CAMgraphicsProcess::labelX(const char* S)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
@@ -362,7 +362,7 @@ void CAMgraphicsProcess::labelX(char* S)
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::labelX(char* S, double size)
+void CAMgraphicsProcess::labelX(const char* S, double size)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
@@ -375,7 +375,7 @@ void CAMgraphicsProcess::labelX(char* S, double size)
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::labelY(char* S)
+void CAMgraphicsProcess::labelY(const char* S)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
@@ -387,7 +387,7 @@ void CAMgraphicsProcess::labelY(char* S)
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::labelY(char* S, double size)
+void CAMgraphicsProcess::labelY(const char* S, double size)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
@@ -787,7 +787,7 @@ void CAMgraphicsProcess::setPlotPointType(char p)
     Arg.b = b;
 
 
-	Arg.b[0] = p;
+	//Arg.b[0] = p;
     ODriver->accept(Arg);
  }
 
@@ -805,7 +805,7 @@ void CAMgraphicsProcess::setPlotPointType(char p)
     ODriver->accept(Arg);
  }
 
- void CAMgraphicsProcess::setPlotPointFont(char* S)
+ void CAMgraphicsProcess::setPlotPointFont(const char* S)
  {
  	if(ODriver == 0) return;
     CAMsetArguments Arg;

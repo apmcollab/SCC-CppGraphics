@@ -18,9 +18,9 @@ public :
 
     long callType;
 
-    long*    i;    // for int arguments
-    double*  d;    // for double arguments
-    char*    b;    // for string arguments
+    long*          i;    // for int arguments
+    double*        d;    // for double arguments
+    const char*    b;    // for string arguments
 
     long i_Size; long d_Size; long b_Size;
 

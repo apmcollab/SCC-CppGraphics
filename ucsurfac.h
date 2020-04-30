@@ -77,11 +77,11 @@ class vertex
       double x;
       double y;
       double z;
-      double a;   // suedo-angle
+      double a;   // psuedo-angle
       vertex *next;
 
-      vertex() {x = y = z = a = 0; next = 0;}
-      vertex(double nx, double ny, double nz, double na, vertex *n = 0)
+      vertex() {x = y = z = a = 0; next = nullptr;}
+      vertex(double nx, double ny, double nz, double na, vertex *n = nullptr)
     { x=nx; y = ny; z = nz; a = na; next = n;}
 
       friend int operator<(vertex& v, vertex& v2);
@@ -95,7 +95,7 @@ class perimeter
       vertex *inner;
       vertex *end;    // pointer to element before outer
 
-      perimeter() { outer = inner = 0;}
+      perimeter() { outer = inner = end = nullptr;}
       ~perimeter();
 
       void add_vertex_after(vertex *v, vertex *w);

@@ -15,7 +15,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
-using namespace std;
 
 #ifndef __CAMGRAPHICSDRIVER__
 class CAMgraphicsDriver;
@@ -63,19 +62,19 @@ public :
 	void surface(double* z, long  m, long n);
 	void surface(double *z, long m, long n, double* x, double* y);
 
-	void drawString(double x, double y, char* S);
-	void drawString(double x, double y, char* S, double size);
+	void drawString(double x, double y, const char* S);
+	void drawString(double x, double y, const char* S, double size);
 
     void setTextColor(int iColor);
     void setTextColor(double* rgb);
     void setTextAlign(double horiz, double vert);
 
-	void title(char* S);
-	void title(char* S, double size);
-	void labelX(char* S);
-	void labelX(char* S, double size);
-	void labelY(char* S);
-	void labelY(char* S, double size);
+	void title(const char* S);
+	void title(const char* S, double size);
+	void labelX(const char* S);
+	void labelX(const char* S, double size);
+	void labelY(const char* S);
+	void labelY(const char* S, double size);
 
 
 	void setFrame(double left, double right, double bottom, double top);
@@ -123,7 +122,7 @@ public :
     void setPlotLineWidth(double w);
     void setPlotPointType(char p);
     void setPlotPointSize(double p);
-    void setPlotPointFont(char* S);
+    void setPlotPointFont(const char* S);
 
     void restorePlotDefaults();
 

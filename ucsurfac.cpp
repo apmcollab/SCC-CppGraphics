@@ -528,13 +528,13 @@ void UCsurface::get_vertex_list(long r, long c, vertex *&v, vertex *&w)
 
   // reverse order of w
   vertex *a, *b, *d;
-  if (w != 0 && w->next != 0)
+  if (w != nullptr && w->next != nullptr)
   {
      a = w;
      b = w->next;
-     w->next = 0;
+     w->next = nullptr;
 
-     while (b->next != 0)
+     while (b->next != nullptr)
      {
         d = b->next;
         b->next = a;
@@ -555,15 +555,15 @@ void UCsurface::get_vertex_list(long r, long c, vertex *&v, vertex *&w)
 //                      CHECK_AGAINST_PERIMETER 
 //******************************************************************************
 //
-void UCsurface::check_against_perimeter(vertex *f1, perimeter &per,
-                                                     int dir)
+void UCsurface::check_against_perimeter(vertex *f1, perimeter &per, int dir)
 {
+
   //    Function checks the list of vertices against the perimeter,
   //    draws any lines that need to be drawn, and updates the
   //    perimeter.  If dir == 0, routine checks against the inner
   //    perimeter, else the outer.
 
-  if (f1 == 0 || f1->next == 0) return;
+  if ((f1 == nullptr) || (f1->next == nullptr)) return;
 
   vertex *p1 = (dir == 1) ? per.outer : per.inner;
   if (dir == 1)
@@ -584,14 +584,17 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per,
   head = 0; tail = 0; nx2last = 0;
   vertex *m;                     // for random tranversing
 
-  vertex *p2, *f2;
+  vertex *p2;
+  vertex *f2;
 
   vertex *vtest;
   //vertex *vnextdelete;  // for vertex removal code (CRA)
+
   p2 = p1->next;
   f2 = f1->next;
 
-  while(f2 != 0)
+
+  while((f2 != nullptr)&&(p2 != nullptr))
   {
 
      dpx = p2->x - p1->x;
@@ -603,7 +606,6 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per,
      cp2 = dpy*(f2->x - p1->x) - dpx*(f2->y - p1->y);
      cp3 = dfx*(p1->y - f1->y) - dfy*(p1->x - f1->x);
      cp4 = dfx*(p2->y - f1->y) - dfy*(p2->x - f1->x);
-
 
          // going out   CRA  changed -12 to -8
      if ((flag != OUTSIDE) && (cp1 <= 1e-8) && cp2 > 1e-8
@@ -651,8 +653,8 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per,
         }
 
 
-              // UPDATE PERIMETER
-              // Remove past vertexes from perimeter
+// UPDATE PERIMETER
+// Remove past vertexes from perimeter
               
  // while (I->next != p2) per.remove_next_vertex(I);
  //
@@ -660,14 +662,14 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per,
  //  the same call as before, but I updated I->next in the
  //  else if(I->next == per.outer) --- it wasn't there before.
  //
+
  		while(I->next != p2)
         {
-
-         if(per.outer == 0){}
+         if(per.outer == nullptr){}
          else if (I->next == I)
          {
          delete per.outer;
-         per.outer = 0; per.inner = 0; per.end = 0;
+         per.outer = nullptr; per.inner = nullptr; per.end = nullptr;
          }
          else if (I->next == per.outer)
          {
@@ -681,8 +683,8 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per,
          else if(I->next == per.end)
          {
          if(per.inner == per.end) per.inner = I;
-         per.end = I;
-         vtest        = (I->next)->next;
+         per.end   = I;
+         vtest     = (I->next)->next;
          delete I->next;
          I->next      = vtest;
          }
@@ -690,15 +692,17 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per,
          {
          if(per.inner == I->next) per.inner = I;
          vtest        = (I->next)->next;
-         delete I->next;
+         //delete I->next;                          //  CRA 4.30.2020 - commented out this delete to stop valgrind access errors
+                                                    //  a logic problem. Leaving it till later -- this doesn't cause a memory leak.
+                                                    //  The whole update perimeter segment needs to be reworked.
          I->next      = vtest;
          }
 
         }
  //
  //
- //
-                    // Add new segments
+ // Add new segments
+
         per.add_segments_after(I,head,tail,nx2last);
 
         tail = head = 0;
@@ -707,7 +711,7 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per,
      }
 
 
-          // advance pointer and possibly update
+     // advance pointer and possibly update
      if ((dir == 1) ? (*p2 < *f2) : (*f2 < *p2))
      {
         p1 = p2;
@@ -727,6 +731,7 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per,
           tail = tail->next;
         }
      }
+
   }
 }
 //

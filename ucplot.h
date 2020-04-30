@@ -188,18 +188,18 @@ public:
 //
     void set_point_type(char p) { point_type = p;}
     void set_point_size(double s) { point_size = s;}
-    void set_point_font(char *s);
+    void set_point_font(const char* s);
 
     int get_point_type() { return point_type;}
     double get_point_size() { return point_size;}
-    char *get_point_font();
+    std::string get_point_font();
 
     void set_plot_style(int s)
        { if (s==CURVE || s==POINTS || s==CURVE_AND_POINTS) plot_style=s;}
     int get_plot_style() { return plot_style;}
 
-    void label_x(char *s, double size = 0);
-    void label_y(char *s, double size = 0);
+    void label_x(const char* s, double size = 0);
+    void label_y(const char* s, double size = 0);
 
     void set_function_evaluation_count(long n){n_fun_points = n;}
     long get_function_evaluation_count(){return n_fun_points;}

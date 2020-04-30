@@ -19,7 +19,6 @@
 #include "camgraphimpexp.h"
 
 #include <fstream>
-using namespace std;
 
 #include "ucdriver.h"
 
@@ -34,7 +33,7 @@ class __IMPEXP__ UCdriver_ps : public UCdriver
 {
 public:
 
-    UCdriver_ps(const char *s = 0);
+    UCdriver_ps(const char* s = 0);
     ~UCdriver_ps();
 
     void lines(double *x, double *y, long npoints, int dash_pattern,
@@ -44,12 +43,12 @@ public:
             int dash_pattern, unsigned user_pattern, double width,
             int color, double *RGB);
 
-    void point(double x, double y, char p, const char *font, double size,
+    void point(double x, double y, char p, const char* font, double size,
              int color, double *RGB);
-    void points(double *X, double *Y, long np, char p, const char *font,
+    void points(double *X, double *Y, long np, char p, const char* font,
               double size, int color, double *RGB);
 
-    void text(double x, double y, const char *s, const char *font, double size,
+    void text(double x, double y, const char* s, const char* font, double size,
             double rotation, double horiz_just, double vert_just,
             int color, double *RGB);
 
@@ -62,7 +61,7 @@ public:
 //
 //  Internal Data
 //
-    ofstream fout;
+    std::ofstream fout;
 
 // variables and flags for internal use   
 
@@ -81,7 +80,7 @@ public:
     int pres_user_pattern;
     double pres_line_width;
 
-    char *pres_font;
+    char* pres_font;
     double pres_font_size;
 //
 // Internal Helper Functions
@@ -90,7 +89,7 @@ public:
     void do_dash(int dash_pattern, int user_pattern);
     void do_line_width(double width);
     void do_color(int color, double *RGB);
-    void do_font(const char *f, double s);
+    void do_font(const char* f, double s);
     void stroke_line();
 };
 #endif

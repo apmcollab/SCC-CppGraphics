@@ -84,7 +84,7 @@ UCgraph::UCgraph(UCdriver *driver)
 //              DRAW_STRING
 //********************************************************************************
 //
-void UCgraph::draw_string(double x, double y, char *s, double size)
+void UCgraph::draw_string(double x, double y, const char* s, double size)
 { 
 //
 //    Draws string s using x,y as reference point in present color,
@@ -109,7 +109,7 @@ void UCgraph::draw_string(double x, double y, char *s, double size)
 //              TITLE
 //********************************************************************************
 //
-void UCgraph::title(char *s, double size)
+void UCgraph::title(const char* s, double size)
 { 
     
 //    Title draws the string s centered above the frame in the
@@ -147,7 +147,7 @@ void UCgraph::title(char *s, double size)
 //              SET_FONT
 //********************************************************************************
 //
-void UCgraph::set_font(char *f)
+void UCgraph::set_font(const char* f)
 {
   if (font) delete font;
 
@@ -168,7 +168,7 @@ char* UCgraph::get_font()
 {
   if (font)
   {
-    char *s = new char[strlen(font) + 1];
+    char* s = new char[strlen(font) + 1];
     strcpy(s,font);
     return s;
   }

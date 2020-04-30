@@ -270,7 +270,7 @@ void  CAMgraphics::open(UCdriver* d)
     UCsurfacePointerArray[0] = new UCsurface(d);
 }
 
-void  CAMgraphics::open(char* fileName)
+void  CAMgraphics::open(const char* fileName)
 {
 //
 //  Set Defaults
@@ -509,19 +509,19 @@ void  CAMgraphics::drawAxis()
     (UCplotPointerArray[plotRegionIndex-1])->draw_axis();
 }
 
-void  CAMgraphics::title(char *s, double size )
+void  CAMgraphics::title(const char*s, double size )
 {
     (UCplotPointerArray[plotRegionIndex-1])->title(s,size);
     (UCcontourPointerArray[plotRegionIndex-1])->title(s,size); 
     (UCsurfacePointerArray[plotRegionIndex-1])->title(s,size);
 }
 
-void  CAMgraphics::labelX(char *s, double size )
+void  CAMgraphics::labelX(const char*s, double size )
 { 
     (UCplotPointerArray[plotRegionIndex-1])->label_x(s,size);
 }
 
-void  CAMgraphics::labelY(char *s, double size )
+void  CAMgraphics::labelY(const char*s, double size )
 {  
     (UCplotPointerArray[plotRegionIndex-1])->label_y(s,size);
 }
@@ -846,12 +846,12 @@ void  CAMgraphics::setPlotPointSize(double s)
     (UCplotPointerArray[plotRegionIndex-1])->set_point_size(s);
 }
 
-void  CAMgraphics::setPointFont(char *s)
+void  CAMgraphics::setPointFont(const char*s)
 {
     (UCplotPointerArray[plotRegionIndex-1])->set_point_font(s);
 }
 
-void  CAMgraphics::setPlotPointFont(char *s)
+void  CAMgraphics::setPlotPointFont(const char*s)
 {
     (UCplotPointerArray[plotRegionIndex-1])->set_point_font(s);
 }
@@ -863,7 +863,7 @@ void  CAMgraphics::setPlotPointFont(char *s)
 // 
 /* Note p_arg goes before p_style ... */
 
-void  CAMgraphics::drawString(double x, double y, char *s, double size )
+void  CAMgraphics::drawString(double x, double y, const char*s, double size )
 {
     (UCplotPointerArray[plotRegionIndex-1])->draw_string(x,y,s,size);
 }

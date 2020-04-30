@@ -269,7 +269,7 @@ void UCplot::y_tick_mark(double ypos, double length, double xpos)
 void UCplot::x_num_label(double x, double xpos, double ypos)
 {                       // ypos only used if axis_type == FLOATING
   char str[15];
-  char *s = new char[label_width + label_precision+25];
+  char* s = new char[label_width + label_precision+25];
 
   if (label_type == SCIENTIFIC)
     sprintf(str, "%%%d.%de", label_width, label_precision);
@@ -299,7 +299,7 @@ void UCplot::y_num_label(double y, double ypos, double xpos)
 {                              
 // ypos only used if axis_type == FLOATING
   char str[15];
-  char *s = new char[label_width + label_precision+25];
+  char* s = new char[label_width + label_precision+25];
 
   if (label_type == SCIENTIFIC)
     sprintf(str,"%%.%de",label_precision);
@@ -605,7 +605,7 @@ void UCplot::create_plot()
 //                      SET_POINT_FONT
 //******************************************************************************
 //
-void UCplot::set_point_font(char *f)
+void UCplot::set_point_font(const char* f)
 {
   if (point_font) delete point_font;
 
@@ -622,16 +622,25 @@ void UCplot::set_point_font(char *f)
 //                      GET_POINT_FONT
 //******************************************************************************
 //
-char* UCplot::get_point_font()
+std::string UCplot::get_point_font()
 {
+  std:string s;
   if (point_font)
   {
-    char *s = new char[strlen(point_font) + 1];
+    s = (std::string)(point_font);
+    return s;
+  }
+
+  /*
+  if (point_font)
+  {
+    char* s = new char[strlen(point_font) + 1];
     strcpy(s,point_font);
     return s;
   }
   else
     return 0;
+  */
 }
 //
 //******************************************************************************
@@ -784,7 +793,7 @@ void UCplot::draw_y_axis()
 //                      LABEL_X
 //******************************************************************************
 //
-void UCplot::label_x(char *s, double size)
+void UCplot::label_x(const char* s, double size)
 {
 //  Draws string s centered below the frame in the pressent
 //    font and  text_color.
@@ -812,7 +821,7 @@ void UCplot::label_x(char *s, double size)
 //                      LABEL_Y
 //******************************************************************************
 //
-void UCplot::label_y(char *s, double size)
+void UCplot::label_y(const char* s, double size)
 {
 //  Draws string s vertically centered left or right of the frame at
 //    an angle of 90 degrees using the present font and text_color.

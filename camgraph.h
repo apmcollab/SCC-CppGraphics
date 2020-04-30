@@ -7,7 +7,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
-using namespace std;
+
 
 //
 //********************************************************************************
@@ -68,7 +68,7 @@ public :
 //
 //  Output 
 //
-    friend ostream& operator <<(ostream& out_stream, const CAMgraphics& A);
+    friend std::ostream& operator <<(std::ostream& out_stream, const CAMgraphics& A);
 //
 //  Enumerations
 //
@@ -112,7 +112,7 @@ public :
 //
     static void  open();
     static void  open(UCdriver* d);
-    static void  open(char* fileName);
+    static void  open(const char* fileName);
     static void  close();
     static void  frame();
     static void  setFrame(double fLeft, double fRight, double fBottom, double fTop);
@@ -123,9 +123,9 @@ public :
 //  Title and Axis Label Manipulation
 //
     static void  drawAxis();
-    static void  title(char *s, double size = 0);
-    static void  labelX(char *s, double size = 0);
-    static void  labelY(char *s, double size = 0);
+    static void  title(const char*s, double size = 0);
+    static void  labelX(const char*s, double size = 0);
+    static void  labelY(const char*s, double size = 0);
     static void  setLabelFormat(int t, int w, int p);
     static void  setLabelType(int t);
     static void  setLabelWidth(int w);
@@ -190,21 +190,21 @@ public :
     static void  setUserDashPattern(int d);
     static void  setLineWidth(double w);
     static void  setPointSize(double s);
-    static void  setPointFont(char *s);
+    static void  setPointFont(const char*s);
 
     static void  setPlotLineColor(int c);
     static void  setPlotLineColor(double *rgb);
     static void  setPlotDashPattern(int d);
     static void  setPlotLineWidth(double w);
     static void  setPlotPointSize(double s);
-    static void  setPlotPointFont(char *s);
+    static void  setPlotPointFont(const char*s);
 
 
 
 //
 //  Text Drawing Routine
 //
-    static void  drawString(double x, double y, char *s, double size = 0);
+    static void  drawString(double x, double y, const char*s, double size = 0);
 
     static void  setTextColor(int c);
     static void  setTextColor(double *rgb);

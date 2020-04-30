@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <cstring>
 using namespace std;
 
 #include "CAMpostScriptDriver.h"
@@ -8,8 +10,19 @@ using namespace std;
 #include "CAMtextArguments.h"
 #include "CAMsetArguments.h"
 #include "camgraph.h"
-#include "string.h"
+
+
 //
+// strcpy_s is not implemented as part of C++11 (arrgh) so this macro
+// inserts strcpy calls.
+//
+
+#ifdef _MSC_VER
+#define COPYSTR(dst,count,src) strcpy_s(dst,count,src)
+#else
+#define COPYSTR(dst,count,src) strcpy(dst,src)
+#endif
+
 //######################################################################
 //
 //            Chris Anderson (C) UCLA
@@ -26,7 +39,11 @@ CAMpostScriptDriver::CAMpostScriptDriver()
 	S = new CAMgraphicsState();
     G = new CAMgraphics;
     outputFile = new char[9];
+
+    std::string oFile = "graph.ps";
     strcpy(outputFile,"graph.ps");
+
+    //COPYSTR(outputFile,9,oFile.c_str());
 
     dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
     strcpy(dTypeName,"CAMpostScriptDriver");
@@ -170,7 +187,7 @@ void CAMpostScriptDriver::accept(const CAMtextArguments& A)
   	double    x             = A.x;
   	double    y             = A.y;
   	double   size           = A.size;
-  	char* St                = A.s;
+  	const char* St          = A.s;
 
   
   	switch(callType)
@@ -199,7 +216,7 @@ void CAMpostScriptDriver::accept(const CAMsetArguments& A)
 
   	long* I                 = A.i;
   	double* D               = A.d;
-  	char* St                = A.b;
+  	const char* St          = A.b;
 
  	 switch(callType)
  	{

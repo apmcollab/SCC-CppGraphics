@@ -22,7 +22,7 @@
 #include <cstdio>
 #include <iostream>
 #include <cstdlib>
-using namespace std;
+
 
 #define DEFAULT_INSTANCE  "graph.out"
 

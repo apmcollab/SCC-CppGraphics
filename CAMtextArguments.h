@@ -20,7 +20,7 @@ public :
     double     y;
     double  size;        // size of characters (-1 => use default size)
 
-    char* s;
+    const char* s;
     long s_Size;
 
     CAMtextArguments()
