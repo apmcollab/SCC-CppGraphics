@@ -7,9 +7,9 @@ Beta revision of classes supporting the construction of graphical output. These 
 GNU make
 
 ### Versioning
-
-Release : 19.12.16
-
+Release : 1.0.1
+### Date
+April 30, 2020
 ### Authors
 
 Chris Anderson
