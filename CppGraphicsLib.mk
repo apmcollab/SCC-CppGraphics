@@ -32,7 +32,7 @@ endif
 ifeq ($(MAKECMDGOALS),release)
 
 CFLAGS      :=-O2  -fno-gcse -fno-optimize-sibling-calls -Wno-write-strings
-CXXFLAGS    :=-O2  -fno-gcse -fno-optimize-sibling-calls -Wno-write-strings
+CXXFLAGS    :=-O2  -fno-gcse -fno-optimize-sibling-calls -Wno-write-strings --std=c++11
 CDEFINES    += 
 CXXDEFINES  += 
 endif
