@@ -193,14 +193,14 @@ void CAMpostScriptDriver::accept(const CAMtextArguments& A)
   
   	switch(callType)
   	{
-  	case 1  : if(size <= 0.0) CAMgraphics::drawString(x,y,St);
-           		 else G->drawString(x,y,St,size); break;
-  	case 2  : if(size <= 0.0) G->title(St);
-           		 else G->title(St,size); break;
-  	case 3  : if(size <= 0.0) G->labelX(St);
-           		 else G->labelX(St,size); break;
-  	case 4  : if(size <= 0.0) G->labelY(St);
-           		 else G->labelY(St,size); break;
+  	case 1  : if(size <= 0.0) {CAMgraphics::drawString(x,y,St);}
+           	  else            {G->drawString(x,y,St,size);} break;
+  	case 2  : if(size <= 0.0) {G->title(St);}
+           	  else            {G->title(St,size); }break;
+  	case 3  : if(size <= 0.0) {G->labelX(St);}
+              else            {G->labelX(St,size);} break;
+  	case 4  : if(size <= 0.0) {G->labelY(St);}
+           	  else            {G->labelY(St,size);} break;
  	 }
 	G->getState(*S);
 }

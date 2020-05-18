@@ -640,7 +640,7 @@ void UCplot::set_point_font(const char* f)
 //
 std::string UCplot::get_point_font()
 {
-  std:string s;
+  std::string s;
   if (point_font)
   {
     s = (std::string)(point_font);
