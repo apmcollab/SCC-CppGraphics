@@ -1042,8 +1042,8 @@ void UCcontour::draw_lines(int level)
 //
   int cnt = 0;
   double ang,x,y;
-  char lab[20];
-  char format[20];
+  char lab[256];
+  char format[256];
 
   if (f == 2 || f == 3)           // Labels are going to be drawn.  Make 
   {                               //   labels at least two sig digits
@@ -1172,7 +1172,7 @@ void UCcontour::draw_background()
 void UCcontour::draw_high_low_labels()
 {
   double x,y,val;
-  char lab[20], format[20];
+  char lab[256], format[256];
 
   for (int r = 1; r < rows - 1; r++)
     for (int c = 1; c < columns - 1; c++)

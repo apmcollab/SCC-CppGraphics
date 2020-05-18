@@ -283,7 +283,7 @@ void UCplot::y_tick_mark(double ypos, double length, double xpos)
 //
 void UCplot::x_num_label(double x, double xpos, double ypos)
 {                       // ypos only used if axis_type == FLOATING
-  char str[15];
+  char str[256];
   char* s = new char[label_width + label_precision+25];
 
   if (label_type == SCIENTIFIC)
