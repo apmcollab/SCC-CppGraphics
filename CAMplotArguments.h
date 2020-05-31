@@ -1,5 +1,5 @@
-#ifndef __CAMPLOTARGUMENTS__
-#define __CAMPLOTARGUMENTS__
+#ifndef CAMPLOTARGUMENTS__
+#define CAMPLOTARGUMENTS__
 //
 //######################################################################
 //

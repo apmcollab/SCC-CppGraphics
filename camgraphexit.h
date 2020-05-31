@@ -11,8 +11,8 @@
 //
 //********************************************************************************
 //
-#ifndef __CAMGRAPHICSEXIT__
-#define __CAMGRAPHICSEXIT__
+#ifndef CAMGRAPHICSEXIT__
+#define CAMGRAPHICSEXIT__
 #include <cstdlib>
 
 #include "camgraphimpexp.h"

@@ -13,8 +13,8 @@
 //                            (C) UCLA 1994,1995
 //********************************************************************************
 // 
-#ifndef _UCSURFACE_
-#define _UCSURFACE_
+#ifndef UCSURFACE_
+#define UCSURFACE_
 
 #include "uc3dgrph.h"
 #include "camgraphimpexp.h"

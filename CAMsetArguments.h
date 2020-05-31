@@ -1,5 +1,5 @@
-#ifndef __CAMSETARGUMENTS__
-#define __CAMSETARGUMENTS__
+#ifndef CAMSETARGUMENTS__
+#define CAMSETARGUMENTS__
 //
 //######################################################################
 //

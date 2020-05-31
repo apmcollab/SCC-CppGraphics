@@ -6,7 +6,7 @@
 #undef  __IMPEXP__
 
 #ifdef  __BCPLUSPLUS__
-#ifdef  __EXPORT_CAMGRAPHICS__
+#ifdef  __EXPORTCAMGRAPHICS__
 #define __IMPEXP__  __declspec(dllexport)
 #endif
 #ifdef  __USEDLL__
@@ -15,7 +15,7 @@
 #endif
 
 #ifdef  _MSC_VER
-#ifdef  __EXPORT_CAMGRAPHICS__
+#ifdef  __EXPORTCAMGRAPHICS__
 #define __IMPEXP__  __declspec(dllexport)
 #endif
 #ifdef  __USEDLL__

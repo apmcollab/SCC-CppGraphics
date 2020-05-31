@@ -1,5 +1,5 @@
-#ifndef __CAMPSDRIVER__
-#define __CAMPSDRIVER__
+#ifndef CAMPSDRIVER__
+#define CAMPSDRIVER__
 //
 //######################################################################
 //
@@ -13,27 +13,27 @@
 //
 #include "CAMgraphicsDriver.h"
 
-#ifndef __CAMPLOTARGUMENTS__
+#ifndef CAMPLOTARGUMENTS__
 class CAMplotArguments;
 #endif
 
-#ifndef __CAMCONTOURARGUMENTS__
+#ifndef CAMCONTOURARGUMENTS__
 class CAMcontourArguments;
 #endif
 
-#ifndef __CAMSURFACEARGUMENTS__
+#ifndef CAMSURFACEARGUMENTS__
 class CAMsurfaceArguments;
 #endif
 
-#ifndef __CAMTEXTARGUMENTS__
+#ifndef CAMTEXTARGUMENTS__
 class CAMtextArguments;
 #endif
 
-#ifndef __CAMSETARGUMENTS__
+#ifndef CAMSETARGUMENTS__
 class CAMsetArguments;
 #endif
 
-#ifndef _CAMGRAPHICS_
+#ifndef CAMGRAPHICS_
 class CAMgraphicsState;
 class CAMgraphics;
 #endif

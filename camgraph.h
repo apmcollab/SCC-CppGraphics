@@ -21,19 +21,19 @@
 //
 //  
 //
-#ifndef _CAMGRAPHICS_
-#define _CAMGRAPHICS_
+#ifndef CAMGRAPHICS_
+#define CAMGRAPHICS_
 
-#ifndef  _UCDRIVER_
+#ifndef  UCDRIVER_
 class UCdriver;
 #endif
-#ifndef _UCPLOT_
+#ifndef UCPLOT_
 class UCplot;
 #endif
-#ifndef _UCCONTOUR_
+#ifndef UCCONTOUR_
 class UCcontour;
 #endif
-#ifndef _UCSURFACE_
+#ifndef UCSURFACE_
 class UCsurface;
 #endif
 

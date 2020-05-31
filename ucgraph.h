@@ -13,8 +13,8 @@
 //                            (C) UCLA 1994, 1995
 //********************************************************************************
 //
-#ifndef _UCGRAPH_
-#define _UCGRAPH_
+#ifndef UCGRAPH_
+#define UCGRAPH_
 #include "ucdriver.h"
 class UCgraph
 {

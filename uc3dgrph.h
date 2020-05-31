@@ -13,8 +13,8 @@
 //                            (C) UCLA 1994, 1995
 //********************************************************************************
 //
-#ifndef _UC3DGARPH_
-#define _UC3DGARPH_
+#ifndef UC3DGARPH_
+#define UC3DGARPH_
 #include "ucgraph.h"
 
 class UC3dgraph : public UCgraph

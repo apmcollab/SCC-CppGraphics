@@ -1,5 +1,5 @@
-#ifndef __CAMSURFACEARGUMENTS__
-#define __CAMSURFACEARGUMENTS__
+#ifndef CAMSURFACEARGUMENTS__
+#define CAMSURFACEARGUMENTS__
 //
 //######################################################################
 //

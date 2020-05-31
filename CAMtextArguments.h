@@ -1,5 +1,5 @@
-#ifndef __CAMTEXTARGUMENTS__
-#define __CAMTEXTARGUMENTS__
+#ifndef CAMTEXTARGUMENTS__
+#define CAMTEXTARGUMENTS__
 //
 //######################################################################
 //

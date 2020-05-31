@@ -13,8 +13,8 @@
 //                            (C) UCLA 1994, 1995
 //********************************************************************************
 //
-#ifndef _UCDRIVER__PS_
-#define _UCDRIVER__PS_
+#ifndef UCDRIVER__PS_
+#define UCDRIVER__PS_
 
 #include "camgraphimpexp.h"
 

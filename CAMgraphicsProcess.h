@@ -1,5 +1,5 @@
-#ifndef __CAMGRAPHICSPROCESS__
-#define __CAMGRAPHICSPROCESS__
+#ifndef CAMGRAPHICSPROCESS__
+#define CAMGRAPHICSPROCESS__
 //
 //######################################################################
 //
@@ -16,7 +16,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#ifndef __CAMGRAPHICSDRIVER__
+#ifndef CAMGRAPHICSDRIVER__
 class CAMgraphicsDriver;
 #endif
 

@@ -1,5 +1,5 @@
-#ifndef __CAMCONTOURARGUMENTS__
-#define __CAMCONTOURARGUMENTS__
+#ifndef CAMCONTOURARGUMENTS__
+#define CAMCONTOURARGUMENTS__
 
 //
 //######################################################################

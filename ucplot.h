@@ -13,8 +13,8 @@
 //                            (C) UCLA 1994, 1995
 //********************************************************************************
 //
-#ifndef _UCPLOT_
-#define _UCPLOT_
+#ifndef UCPLOT_
+#define UCPLOT_
 #include "uc2dgrph.h"
 
 class UCplot : public UC2dgraph

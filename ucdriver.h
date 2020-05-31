@@ -14,8 +14,8 @@
 //###########################################################################
 //
 
-#ifndef _UCDRIVER_
-#define _UCDRIVER_  
+#ifndef UCDRIVER_
+#define UCDRIVER_  
 
 #include <string>
 #include <cstring>

@@ -16,8 +16,8 @@
 //********************************************************************************
 //
 #include <math.h>
-#ifndef __UCclip__
-#define __UCclip__
+#ifndef UCclip__
+#define UCclip__
 
 class UCclip
 {

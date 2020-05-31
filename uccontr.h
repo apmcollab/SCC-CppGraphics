@@ -13,8 +13,8 @@
 //                            (C) UCLA 1994
 //********************************************************************************
 //
-#ifndef _UCCONTOUR_
-#define _UCCONTOUR_
+#ifndef UCCONTOUR_
+#define UCCONTOUR_
 
 #include "uc2dgrph.h"  
 
