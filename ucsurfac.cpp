@@ -13,10 +13,9 @@
 //
 #include "ucsurfac.h"
 #include "camgraphexit.h"
-#include <math.h>
-// #include <stdlib.h>
+#include <cmath>
 #include <iostream>
-using namespace std;
+
 //
 // define external flag array classes    cra 9/29/95
 //
@@ -83,7 +82,7 @@ void UCsurface::surface()
 {  
     if((data_array == 0)&&(data_function == 0))
     {
-     cerr << " Surface Plot Data or Function Unspecifed " << endl;
+     std::cerr << " Surface Plot Data or Function Unspecifed " << std::endl;
      CAMgraphicsExit();
     }
      
@@ -829,7 +828,7 @@ double UCsurface::suedo_angle(double x, double y)
   x = x-VPx;
   y = y-VPy;
 
-  if (fabs(x) >= fabs(y))
+  if (std::abs(x) >= std::abs(y))
     if (x > 0) return (y/x);
     else return (4+y/x);
   else
@@ -1193,7 +1192,7 @@ void UCsurface::initialize_perimeter(perimeter &p)
 
   if (p.outer == 0)
   {
-    cerr << "Something wrong with parameter initialization\n";
+    std::cerr << "Something wrong with parameter initialization\n";
     CAMgraphicsExit();
   }
 }

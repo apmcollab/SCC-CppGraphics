@@ -14,7 +14,7 @@
 #include "ucgraph.h"
 #include <string>
 #include <iostream>
-using namespace std;
+
 
 //
 // strcpy_s is not implemented as part of C++11 (arrgh) so this macro

@@ -25,7 +25,7 @@ void UC3dgraph::set_up_transformation()
   double VDz = Fz - VPz;
 
     // Calculate the length of the view direction vector
-  D = sqrt(VDx*VDx + VDy*VDy + VDz*VDz);
+  D = std::sqrt(VDx*VDx + VDy*VDy + VDz*VDz);
 
     // Vector U is the up direction
   double Ux, Uy, Uz;
@@ -40,7 +40,7 @@ void UC3dgraph::set_up_transformation()
   trans_matrix[11] = -VPz;
 
     // First rotation - about y
-  double p = sqrt(VDx*VDx + VDz*VDz);
+  double p = std::sqrt(VDx*VDx + VDz*VDz);
   double m[16];
 
   if (p)
@@ -67,7 +67,7 @@ void UC3dgraph::set_up_transformation()
   else
     Uy = -Uz*VDy/D;
 
-  double w = sqrt(Ux*Ux + Uy*Uy);
+  double w = std::sqrt(Ux*Ux + Uy*Uy);
 
     // Rotate about z so that the image of U points up on the screen
   if (w)

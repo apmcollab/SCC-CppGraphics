@@ -24,29 +24,26 @@
 #define COPYSTR(dst,count,src) strcpy(dst,src)
 #endif
 
-
-
 #include <iostream>
 #include <string>
-using namespace std;
 
 #ifndef __BCPLUSPLUS__
 void CAMgraphicsExit()
 {
-	cerr << " Fatal Error : Program Stopped " << endl;
+	std::cerr << " Fatal Error : Program Stopped " << std::endl;
 	exit(1);
 };
 void CAMgraphicsExit(char* ErrorMessage)
 {
-	cerr << ErrorMessage << endl << endl << endl;
-	cerr << " Fatal Error " << endl;
+	std::cerr << ErrorMessage << std::endl << std::endl << std::endl;
+	std::cerr << " Fatal Error " << std::endl;
 	exit(1);
 };
 #else
 void CAMgraphicsExit()
 {
-    cerr << endl << endl;
-    cerr << "Hit return to Exit " << endl << endl;
+    std::cerr << std::endl << std::endl;
+    std::cerr << "Hit return to Exit " << std::endl << std::endl;
     getchar();
 	throw CAMgraphicsException("Error In CAM geometric entity Classes");
 };

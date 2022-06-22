@@ -10,9 +10,8 @@
 	Plots the function sin(x*x) over the interval [-3,3]
 */
 #include "camgraph.h"
-#include <math.h>
+#include <cmath>
 #include <iostream>
-using namespace std;
 #include <stdio.h>
 //
 // Function to be plotted
@@ -51,7 +50,7 @@ int main()
     delete [] x;                         // clean up
     delete [] y;
 
-    cout << "   Program Complete "    << endl << endl;
+    std::cout << "   Program Complete "    << std::endl << std::endl;
     return 0;
 }
  

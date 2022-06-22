@@ -73,7 +73,7 @@ int main()
     delete [] y;
     delete [] z;
 
-    cout << " Program Complete :  See graph.ps for output. "    << endl <<endl;
+    std::cout << " Program Complete :  See graph.ps for output. "    << std::endl <<std::endl;
     return 0;
 }
  

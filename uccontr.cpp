@@ -13,7 +13,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
-using namespace std;
 
 #include "uccontr.h"
 #include "camgraphexit.h"
@@ -182,7 +181,7 @@ void UCcontour::contour()
 // This routine contours existing data -
 //  
     if(data == 0) 
-    {cerr << " Data Not Specified For Contour " << endl; CAMgraphicsExit();};
+    {std::cerr << " Data Not Specified For Contour " << std::endl; CAMgraphicsExit();};
 
     init_variables();
     set_range(x_value(0),x_value(rows-1),y_value(0),y_value(columns-1));
@@ -197,8 +196,8 @@ void UCcontour::contour()
     {set_line_spacing(step_hold);} 
   
     else if((auto_contour_flag == 0)&&( line_values == 0 ))
-    {cerr << "Error : Auto Contouring Off and Contour Levels Are Unspecified "
-        << endl; CAMgraphicsExit();}
+    {std::cerr << "Error : Auto Contouring Off and Contour Levels Are Unspecified "
+        << std::endl; CAMgraphicsExit();}
         
     create_contour_plot();
 }
@@ -221,8 +220,8 @@ void UCcontour::contour(double *data_pointer, int n, int m)
   {set_line_spacing(step_hold);} 
   
   else if((auto_contour_flag == 0)&&( line_values == 0 ))
-  {cerr << "Error : Auto Contouring Off and Contour Levels Are Unspecified "
-        << endl; CAMgraphicsExit();}
+  {std::cerr << "Error : Auto Contouring Off and Contour Levels Are Unspecified "
+        << std::endl; CAMgraphicsExit();}
   create_contour_plot();
   
 }
@@ -478,12 +477,12 @@ void UCcontour::set_number_of_lines(int num)
 
   if (nlines < 0)
   {
-    int n = int(floor((maxz-minz)/(high-low) + 0.5));
+    int n = int(std::floor((maxz-minz)/(high-low) + 0.5));
     if (n < 1) n = 1;
     
     if (!set_nice_values(-nlines*n))
     {
-      cerr << "\nUCcontour::set_nice_values() called from "
+      std::cerr << "\nUCcontour::set_nice_values() called from "
            << "set_number_of_lines.\n";
       CAMgraphicsExit();
     }
@@ -492,7 +491,7 @@ void UCcontour::set_number_of_lines(int num)
   {
     if (!set_even_values(nlines))
     {
-      cerr << "\nUCcontour::set_even_values() called from "
+      std::cerr << "\nUCcontour::set_even_values() called from "
            << "set_number_of_lines.\n";
       CAMgraphicsExit();
     }
@@ -516,7 +515,7 @@ void UCcontour::set_line_spacing(double inc)
 
   if (high > low)
   {
-    numlines = int(floor((high-low)/step)) + 1;
+    numlines = int(std::floor((high-low)/step)) + 1;
     start = low;
   }
   else
@@ -570,7 +569,7 @@ void UCcontour::set_line_value(int line, double value)
 {
   if (line > numlines)
   {
-    cerr << "\nUCcontour::set_line_value(): argument 0 out of "
+    std::cerr << "\nUCcontour::set_line_value(): argument 0 out of "
          << "range -- Exiting\n";
     CAMgraphicsExit();
   }
@@ -589,7 +588,7 @@ double UCcontour::get_line_value(int line)
 {
   if (line > numlines)
   {
-    cerr << "\nUCcontour::get_line_value(): argument 0 out of "
+    std::cerr << "\nUCcontour::get_line_value(): argument 0 out of "
          << "range -- Exiting\n";
     CAMgraphicsExit();
   }
@@ -606,7 +605,7 @@ void UCcontour::set_line_dash_pattern(int line, short d)
 {
   if (line > numlines)
   {
-    cerr << "\nUCcontour::set_line_dash_pattern(): argument 0 out of "
+    std::cerr << "\nUCcontour::set_line_dash_pattern(): argument 0 out of "
          << "range -- Exiting\n";
     CAMgraphicsExit();
   }
@@ -629,7 +628,7 @@ int UCcontour::get_line_dash_pattern(int line)
 {
   if (line > numlines)
   {
-    cerr << "\nUCcontour::get_line_dash_pattern(): argument 0 out of "
+    std::cerr << "\nUCcontour::get_line_dash_pattern(): argument 0 out of "
          << "range -- Exiting\n";
     CAMgraphicsExit();
   }
@@ -649,7 +648,7 @@ void UCcontour::set_line_color(int line, short c)
 {
   if (line > numlines)
   {
-    cerr << "\nUCcontour::set_line_color(): argument 0 out of "
+    std::cerr << "\nUCcontour::set_line_color(): argument 0 out of "
          << "range -- Exiting\n";
     CAMgraphicsExit();
   }
@@ -671,7 +670,7 @@ int UCcontour::get_line_color(int line)
 {
   if (line > numlines)
   {
-    cerr << "\nUCcontour::get_line_color(): argument 0 out of "
+    std::cerr << "\nUCcontour::get_line_color(): argument 0 out of "
          << "range -- Exiting\n";
     CAMgraphicsExit();
   }
@@ -690,7 +689,7 @@ void UCcontour::set_line_labels(int line, short f)
 {
   if (line > numlines)
   {
-    cerr << "\nUCcontour::set_line_labels(): argument 0 out of "
+    std::cerr << "\nUCcontour::set_line_labels(): argument 0 out of "
          << "range -- Exiting\n";
     CAMgraphicsExit();
   }
@@ -713,7 +712,7 @@ int UCcontour::get_line_labels(int line)
 {
   if (line > numlines)
   {
-    cerr << "\nUCcontour::get_line_labels(): argument 0 out of "
+    std::cerr << "\nUCcontour::get_line_labels(): argument 0 out of "
          << "range -- Exiting\n";
     CAMgraphicsExit();
   }
@@ -734,7 +733,7 @@ void UCcontour::set_line(int line, double value, short d, short c,
 {
   if (line > numlines)
   {
-    cerr << "\nUCcontour::set_line(): argument 0 out of "
+    std::cerr << "\nUCcontour::set_line(): argument 0 out of "
          << "range -- Exiting\n";
     CAMgraphicsExit();
   }
@@ -888,7 +887,7 @@ int UCcontour::save_point(long triang, int side, int level)
 
   if (last == next)
   {
-	cerr << "\nUCcontour::save_point(): potential divide-by-zero!\n";
+	std::cerr << "\nUCcontour::save_point(): potential divide-by-zero!\n";
 	return 0;
   }
 
@@ -903,7 +902,7 @@ int UCcontour::save_point(long triang, int side, int level)
   row = int((triang/2)%(rows-1));
   col = int((triang/2)/(rows-1));
 
-//  cout << row << "  " << col << endl;
+//  std::cout << row << "  " << col << std::endl;
 //  if((row == 19)&&(col == 2)) getchar();
 
   double xd, yd;
@@ -1052,7 +1051,7 @@ void UCcontour::draw_lines(int level)
 //  since labels in fixed precision - limit number of small digits
 //
     double line_value = line_values[level];
-    if(fabs(line_value) < .0001) 
+    if(std::abs(line_value) < .0001) 
     {
     line_value = 0.00;
     sprintf(format,"%%%d.%df",6,4);
@@ -1062,7 +1061,7 @@ void UCcontour::draw_lines(int level)
     {
 //    
     if (line_value != 0)
-      first_dig = int(floor(log10(fabs(line_value)))) + 1;
+      first_dig = int(std::floor(std::log10(std::abs(line_value)))) + 1;
     else
       first_dig = 0;
 
@@ -1083,7 +1082,7 @@ void UCcontour::draw_lines(int level)
     } 
   }
 
-  int mul = int(floor(double(((rows+columns)/2 + 9)/15)));
+  int mul = int(std::floor(double(((rows+columns)/2 + 9)/15)));
   if (mul < 1) mul = 1;
     
   switch (f)
@@ -1189,7 +1188,7 @@ void UCcontour::draw_high_low_labels()
         y = frame_2_screen_y(normalize_y(y_value(c)));
 
         int first_dig = 
-            (val != 0) ? (int(floor(log10(fabs(val)))) + 1) : 0;
+            (val != 0) ? (int(std::floor(std::log10(std::abs(val)))) + 1) : 0;
 
         int field, dec;
 
@@ -1204,7 +1203,7 @@ void UCcontour::draw_high_low_labels()
 //
 //      limit printing of lots of zeros
 //        
-        if(fabs(val) < .0001) 
+        if(std::abs(val) < .0001) 
         {field = 6; dec = 4;}
 
         sprintf(format,"%%%d.%df",field,dec);
@@ -1222,7 +1221,7 @@ void UCcontour::draw_high_low_labels()
         y = frame_2_screen_y(normalize_y(y_value(c)));
 
         int first_dig = 
-            (val != 0) ? (int(floor(log10(fabs(val)))) + 1) : 0;
+            (val != 0) ? (int(std::floor(std::log10(std::abs(val)))) + 1) : 0;
         int field, dec;
 
         if (first_dig > 2) 
@@ -1236,7 +1235,7 @@ void UCcontour::draw_high_low_labels()
 //
 //      limit printing of lots of zeros
 //        
-        if(fabs(val) < .0001) 
+        if(std::abs(val) < .0001) 
         {field = 6; dec = 4;}
 //        
         sprintf(format,"%%%d.%df",field,dec);
@@ -1303,7 +1302,7 @@ int UCcontour::set_nice_values(int n)
 //
 // Fixed std = 0 temporarily  CRA 4/96
 //
-  if(fabs(std) < 1.0e-15)
+  if(std::abs(std) < 1.0e-15)
   {
   step     = 0.0;
   numlines = 1;
@@ -1314,14 +1313,14 @@ int UCcontour::set_nice_values(int n)
   else
   {
   step = 4.0*std/n;
-  double p = pow(10.0, floor(log10(step)));
-  step = p*floor((step +p/2.0)/p);
+  double p = pow(10.0, std::floor(std::log10(step)));
+  step = p*std::floor((step +p/2.0)/p);
  
   double lev;
   if (maxz*minz < 0)
-    lev = step*floor(mean/step);
+    lev = step*std::floor(mean/step);
   else
-    lev = step*floor(minz/step);
+    lev = step*std::floor(minz/step);
      
 
   double lowval = (high < low) ? minz : low;

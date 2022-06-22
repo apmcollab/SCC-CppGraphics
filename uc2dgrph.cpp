@@ -10,10 +10,8 @@
 //            David Sansot             (C) UCLA 1994,1995
 //********************************************************************************
 //
-#include <math.h>
+#include <cmath>
 #include <iostream>
-using namespace std;
-
 #include "uc2dgrph.h"
 //
 //******************************************************************************
@@ -26,8 +24,8 @@ double UC2dgraph::normalize_x(double x)
   {
 	if (xmin <= 0 || x <= 0)
     {
-      cerr << "UC2dgraph::normalize_x -\n";
-      cerr << "Can't take log of negative number - Returning\n";
+      std::cerr << "UC2dgraph::normalize_x -\n";
+      std::cerr << "Can't take log of negative number - Returning\n";
       return 0;
     }
 
@@ -48,8 +46,8 @@ double UC2dgraph::normalize_y(double y)
   {
 	if (ymin <= 0.0 || y <= 0)
     {
-      cerr << "UC2dgraph::normalize_y -\n";
-      cerr << "Can't take log of negative number - Returning\n";
+      std::cerr << "UC2dgraph::normalize_y -\n";
+      std::cerr << "Can't take log of negative number - Returning\n";
       return 0;
     }
 

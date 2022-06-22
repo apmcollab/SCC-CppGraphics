@@ -10,10 +10,9 @@
         Demonstrate the use of several contour plot command options.
 */
 #include "camgraph.h"
-#include <math.h>
+#include <cmath>
 #include <stdio.h>
 #include <iostream>
-using namespace std;
 //
 // Function to be contoured
 //
@@ -85,7 +84,7 @@ int main()
     delete [] y;
     delete [] z;
 
-    cout << "   Program Complete "    << endl << endl;
+    std::cout << "   Program Complete "    << std::endl << std::endl;
     return 0;
 }
  

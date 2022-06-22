@@ -10,10 +10,10 @@
   	Creation of a surface plot
 */
 #include "camgraph.h"
-#include <math.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 #include <iostream>
-using namespace std;
+
 //
 // Target Function 
 //
@@ -71,7 +71,7 @@ int main()
     delete [] y;
     delete [] z;
 
-    cout << "   Program Complete "    << endl << endl;
+    std::cout << "   Program Complete "    << std::endl << std::endl;
 	return 0;
 }
  

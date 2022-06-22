@@ -91,7 +91,7 @@ int main()
     delete [] y2;
     delete [] y3;
 
-    cout << " Program Complete :  See graph.ps for output. "    << endl <<endl;
+    std::cout << " Program Complete :  See graph.ps for output. "    << std::endl <<std::endl;
     return 0;
 }
  

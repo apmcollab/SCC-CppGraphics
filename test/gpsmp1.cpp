@@ -54,7 +54,7 @@ int main()
     delete [] x;                         // clean up
     delete [] y;
 
-    cout << " Program Complete :  See graph.ps for output. "    << endl <<endl;
+    std::cout << " Program Complete :  See graph.ps for output. "    << std::endl <<std::endl;
     return 0;
 }
  

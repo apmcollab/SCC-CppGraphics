@@ -11,10 +11,10 @@
     different plot and line styles.
 */
 #include "camgraph.h"
-#include <math.h>
+#include <cmath>
 #include <stdio.h>
 #include <iostream>
-using namespace std;
+
 //
 // Functions to be plotted
 //
@@ -89,7 +89,7 @@ int main()
     delete [] y2;
     delete [] y3;
 
-    cout << "   Program Complete "    << endl << endl;
+    std::cout << "   Program Complete "    << std::endl << std::endl;
 	return 0;
 }
  

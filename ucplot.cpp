@@ -19,8 +19,6 @@
 #include <cstdio>
 #include <cmath>
 #include <iostream>
-using namespace std;
-
 
 //
 // strcpy_s is not implemented as part of C++11 (arrgh) so this macro
@@ -484,7 +482,7 @@ double* UCplot::get_double_array(long length)
   double *array;
   if((array = new double[length]) == 0)
   {
-    cerr << "\nOut of Memory -- Exiting\n\n";
+    std::cerr << "\nOut of Memory -- Exiting\n\n";
     CAMgraphicsExit();
   }
   return array;
@@ -886,7 +884,7 @@ void UCplot::label_y(const char* s, double size)
 void UCplot::plot()
 {
     if((Y ==0)&&(fun == 0))
-    {cerr << " Data Not Specified For Plot " << endl; CAMgraphicsExit();};
+    {std::cerr << " Data Not Specified For Plot " << std::endl; CAMgraphicsExit();};
     if(auto_scale_flag == 1) set_range_to_min_max(); 
     create_plot(); 
 } 

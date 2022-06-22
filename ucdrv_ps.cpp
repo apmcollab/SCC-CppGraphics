@@ -31,8 +31,6 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-using namespace std;
-
 #include <time.h>
 #include <cmath>
 
@@ -76,7 +74,7 @@ UCdriver_ps::UCdriver_ps(const char *s) : UCdriver(s)
 
   if (!fout)
   {
-    cerr << "Trouble opening file for graphics output - Exiting \n";
+    std::cerr << "Trouble opening file for graphics output - Exiting \n";
     CAMgraphicsExit();
   }
 
@@ -92,10 +90,10 @@ UCdriver_ps::UCdriver_ps(const char *s) : UCdriver(s)
     //  Write header
   fout
    << "%!PS-Adobe-3.0 \n"
-   << "%%Creator: UCLA++ Class Libraries PostScript Driver"  << endl;
+   << "%%Creator: UCLA++ Class Libraries PostScript Driver"  << std::endl;
   fout
    << "%%CreationDate: " << asctime(t_ptr)
-   << "%%Title: " << instance << endl
+   << "%%Title: " << instance << std::endl
    //
    // remove the bounding box margin (it messes up conversion to gif's)
    // CRA 8/30/2000
@@ -103,10 +101,10 @@ UCdriver_ps::UCdriver_ps(const char *s) : UCdriver(s)
 
    << "%%BoundingBox: " << 0 << " " << 0 << " "
                         << int(lmarg + PICTURE_WIDTH) << " "
-                        << int(bmarg + PICTURE_HEIGHT) << endl;
+                        << int(bmarg + PICTURE_HEIGHT) << std::endl;
   fout << "%%Orientation: Portrait" 
    << "%%Pages: (atend) \n"
-   << "%%EndComments " << endl << endl; 
+   << "%%EndComments " << std::endl << std::endl; 
 
     //  Write prolog
   fout
@@ -126,7 +124,7 @@ UCdriver_ps::UCdriver_ps(const char *s) : UCdriver(s)
    << "/sh { show } def \n"
    << "/slw { setlinewidth } def \n"
    << "/sw { stringwidth } def \n"
-   << "/t { translate } def \n" << endl;
+   << "/t { translate } def \n" << std::endl;
 
   fout
    << "   %  Routine scales and set the font - space saver \n"
@@ -170,16 +168,16 @@ UCdriver_ps::UCdriver_ps(const char *s) : UCdriver(s)
    << "   %  Routines for determining offsets used for justification \n"
    << "   %    input - factor, string,  output - offset \n"
    << "/xoff { sw pop 2 div mul } def \n"
-   << "/yoff { strh add 2 div mul } def \n" << endl;
+   << "/yoff { strh add 2 div mul } def \n" << std::endl;
 
   fout
-   << "end % end UC_Dict \n" << endl;
+   << "end % end UC_Dict \n" << std::endl;
 
   fout
    << "/UC_Page_Begin { UC_Dict begin /UC_State save def } def \n"
    << "/UC_Page_End { UC_State restore end } def \n";
 
-  fout << "%%EndProlog \n \n" << endl;
+  fout << "%%EndProlog \n \n" << std::endl;
 }
 //
 //******************************************************************************
@@ -194,11 +192,11 @@ UCdriver_ps::~UCdriver_ps()
 
   // Changed 10/07/02 
   // because it seemed to want the Pages after EOF marker
-  // fout << "%%Pages: " << page << endl;
+  // fout << "%%Pages: " << page << std::endl;
   // fout << "%%EOF";
 
-  fout << "%%EOF"  << endl;
-  fout << "%%Pages: " << page << endl;
+  fout << "%%EOF"  << std::endl;
+  fout << "%%Pages: " << page << std::endl;
 
   fout.close(); 
 
@@ -375,7 +373,7 @@ void UCdriver_ps::points(double *X, double *Y, long np, char p,
          << p << ") sh \n";
   }
 
-  fout << endl;
+  fout << std::endl;
 }
 //
 //******************************************************************************
@@ -406,27 +404,27 @@ void UCdriver_ps::setup_page()
   int lmarg = (612 - PICTURE_WIDTH)/2;
   int bmarg = (792 - PICTURE_HEIGHT)/2;
   page++;
-  fout << "%%Page: " << page << " " << page << endl;
-  fout << "%%BeginPageSetup " << endl;
-  fout << "UC_Page_Begin " << endl;
-  fout << lmarg << " " << bmarg << " t " << endl;      // move origin
-  fout << int(PICTURE_WIDTH) << " " << int(PICTURE_HEIGHT) << " scale " << endl;  // normalize window
+  fout << "%%Page: " << page << " " << page << std::endl;
+  fout << "%%BeginPageSetup " << std::endl;
+  fout << "UC_Page_Begin " << std::endl;
+  fout << lmarg << " " << bmarg << " t " << std::endl;      // move origin
+  fout << int(PICTURE_WIDTH) << " " << int(PICTURE_HEIGHT) << " scale " << std::endl;  // normalize window
 
-  fout << "0.004 slw" << endl;
+  fout << "0.004 slw" << std::endl;
 //
 // Don't draw a bounding rectangle
 // CRA 8/30/2000
 
-//fout << "n 0 0 m 0 1 l 1 1 l 1 0 l c clip s" << endl;
+//fout << "n 0 0 m 0 1 l 1 1 l 1 0 l c clip s" << std::endl;
 
-  fout << "0 0 m" << endl;
+  fout << "0 0 m" << std::endl;
   last_x = last_y = 0;
   line_not_stroked = 0;
 
-  fout << "0 setlinecap 0 setlinejoin " << endl;
-  fout << DEFAULT_LINE_WIDTH << " slw " << endl;
+  fout << "0 setlinecap 0 setlinejoin " << std::endl;
+  fout << DEFAULT_LINE_WIDTH << " slw " << std::endl;
 
-  fout << "%%EndPageSetup " << endl << endl;
+  fout << "%%EndPageSetup " << std::endl << std::endl;
 
   pres_color = pres_dash = 0;
   pres_line_width = DEFAULT_LINE_WIDTH;
@@ -639,7 +637,7 @@ void UCdriver_ps::do_color(int color, double *RGB)
 //
 void UCdriver_ps::do_font(const char *f, double s)
 {
-  if(fabs(s) < 10e-08) s = DEFAULT_FONT_SIZE;
+  if(std::abs(s) < 10e-08) s = DEFAULT_FONT_SIZE;
   if(f != 0) {if(strlen(f) == 0) f = 0;}
   if(f)
   {

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-using namespace std;
+
 
 #include "CAMpostScriptDriver.h"
 #include "CAMplotArguments.h"
