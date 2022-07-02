@@ -47,7 +47,7 @@ endif
 RELEASE_DIR  = ./_releaseCppGraphics
 DEBUG_DIR    = ./_debugCppGraphics
 
-DEBUG_LIBRARY    = $(LIB_DIR)/libCppGraphics_debug.a
+DEBUG_LIBRARY    = $(LIB_DIR)/libCppGraphicsd.a
 RELEASE_LIBRARY  = $(LIB_DIR)/libCppGraphics.a 
 
 include $(MAKESCRIPTS_Dir)/CommonLibMake.mk
