@@ -13,6 +13,7 @@
 //                            (C) UCLA 1994, 1995
 //********************************************************************************
 //
+#include <cmath>
 #ifndef UC3DGARPH_
 #define UC3DGARPH_
 #include "ucgraph.h"
