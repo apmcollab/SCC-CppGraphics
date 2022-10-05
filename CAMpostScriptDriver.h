@@ -11,7 +11,9 @@
 //
 //
 //
+#include <string>
 #include "CAMgraphicsDriver.h"
+
 
 #ifndef CAMPLOTARGUMENTS__
 class CAMplotArguments;
@@ -46,8 +48,8 @@ class __IMPEXP__ CAMpostScriptDriver : public CAMgraphicsDriver
 public  :
 
 	CAMpostScriptDriver();
-    CAMpostScriptDriver(const char* F);
-    ~CAMpostScriptDriver();
+    CAMpostScriptDriver(const std::string& outputFileName);
+    virtual ~CAMpostScriptDriver();
     
 	void open();
 	void close();
@@ -58,6 +60,8 @@ public  :
 	void accept(const CAMtextArguments& A);
  	void accept(const CAMsetArguments& A);
 
+    void initialize(const std::string& outputFileName);
+
 
     void AddBackSlash(const char* in, char* out);
 
@@ -65,7 +69,7 @@ private :
 
    CAMgraphics* G;
    CAMgraphicsState* S;
-   char* outputFile;
+   std::string outputFile;
 
 };
 #endif 

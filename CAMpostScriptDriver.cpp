@@ -38,29 +38,19 @@ CAMpostScriptDriver::CAMpostScriptDriver()
 {
 	S = new CAMgraphicsState();
     G = new CAMgraphics;
-    outputFile = new char[9];
-
-    // strcpy(outputFile,"graph.ps");
-    COPYSTR(outputFile,strlen("graph.ps") + 1,"graph.ps");
-
+    outputFile = "graph.ps";
     dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
-
-    // strcpy(dTypeName,"CAMpostScriptDriver");
     COPYSTR(dTypeName,strlen("CAMpostScriptDriver") + 1,"CAMpostScriptDriver");
 
     open();
 }
 
-CAMpostScriptDriver::CAMpostScriptDriver(const char* F)
+CAMpostScriptDriver::CAMpostScriptDriver(const std::string& fileName)
 {
     S = new CAMgraphicsState();
     G = new CAMgraphics;
-    outputFile = new char[strlen(F) + 1];
-    //strcpy(outputFile,F);
-    COPYSTR(outputFile,strlen(F) + 1,F);
-
+    outputFile = fileName;
     dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
-    //strcpy(dTypeName,"CAMpostScriptDriver");
     COPYSTR(dTypeName,strlen("CAMpostScriptDriver") + 1,"CAMpostScriptDriver");
     open();
 }
@@ -70,12 +60,30 @@ CAMpostScriptDriver::~CAMpostScriptDriver()
     close();
     delete S;
 	delete G;
-    delete [] outputFile;
+    outputFile.clear();
 }                                            
 
+void CAMpostScriptDriver::initialize(const std::string& outputFileName)
+{
+	close();
+    delete S;
+	delete G;
+    outputFile.clear();
+    delete [] dTypeName;
+
+    S = new CAMgraphicsState();
+    G = new CAMgraphics;
+
+    outputFile = outputFileName;
+    dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
+    COPYSTR(dTypeName,strlen("CAMpostScriptDriver") + 1,"CAMpostScriptDriver");
+    open();
+
+
+}
 void CAMpostScriptDriver::open()
 {
-	G->open(outputFile);
+	G->open(outputFile.c_str());
     G->getState(*S);
 }
 
