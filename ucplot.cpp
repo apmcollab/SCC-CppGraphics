@@ -494,6 +494,8 @@ double* UCplot::get_double_array(long length)
 //
 void UCplot::create_plot()
 {
+	if(n_points == 0) {return;}
+
     double *xPoint = get_double_array(n_points);
     double *yPoint = get_double_array(n_points);
 
