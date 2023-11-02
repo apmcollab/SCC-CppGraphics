@@ -1041,8 +1041,9 @@ void UCcontour::draw_lines(int level)
 //
   int cnt = 0;
   double ang,x,y;
-  char lab[256];
-  char format[256];
+  const size_t bufSize = 1024;
+  char lab[bufSize];
+  char format[bufSize];
 
   if (f == 2 || f == 3)           // Labels are going to be drawn.  Make 
   {                               //   labels at least two sig digits
@@ -1054,8 +1055,8 @@ void UCcontour::draw_lines(int level)
     if(std::abs(line_value) < .0001) 
     {
     line_value = 0.00;
-    sprintf(format,"%%%d.%df",6,4);
-    sprintf(lab,format,line_value); 
+    snprintf(format,bufSize,"%%%d.%df",6,4);
+    snprintf(lab,bufSize,format,line_value);
     }
     else
     {
@@ -1076,8 +1077,8 @@ void UCcontour::draw_lines(int level)
 
     if (line_value < 0) field++;
 
-    sprintf(format,"%%%d.%df",field,dec);
-    sprintf(lab,format,line_value);
+    snprintf(format,bufSize,"%%%d.%df",field,dec);
+    snprintf(lab,bufSize,format,line_value);
        
     } 
   }
@@ -1171,7 +1172,8 @@ void UCcontour::draw_background()
 void UCcontour::draw_high_low_labels()
 {
   double x,y,val;
-  char lab[256], format[256];
+  const size_t bufSize = 1024;
+  char lab[bufSize], format[bufSize];
 
   for (int r = 1; r < rows - 1; r++)
     for (int c = 1; c < columns - 1; c++)
@@ -1206,8 +1208,8 @@ void UCcontour::draw_high_low_labels()
         if(std::abs(val) < .0001) 
         {field = 6; dec = 4;}
 
-        sprintf(format,"%%%d.%df",field,dec);
-        sprintf(lab,format,val);
+        snprintf(format,bufSize,"%%%d.%df",field,dec);
+        snprintf(lab,bufSize,format,val);
        
         drv->text(x,y,"H",0,scale_to_frame_width(0.03),0,1,0,0,0);
         drv->text(x,y,lab,0,scale_to_frame_width(0.02),0,-1,1,0,0);
@@ -1238,8 +1240,8 @@ void UCcontour::draw_high_low_labels()
         if(std::abs(val) < .0001) 
         {field = 6; dec = 4;}
 //        
-        sprintf(format,"%%%d.%df",field,dec);
-        sprintf(lab,format,val);
+        snprintf(format,bufSize,"%%%d.%df",field,dec);
+        snprintf(lab,bufSize,format,val);
 
         drv->text(x,y,"L",0,scale_to_frame_width(0.03),0,1,0,0,0);
         drv->text(x,y,lab,0,scale_to_frame_width(0.02),0,-1,1,0,0);

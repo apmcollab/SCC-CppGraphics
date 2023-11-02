@@ -281,15 +281,19 @@ void UCplot::y_tick_mark(double ypos, double length, double xpos)
 //
 void UCplot::x_num_label(double x, double xpos, double ypos)
 {                       // ypos only used if axis_type == FLOATING
-  char str[256];
-  char* s = new char[label_width + label_precision+25];
+
+  size_t buffSize = 1024;
+  char      str[buffSize];
+
+  size_t sbuffSize = label_width + label_precision + 25;
+  char* s = new char[sbuffSize];
 
   if (label_type == SCIENTIFIC)
-    sprintf(str, "%%%d.%de", label_width, label_precision);
+    snprintf(str, buffSize,"%%%d.%de", label_width, label_precision);
   else
-    sprintf(str, "%%.%df", label_precision);
+    snprintf(str, buffSize,"%%.%df", label_precision);
 
-  sprintf(s, str, x);
+  snprintf(s, sbuffSize, str, x);
 
   double scale = ((frame_r - frame_l) < (frame_t - frame_b)) ?
   (frame_r - frame_l) : (frame_t - frame_b);
@@ -311,15 +315,19 @@ void UCplot::x_num_label(double x, double xpos, double ypos)
 void UCplot::y_num_label(double y, double ypos, double xpos)
 {                              
 // ypos only used if axis_type == FLOATING
-  char str[15];
-  char* s = new char[label_width + label_precision+25];
+
+  size_t buffSize = 1024;
+  char      str[buffSize];
+
+  size_t sbuffSize = label_width + label_precision+25;
+  char* s = new char[sbuffSize];
 
   if (label_type == SCIENTIFIC)
-    sprintf(str,"%%.%de",label_precision);
+    snprintf(str,buffSize,"%%.%de",label_precision);
   else
-	sprintf(str,"%%.%df",label_precision);
+	snprintf(str,buffSize,"%%.%df",label_precision);
 
-  sprintf(s,str,y);
+  snprintf(s,sbuffSize,str,y);
 
   double scale = ((frame_r - frame_l) < (frame_t - frame_b)) ?
   (frame_r - frame_l) : (frame_t - frame_b);
