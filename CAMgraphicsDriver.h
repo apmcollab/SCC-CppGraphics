@@ -30,6 +30,10 @@ class CAMtextArguments;
 class CAMsetArguments;
 #endif
 
+#ifndef CAM_REGION_ARGUMENTS__
+class CAMregionArguments;
+#endif
+
 #include "camgraphimpexp.h"
 
 class __IMPEXP__ CAMgraphicsDriver
@@ -41,6 +45,7 @@ class __IMPEXP__ CAMgraphicsDriver
     virtual void accept(const  CAMsurfaceArguments& /* S */) {};
     virtual void accept(const  CAMtextArguments& /* T */){};
     virtual void accept(const  CAMsetArguments& /* S */){};
+    virtual void accept(const  CAMregionArguments& /* R */){};
     virtual void open() {};
     virtual void close(){};
     virtual void frame(){};

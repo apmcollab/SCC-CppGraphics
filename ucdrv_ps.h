@@ -52,7 +52,7 @@ public:
             double rotation, double horiz_just, double vert_just,
             int color, double *RGB);
 
-    void region(double *X, double *Y, long npoints, double *RGB);
+    void region(double *X, double *Y, long npoints, int color, double *RGB);
 
     void frame();
 //

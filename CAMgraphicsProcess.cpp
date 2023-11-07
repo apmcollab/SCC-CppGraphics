@@ -1,6 +1,7 @@
 #include "CAMgraphicsProcess.h"
 #include "CAMgraphicsDriver.h"
 #include "CAMplotArguments.h"
+#include "CAMregionArguments.h"
 #include "CAMcontourArguments.h"
 #include "CAMsurfaceArguments.h"
 #include "CAMtextArguments.h"
@@ -126,6 +127,35 @@ void CAMgraphicsProcess::plot(double* x, double* y, long n, int c, int s)
     Arg.n        = n;
     Arg.c        = char(c);
     Arg.s        = s;
+    ODriver->accept(Arg);
+}
+
+
+void CAMgraphicsProcess::region(double *x, double *y, long n)
+{
+	if(ODriver == 0) return;
+	CAMregionArguments Arg;
+    Arg.callType = 0;
+    Arg.x_Size   = n;
+    Arg.x        = x;
+    Arg.y_Size   = n;
+    Arg.y        = y;
+    Arg.n        = n;
+    ODriver->accept(Arg);
+}
+
+void CAMgraphicsProcess::region(double *x, double *y, long n, int color, double *rgb)
+{
+	if(ODriver == 0) return;
+	CAMregionArguments Arg;
+    Arg.callType = 1;
+    Arg.x_Size   = n;
+    Arg.x        = x;
+    Arg.y_Size   = n;
+    Arg.y        = y;
+    Arg.n        = n;
+    Arg.col      = color;
+    Arg.rgb      = rgb;
     ODriver->accept(Arg);
 }
 
@@ -743,6 +773,8 @@ void CAMgraphicsProcess::setPlotLineColor(double* rgb)
     Arg.d_Size   = 3;
     double d[3];
     d[0] = rgb[0]; d[1] = rgb[1]; d[2] = rgb[2];
+
+    std::cout << "CAMgraphicsProcess : " << d[0] << " " << d[1] << " " << d[2] << std::endl;
     Arg.d = d;
 
     ODriver->accept(Arg);

@@ -356,10 +356,15 @@ virtual void text(double x, double y, const char *s, const char *font,
 
     @param npoints The number of segment endpoints (typically the size of the X and Y arrays).
     
+    @param color One of the enumerated color constants values
+    specifying the color of the line.
+    If color == 0 the default color is used.
+    If color == USER_RGB then the parameter RGB is used to set the color.
+
     @param RGB A three element double array with values between
     0 and 255 specifying the red, green and blue components of the color.  
 */
-virtual void region(double *X, double *Y, long npoints, double *RGB) = 0;
+virtual void region(double *X, double *Y, long npoints, int color, double *RGB) = 0;
 
 
 //

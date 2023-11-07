@@ -23,6 +23,7 @@ class UCplot : public UC2dgraph
 public:
 //
 //  Constructors
+
 // 
 //  Copy Constructor
 //
@@ -54,6 +55,10 @@ public:
     void plot(double (*f)(double x), double x_min, double x_max, double y_min, double y_max);
     void plot(double (*f)(double x), double x_min, double x_max, double y_min, double y_max, int p_arg); 
     void plot(double (*f)(double x), double x_min, double x_max, double y_min, double y_max, int p_style,  int p_arg); 
+
+//
+    void region(double *x, double *y, long npoints);
+    void region(double *x, double *y, long npoints, int color, double *RGB);
 //
     void frame(){drv->frame();};
 //
@@ -172,7 +177,8 @@ public:
 //
     void set_line_color(int c) {line_color = c;}
     void set_line_color(double *rgb)
-      { line_rgb = rgb; line_color = USER_RGB; }
+      { std::cout << "UCPlot.h " << rgb[0] << " " << rgb[1] << " " << rgb[2] << std::endl;
+      line_rgb = rgb; line_color = USER_RGB; }
     void set_dash_pattern(int d) { line_dash_pattern = d;}
     void set_user_dash_pattern(int d)
        { user_dash_pattern = d; line_dash_pattern = USER_DASH;}
@@ -286,6 +292,7 @@ protected:
 //  Helper functions
 //    
     void create_plot();
+    void create_region_plot();
 
     void x_tick_mark(double xpos, double length, double ypos);
     void y_tick_mark(double ypos, double length, double xpos);

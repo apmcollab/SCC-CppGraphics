@@ -238,6 +238,9 @@ public :
     static void  plot(double (*f)(double x), double x_min, double x_max, double y_min, double y_max);
     static void  plot(double (*f)(double x), double x_min, double x_max, double y_min, double y_max, int p_arg);
     static void  plot(double (*f)(double x), double x_min, double x_max, double y_min, double y_max, int p_arg, int p_style);
+
+    static void  region(double *X, double *Y, long npoints);
+    static void  region(double *X, double *Y, long npoints, int color, double *RGB);
 //
 //  Member Functions For Combined Surface and Contour Routines
 //
@@ -311,7 +314,7 @@ public :
 //
 //  CAMgraphicsState manipulation
 //
-	 static void setState(const CAMgraphicsState& S);
+	static void setState(const CAMgraphicsState& S);
     static void getState(CAMgraphicsState& S);
 };
 //

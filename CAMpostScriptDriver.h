@@ -19,6 +19,10 @@
 class CAMplotArguments;
 #endif
 
+#ifndef CAM_REGION_ARGUMENTS__
+class CAMregionArguments;
+#endif
+
 #ifndef CAMCONTOURARGUMENTS__
 class CAMcontourArguments;
 #endif
@@ -55,13 +59,13 @@ public  :
 	void close();
 	void frame();
 	void accept(const CAMplotArguments& A);
+	void accept(const CAMregionArguments& A);
 	void accept(const CAMcontourArguments& A);
 	void accept(const CAMsurfaceArguments& A);
 	void accept(const CAMtextArguments& A);
  	void accept(const CAMsetArguments& A);
 
     void initialize(const std::string& outputFileName);
-
 
     void AddBackSlash(const char* in, char* out);
 

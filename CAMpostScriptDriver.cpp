@@ -5,6 +5,7 @@
 
 #include "CAMpostScriptDriver.h"
 #include "CAMplotArguments.h"
+#include "CAMregionArguments.h"
 #include "CAMcontourArguments.h"
 #include "CAMsurfaceArguments.h"
 #include "CAMtextArguments.h"
@@ -41,7 +42,6 @@ CAMpostScriptDriver::CAMpostScriptDriver()
     outputFile = "graph.ps";
     dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
     COPYSTR(dTypeName,strlen("CAMpostScriptDriver") + 1,"CAMpostScriptDriver");
-
     open();
 }
 
@@ -78,8 +78,6 @@ void CAMpostScriptDriver::initialize(const std::string& outputFileName)
     dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
     COPYSTR(dTypeName,strlen("CAMpostScriptDriver") + 1,"CAMpostScriptDriver");
     open();
-
-
 }
 void CAMpostScriptDriver::open()
 {
@@ -90,7 +88,7 @@ void CAMpostScriptDriver::open()
 void CAMpostScriptDriver::close()
 {
     G->setState(*S);
-	 G->close();
+    G->close();
 }
 
 void CAMpostScriptDriver::frame() 
@@ -98,6 +96,7 @@ void CAMpostScriptDriver::frame()
 	 G->setState(*S);
     G->frame();
 }
+
 
 void CAMpostScriptDriver::accept(const CAMplotArguments& A)
 {
@@ -213,6 +212,32 @@ void CAMpostScriptDriver::accept(const CAMtextArguments& A)
 	G->getState(*S);
 }
 
+void CAMpostScriptDriver::accept(const CAMregionArguments& A)
+{
+	G->setState(*S);
+//
+// Unpack arguments
+//
+	int callType            = int(A.callType);
+
+	long   n                = A.n;
+	int   col               = A.col;
+	double*rgb              = A.rgb;
+
+	std::cout << "CAMpostScriptDriver::accept callType, color, and USER_RGB " << callType << " " << col << " " << CAMgraphics::USER_RGB << std::endl;
+
+	double* x                = A.x;
+	double* y                = A.y;
+
+	switch(callType)
+	{
+	case 0  : G->region(x,y,n); break;
+	case 1  : G->region(x,y,n,col,rgb); break;
+	}
+
+	G->getState(*S);
+}
+
 void CAMpostScriptDriver::accept(const CAMsetArguments& A)
 {
 	G->setState(*S);
@@ -234,7 +259,7 @@ void CAMpostScriptDriver::accept(const CAMsetArguments& A)
 //
   	case 10  : G->setFrame(D[0],D[1],D[2],D[3]); break;
   	case 11  : G->subplotOn(I[0],I[1])         ; break;
-   case 12  : G->subplot(I[0],I[1])           ; break;
+    case 12  : G->subplot(I[0],I[1])           ; break;
   	case 13  : G->subplotOff()                 ; break;
 //
 // Axis Range and Scaling Manipulation

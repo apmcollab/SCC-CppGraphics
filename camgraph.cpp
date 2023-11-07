@@ -1008,6 +1008,17 @@ void  CAMgraphics::plot(double (*f)(double x), double x_min, double x_max, doubl
     setPlotPointType(p_arg_save);
     setPlotStyle(p_style_save);
 }
+
+
+void  CAMgraphics::region(double *X, double *Y, long npoints)
+{
+    (UCplotPointerArray[plotRegionIndex-1])->region(X, Y, npoints);
+}
+
+void  CAMgraphics::region(double *X, double *Y, long npoints, int color, double *RGB)
+{
+    (UCplotPointerArray[plotRegionIndex-1])->region(X, Y, npoints, color, RGB);
+}
 //
 //********************************************************************************
 //        COMBINED CONTOURING AND SURFACE PLOT MEMBER_FUNCTIONS

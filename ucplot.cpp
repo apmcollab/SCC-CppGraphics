@@ -40,6 +40,9 @@
 //                         COPY CONSTRUCTOR
 //******************************************************************************
 // 
+
+
+
 UCplot::UCplot(const UCplot& A) : UC2dgraph(A)
 {   
     auto_scale_flag = A.auto_scale_flag;
@@ -141,7 +144,7 @@ UCplot::UCplot(UCdriver *d) : UC2dgraph(d)
     X = 0;  Y = 0;
     n_points  = 0; 
 //    
-    fun          = 0; 
+    fun       = 0;
 }
 //
 //******************************************************************************
@@ -616,6 +619,61 @@ void UCplot::create_plot()
 
   if(xClip != 0) delete [] xClip;
   if(yClip != 0) delete [] yClip;
+}
+
+
+
+void UCplot::create_region_plot()
+{
+	if(n_points < 2) {return;}
+
+    double *xPoint = get_double_array(n_points);
+    double *yPoint = get_double_array(n_points);
+
+    int c = get_graphics_low_color(line_color);
+
+    std::cout << " UCplot::create_region_plot c, line_color " << c << " " << line_color << std::endl;
+    if(c == UCplot::USER_RGB)
+    {
+    std::cout << line_rgb[0] << " " << line_rgb[1] <<  " " << line_rgb[2] << std::endl;
+    }
+
+	int i;
+    for (i = 0; i < n_points; i++)
+    {
+     xPoint[i]  = X[i];
+     yPoint[i]  = Y[i];
+    }
+
+    long plotPointCount;
+
+    plotPointCount = UCclip::getClippedPlotPointCount(xPoint, yPoint, n_points,
+                     xmin, xmax,ymin, ymax);
+
+    double *xClip = get_double_array(plotPointCount);
+    double *yClip = get_double_array(plotPointCount);
+
+    UCclip::createClippedPoints(xClip,yClip,xPoint,yPoint,n_points,xmin,xmax,ymin,ymax);
+    //
+    // normalize
+    //
+    for(i = 0; i < plotPointCount; i++)
+    {
+    xClip[i] = frame_2_screen_x(normalize_x(xClip[i]));
+    yClip[i] = frame_2_screen_y(normalize_y(yClip[i]));
+    }
+
+    drv->region(xClip, yClip,plotPointCount, c, line_rgb);
+
+    if (x_axis_flag) draw_x_axis();
+    if (y_axis_flag) draw_y_axis();
+
+
+   if(xPoint != 0) delete [] xPoint;
+   if(yPoint != 0) delete [] yPoint;
+
+   if(xClip != 0) delete [] xClip;
+   if(yClip != 0) delete [] yClip;
 }
 
 //
@@ -1252,6 +1310,57 @@ void UCplot::plot(double (*f)(double x), double x_min, double x_max, double y_mi
     set_point_type(point_type_save);
     set_plot_style(plot_style_save);
 }
+
+   void UCplot::region(double *x, double *y, long npoints)
+   {
+    X = x;
+    Y = y;
+    n_points = npoints;
+    fun = 0;
+    if(auto_scale_flag == 1) set_range_to_min_max();
+    create_region_plot();
+   }
    
-   
+   void UCplot::region(double *x, double *y, long npoints, int color, double *RGB)
+   {
+    short   line_color_save = line_color;        // = 0 means use default color (black
+
+   if(line_color == UCplot::USER_RGB)
+   {
+   std::cout << "ZZZ UCplot line_color RGB " << std::endl;
+   }
+
+   line_color = color;
+
+
+    double line_rgb_save[3];
+    if(line_rgb != 0)
+    {
+    line_rgb_save[0] = line_rgb[0];
+    line_rgb_save[1] = line_rgb[1];
+    line_rgb_save[2] = line_rgb[2];
+
+    line_rgb[0] = RGB[0];
+    line_rgb[1] = RGB[1];
+    line_rgb[2] = RGB[2];
+    }
+
+
+    X = x;
+    Y = y;
+    n_points = npoints;
+    fun = 0;
+    if(auto_scale_flag == 1) set_range_to_min_max();
+    create_region_plot();
+
+    line_color = line_color_save;
+
+    if(line_rgb != 0)
+    {
+    line_rgb[0] = line_rgb_save[0];
+    line_rgb[1] = line_rgb_save[1];
+    line_rgb[2] = line_rgb_save[2];
+    }
+
+   }
     

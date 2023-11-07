@@ -37,7 +37,7 @@ public :
     virtual void detachDriver();
     CAMgraphicsDriver* getDriver(){return ODriver;};
 
-	 virtual void frame();
+    virtual void frame();
     virtual void reset();
 
     void  plot();
@@ -47,6 +47,9 @@ public :
     void  plot(double *x, double *y, long n);
     void  plot(double *x, double *y, long n, int p_arg);
     void  plot(double *x, double *y, long n, int p_arg, int p_style);
+
+    void  region(double *x, double *y, long n);
+    void  region(double *x, double *y, long n, int color, double *rgb);
 
 	void contour();
 	void contour(double *z, long m, long n);

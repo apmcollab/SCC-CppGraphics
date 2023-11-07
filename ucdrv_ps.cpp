@@ -621,7 +621,7 @@ void UCdriver_ps::do_color(int color, double *RGB)
       break; 
 
     case USER_RGB:
-      fout << RGB[0] << " " << RGB[1] << " " << RGB[2] << " setrgbcolor \n";
+      fout << RGB[0]/255.0 << " " << RGB[1]/255.0 << " " << RGB[2]/255.0 << " setrgbcolor \n";
       pres_RGB[0] = RGB[0];
       pres_RGB[1] = RGB[1];
       pres_RGB[2] = RGB[2];
@@ -686,10 +686,53 @@ void UCdriver_ps::stroke_line()
 //                          REGION
 //******************************************************************************
 //
-void UCdriver_ps::region(double *X, double *Y, long npoints, double *RGB)
+void UCdriver_ps::region(double *x, double *y, long npoints, int color, double *RGB)
 {
-// To do 
+  if (npoints < 2)             //  Not enough points
+    return;
+
+  if (page_not_setup)          //  set up defaults
+    setup_page();
+
+  if (line_not_stroked) stroke_line();
+
+  // Set up dash pattern
+
+  int dash_pattern = 0;
+  int user_pattern = 0;
+
+  if (dash_pattern != pres_dash)   // dash_pattern == 0 means solid line
+    {do_dash(dash_pattern, user_pattern);}
+
+  double width = DEFAULT_LINE_WIDTH;
+
+  if (width != pres_line_width)
+   {do_line_width(width);}
+
+  if (color != pres_color || color == USER_RGB)
+    {do_color(color, RGB);}
+
+  if(color == USER_RGB)
+  {
+  std::cout << "XZZZZ RGB " << RGB[0] << " " << RGB[1] << " " << RGB[2] << std::endl;
+  }
+
+  fout << "n \n";
+  fout << *x << " " << *y << " m \n";
+  x++;
+  y++;
+
+  while (--npoints)
+  {
+    fout << *x << " " << *y << " l \n";
+    x++;
+    y++;
+  }
+
+  fout << "fill \n";
+  fout << "s \n \n";
 }
+
 
   
  
