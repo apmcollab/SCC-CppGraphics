@@ -1,3 +1,6 @@
+#include <vector>
+#include <string>
+
 #ifndef CAMSETARGUMENTS__
 #define CAMSETARGUMENTS__
 //
@@ -18,18 +21,13 @@ public :
 
     long callType;
 
-    long*          i;    // for int arguments
-    double*        d;    // for double arguments
-    const char*    b;    // for string arguments
-
-    long i_Size; long d_Size; long b_Size;
+    std::vector<long>   i;    // for int arguments
+    std::vector<double> d;    // for double arguments
+    std::string         b;    // for string arguments
 
     CAMsetArguments()
     {
      callType = 0;
-     i = 0;  i_Size = 0;
-     d = 0;  d_Size = 0;
-     b = 0;  b_Size = 0;
     };
 
 };

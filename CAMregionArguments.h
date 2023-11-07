@@ -1,3 +1,5 @@
+#include <vector>
+
 #ifndef CAM_REGION_ARGUMENTS__
 #define CAM_REGION_ARGUMENTS__
 //
@@ -24,7 +26,7 @@ public :
 
     double*   x;       // data
     double*   y;
-    double* rgb;
+    std::vector<double>  rgb;
     int     col;
 
     long x_Size;       // Size of data
@@ -33,7 +35,9 @@ public :
     CAMregionArguments()
     {
     callType = 0;
-    n = 0; col = 0; rgb = 0;
+    n = 0;
+    col = 0;
+    rgb.resize(3,0.0);
     x = 0; x_Size = 0;
     y = 0; y_Size = 0;
     };

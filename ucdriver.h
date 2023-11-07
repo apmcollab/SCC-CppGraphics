@@ -14,25 +14,16 @@
 //###########################################################################
 //
 
-#ifndef UCDRIVER_
-#define UCDRIVER_  
-
 #include <string>
+#include <vector>
 #include <cstring>
 #include <cstdio>
 #include <iostream>
 #include <cstdlib>
 
-//
-// strcpy_s is not implemented as part of C++11 (arrgh) so this macro
-// inserts strcpy calls.
-//
+#ifndef UCDRIVER_
+#define UCDRIVER_
 
-#ifdef _MSC_VER
-#define COPYSTR(dst,count,src) strcpy_s(dst,count,src)
-#else
-#define COPYSTR(dst,count,src) strcpy(dst,src)
-#endif
 
 #define DEFAULT_INSTANCE  "graph.out"
 
@@ -51,7 +42,7 @@
 <i>Source</i>: 
 <A HREF="../UCdriver.h">UCdriver.h</A><p>
 
-@author David Sansot, Chris Anderson (C) UCLA 1994-2009
+@author David Sansot, Chris Anderson (C) UCLA 1994-2023
 @version 1/31/09 
 */
 class UCdriver
@@ -77,22 +68,18 @@ public:
     @param s A character string to be 
     passed to initialization routine (e.g. a file name). 
 */
-UCdriver(const char *s = 0)
+UCdriver(const std::string& s)
 {
-    instance = 0;
-    if (s)
-    {
-      instance = new char[strlen(s) + 1];
-      //strcpy(instance,s);
-      COPYSTR(instance,strlen(s) + 1,s);
-    }
-    else
-    {
-      instance = new char[strlen(DEFAULT_INSTANCE) + 1];
-      //strcpy(instance,DEFAULT_INSTANCE);
-      COPYSTR(instance,strlen(DEFAULT_INSTANCE) + 1,DEFAULT_INSTANCE);
-    }
-    dTypeName = 0;
+	if(s.empty())
+	{
+		instance = DEFAULT_INSTANCE;
+	}
+	else
+	{
+    instance = s;
+	}
+
+    dTypeName.clear();
     setDriverTypeName("UCdriver");
 };
 //
@@ -103,7 +90,7 @@ UCdriver(const char *s = 0)
 /**
     Destructor, shuts down, or cleans up, the graphics system. 
 */ 
-virtual ~UCdriver(){if(instance != 0) delete [] instance; if(dTypeName != 0) delete [] dTypeName;};
+virtual ~UCdriver(){};
     
 //
 //###########################################################################
@@ -114,20 +101,14 @@ virtual ~UCdriver(){if(instance != 0) delete [] instance; if(dTypeName != 0) del
     Sets the name of the graphics driver. The default driver name is "UCdriver". 
     @param dName Character string specifying the driver name. 
 */ 
-virtual void setDriverTypeName(const char* dName)
+virtual void setDriverTypeName(std::string dName)
 {
-    if(dTypeName != 0) delete [] dTypeName;
-    if((dName != 0)&&(strlen(dName) != 0))
-    {
-    dTypeName = new char[strlen(dName) + 1];
-    }
-    //strcpy(dTypeName,dName);
-    COPYSTR(dTypeName,strlen(dName) + 1,dName);
+    dTypeName = dName;
 }
 /**
     Returns the name of the graphics driver. 
 */ 
-virtual const char* getDriverTypeName()
+virtual std::string getDriverTypeName()
 {
  return dTypeName;
 }
@@ -173,7 +154,7 @@ virtual const char* getDriverTypeName()
 */
 virtual void line(double x1, double y1, double x2, double y2,
                   int dash_pattern, unsigned user_pattern, double width,
-                  int color, double *RGB) = 0; 
+                  int color, const std::vector<double>& RGB) = 0;
 
 //
 //###########################################################################
@@ -213,7 +194,7 @@ virtual void line(double x1, double y1, double x2, double y2,
 */
 virtual void lines(double *X, double *Y, long npoints,
                   int dash_pattern, unsigned user_pattern, double width,
-                  int color, double *RGB) = 0;
+                  int color, const std::vector<double>& RGB) = 0;
 
 //
 //###########################################################################
@@ -245,8 +226,8 @@ virtual void lines(double *X, double *Y, long npoints,
     0 and 255 specifying the red, green and blue components of the color.  
  
 */
-virtual void point(double x, double y, char c, const char *font,
-                     double size, int color, double *RGB) = 0;
+virtual void point(double x, double y, char c, const std::string& font,
+                     double size, int color, const std::vector<double>& RGB) = 0;
 //
 //###########################################################################
 //                          POINTS       
@@ -284,8 +265,8 @@ virtual void point(double x, double y, char c, const char *font,
 */
   
 virtual void points(double *X, double *Y, long npoints, char c,
-                      const char *font, double size, int color,
-                      double *RGB) = 0;
+                      const std::string& font, double size, int color,
+                      const std::vector<double>& RGB) = 0;
 
 //
 //###########################################################################
@@ -340,9 +321,9 @@ virtual void points(double *X, double *Y, long npoints, char c,
     0 and 255 specifying the red, green and blue components of the color.  
 
 */
-virtual void text(double x, double y, const char *s, const char *font,
+virtual void text(double x, double y, const std::string& s, const std::string& font,
                     double size, double rotation, double horiz_just,
-                    double vert_just, int color, double *RGB) = 0;
+                    double vert_just, int color, const std::vector<double>& RGB) = 0;
 /**
     Draws a filled polygonal region whose vertices are 
     are specified by (X[0],Y[0]), (X[1],Y[1]), ..., (X[npoints-1],Y[npoint-1]),(X[0],Y[0]) 
@@ -364,7 +345,7 @@ virtual void text(double x, double y, const char *s, const char *font,
     @param RGB A three element double array with values between
     0 and 255 specifying the red, green and blue components of the color.  
 */
-virtual void region(double *X, double *Y, long npoints, int color, double *RGB) = 0;
+virtual void region(double *X, double *Y, long npoints, int color, const std::vector<double>& RGB) = 0;
 
 
 //
@@ -401,11 +382,11 @@ YELLOW, WHITE, USER_RGB.
 
 protected :
 
-  char *instance;          //  The name of the instance.  In the case of the
+  std::string instance;    //  The name of the instance.  In the case of the
                            //  PostScript driver, this is used as the file
                            //  name.
 
-  char *dTypeName;         //   Name of the driver class
+  std::string dTypeName;   //   Name of the driver class
 
 };
 #endif 

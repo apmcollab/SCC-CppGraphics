@@ -19,18 +19,13 @@
 #include <cstdio>
 #include <cmath>
 #include <iostream>
+#include <vector>
+#include <string>
 
 //
 // strcpy_s is not implemented as part of C++11 (arrgh) so this macro
 // inserts strcpy calls.
 //
-
-#ifdef _MSC_VER
-#define COPYSTR(dst,count,src) strcpy_s(dst,count,src)
-#else
-#define COPYSTR(dst,count,src) strcpy(dst,src)
-#endif
-
 
 #include "ucplot.h"
 #include "ucclip.h"
@@ -66,29 +61,15 @@ UCplot::UCplot(const UCplot& A) : UC2dgraph(A)
     x_intercept     = A.x_intercept;
     y_intercept     = A.y_intercept;
     axis_color      = A.axis_color; 
+    axis_rgb        = A.axis_rgb;
 
-    if(A.axis_rgb != 0)
-    { 
-      axis_rgb = new double[3];
-      axis_rgb[0] = A.axis_rgb[0];
-      axis_rgb[1] = A.axis_rgb[1];
-      axis_rgb[2] = A.axis_rgb[2];
-    }
-    else
-    {axis_rgb = 0;}
-        
-    line_color = A.line_color;     
+    line_color      = A.line_color;
+    line_rgb        = A.line_rgb;
+
+    text_color      = A.text_color;
+    text_rgb        = A.text_rgb;
  
-    if(A.line_rgb != 0)
-    { 
-      line_rgb = new double[3];
-      line_rgb[0] = A.line_rgb[0];
-      line_rgb[1] = A.line_rgb[1];
-      line_rgb[2] = A.line_rgb[2];
-    }
-    else
-    {line_rgb = 0;}
-        
+
     line_dash_pattern = A.line_dash_pattern;
     user_dash_pattern = A.user_dash_pattern; 
     
@@ -96,16 +77,7 @@ UCplot::UCplot(const UCplot& A) : UC2dgraph(A)
     plot_style = A.plot_style;        
     point_type = A.point_type;        
 
-    if(A.point_font != 0)
-    { point_font = new char[strlen(A.point_font) + 1];
-      strcpy(point_font,A.point_font);
-
-
-
-      }
-    else
-    {point_font = 0;} 
-          
+    point_font   = A.point_font;
     point_size   = A.point_size;
     n_fun_points = A.n_fun_points;     
 //
@@ -194,12 +166,12 @@ void UCplot::init_vars()
     x_intercept = y_intercept = 0;
 
     axis_color = 0;
-    axis_rgb = 0;
+    axis_rgb.resize(3,0.0);
 //
 //  Line Style Defaults
 //
     line_color = 0;
-    line_rgb = 0;
+    line_rgb.resize(3,0.0);
 
     line_dash_pattern = 0;
     user_dash_pattern = 0;
@@ -210,7 +182,7 @@ void UCplot::init_vars()
 //
     plot_style = CURVE;
     point_type = '*';
-    point_font = 0;
+    point_font.clear();
     point_size = 0.02;
 }
 //
@@ -686,18 +658,9 @@ void UCplot::create_region_plot()
 //                      SET_POINT_FONT
 //******************************************************************************
 //
-void UCplot::set_point_font(const char* f)
+void UCplot::set_point_font(const std::string& f)
 {
-  if (point_font) delete point_font;
-
-  if (f)
-  {
-    point_font = new char[strlen(f) + 1];
-    //strcpy(point_font,f);
-    COPYSTR(point_font,strlen(f) + 1,f);
-  }
-  else
-    font = 0;
+    point_font = f;
 }
 //
 //******************************************************************************
@@ -706,22 +669,7 @@ void UCplot::set_point_font(const char* f)
 //
 std::string UCplot::get_point_font()
 {
-  std::string s;
-  if (point_font)
-  {
-    s = (std::string)(point_font);
-  }
-  return s;
-  /*
-  if (point_font)
-  {
-    char* s = new char[strlen(point_font) + 1];
-    strcpy(s,point_font);
-    return s;
-  }
-  else
-    return 0;
-  */
+  return point_font;
 }
 //
 //******************************************************************************
@@ -874,7 +822,7 @@ void UCplot::draw_y_axis()
 //                      LABEL_X
 //******************************************************************************
 //
-void UCplot::label_x(const char* s, double size)
+void UCplot::label_x(const std::string& s, double size)
 {
 //  Draws string s centered below the frame in the pressent
 //    font and  text_color.
@@ -902,7 +850,7 @@ void UCplot::label_x(const char* s, double size)
 //                      LABEL_Y
 //******************************************************************************
 //
-void UCplot::label_y(const char* s, double size)
+void UCplot::label_y(const std::string& s, double size)
 {
 //  Draws string s vertically centered left or right of the frame at
 //    an angle of 90 degrees using the present font and text_color.
@@ -1321,7 +1269,7 @@ void UCplot::plot(double (*f)(double x), double x_min, double x_max, double y_mi
     create_region_plot();
    }
    
-   void UCplot::region(double *x, double *y, long npoints, int color, double *RGB)
+   void UCplot::region(double *x, double *y, long npoints, int color, const std::vector<double>& RGB)
    {
     short   line_color_save = line_color;        // = 0 means use default color (black
 
@@ -1330,21 +1278,8 @@ void UCplot::plot(double (*f)(double x), double x_min, double x_max, double y_mi
    std::cout << "ZZZ UCplot line_color RGB " << std::endl;
    }
 
-   line_color = color;
-
-
-    double line_rgb_save[3];
-    if(line_rgb != 0)
-    {
-    line_rgb_save[0] = line_rgb[0];
-    line_rgb_save[1] = line_rgb[1];
-    line_rgb_save[2] = line_rgb[2];
-
-    line_rgb[0] = RGB[0];
-    line_rgb[1] = RGB[1];
-    line_rgb[2] = RGB[2];
-    }
-
+   line_color          = color;
+   std::vector<double> line_rgb_save = line_rgb;
 
     X = x;
     Y = y;
@@ -1354,13 +1289,7 @@ void UCplot::plot(double (*f)(double x), double x_min, double x_max, double y_mi
     create_region_plot();
 
     line_color = line_color_save;
-
-    if(line_rgb != 0)
-    {
-    line_rgb[0] = line_rgb_save[0];
-    line_rgb[1] = line_rgb_save[1];
-    line_rgb[2] = line_rgb_save[2];
-    }
+    line_rgb   = line_rgb_save;
 
    }
     

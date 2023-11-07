@@ -35,7 +35,7 @@ public :
     double c_inc;
     long     n_c;
 
-    double* c_values;
+    std::vector<double>   c_values;
     double* z;   // data : store as one dimensional
 
     long c_values_Size;
@@ -48,7 +48,7 @@ public :
      callType = 0;
      m     = 0;   n     = 0;   n_c   = 0;
      c_min = 0.0; c_max = 0.0; c_inc = 0.0;
-     c_values = 0; c_values_Size = 0;
+     c_values_Size = 0;
      z        = 0; z_Size        = 0;
      defaultColor  = 0;
     };

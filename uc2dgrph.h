@@ -13,10 +13,11 @@
 //                            (C) UCLA 1994, 1995
 //********************************************************************************
 //
+#include "ucgraph.h"
+
 #ifndef UC2DGRAPH_
 #define UC2DGRAPH_
 
-#include "ucgraph.h"
 
 class UC2dgraph : public UCgraph
 {

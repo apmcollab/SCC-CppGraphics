@@ -13,14 +13,13 @@
 //                            (C) UCLA 1994, 1995
 //********************************************************************************
 //
-#ifndef UCDRIVER__PS_
-#define UCDRIVER__PS_
-
-#include "camgraphimpexp.h"
-
-#include <fstream>
-
 #include "ucdriver.h"
+#include <fstream>
+#include <string>
+#include <vector>
+
+#ifndef UCDRIVER_PS_
+#define UCDRIVER_PS_
 
 #define DEFAULT_LINE_WIDTH  0.001
 #define DEFAULT_FONT  "Times-Roman"
@@ -29,30 +28,31 @@
 #define PICTURE_WIDTH   468 // in points -- 72 points = 1 inch
 #define PICTURE_HEIGHT  468
 
-class __IMPEXP__ UCdriver_ps : public UCdriver
+class UCdriver_ps : public UCdriver
 {
 public:
 
-    UCdriver_ps(const char* s = 0);
+    UCdriver_ps(const std::string& s);
     ~UCdriver_ps();
 
     void lines(double *x, double *y, long npoints, int dash_pattern,
-           unsigned user_pattern, double width, int color, double *RGB);
+           unsigned user_pattern, double width, int color, const std::vector<double>& RGB);
 
     void line(double x1, double y1, double x2, double y2,
             int dash_pattern, unsigned user_pattern, double width,
-            int color, double *RGB);
+            int color, const std::vector<double>& RGB);
 
-    void point(double x, double y, char p, const char* font, double size,
-             int color, double *RGB);
-    void points(double *X, double *Y, long np, char p, const char* font,
-              double size, int color, double *RGB);
+    void point(double x, double y, char p, const std::string& font, double size,
+             int color, const std::vector<double>& RGB);
 
-    void text(double x, double y, const char* s, const char* font, double size,
+    void points(double *X, double *Y, long np, char p, const std::string& font,
+              double size, int color, const std::vector<double>& RGB);
+
+    void text(double x, double y, const std::string& s, const std::string& font, double size,
             double rotation, double horiz_just, double vert_just,
-            int color, double *RGB);
+            int color, const std::vector<double>& RGB);
 
-    void region(double *X, double *Y, long npoints, int color, double *RGB);
+    void region(double *X, double *Y, long npoints, int color, const std::vector<double>& RGB);
 
     void frame();
 //
@@ -74,13 +74,14 @@ public:
     double last_x;
     double last_y;
 
-    short pres_color;
-    double pres_RGB[3];
-    short pres_dash;
-    int pres_user_pattern;
+    short             pres_color;
+    std::vector<double> pres_RGB;
+
+    short        pres_dash;
+    int  pres_user_pattern;
     double pres_line_width;
 
-    char* pres_font;
+    std::string pres_font;
     double pres_font_size;
 //
 // Internal Helper Functions
@@ -88,8 +89,8 @@ public:
     void setup_page();
     void do_dash(int dash_pattern, int user_pattern);
     void do_line_width(double width);
-    void do_color(int color, double *RGB);
-    void do_font(const char* f, double s);
+    void do_color(int color, const std::vector<double>& RGB);
+    void do_font(const std::string& f, double s);
     void stroke_line();
 };
 #endif

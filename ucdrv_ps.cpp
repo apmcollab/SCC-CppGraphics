@@ -27,29 +27,21 @@
 //********************************************************************************
 //  
 #include "ucdrv_ps.h"
-#include "camgraphexit.h"
 #include <string>
 #include <fstream>
 #include <iostream>
 #include <time.h>
 #include <cmath>
+#include <vector>
+#include <stdexcept>
 
-//
-// strcpy_s is not implemented as part of C++11 (arrgh) so this macro
-// inserts strcpy calls.
-//
 
-#ifdef _MSC_VER
-#define COPYSTR(dst,count,src) strcpy_s(dst,count,src)
-#else
-#define COPYSTR(dst,count,src) strcpy(dst,src)
-#endif
 //
 //******************************************************************************
 //                         UCdriver_ps(char *s)
 //******************************************************************************
 //
-UCdriver_ps::UCdriver_ps(const char *s) : UCdriver(s)
+UCdriver_ps::UCdriver_ps(const std::string& s) : UCdriver(s)
 {
   //  Initialize internally used variables
   page = 0;
@@ -58,24 +50,29 @@ UCdriver_ps::UCdriver_ps(const char *s) : UCdriver(s)
   line_not_stroked = 0;
   last_x = last_y = 0;
   pres_color = pres_dash = 0;
-  pres_RGB[0] = pres_RGB[1] = pres_RGB[2] = 0;
+
+  pres_RGB.resize(3,0.0);
+
   pres_user_pattern = 0;
   pres_line_width = DEFAULT_LINE_WIDTH;
 
-  pres_font = 0;
+  pres_font.clear();
   pres_font_size  = DEFAULT_FONT_SIZE;
 
 
 //  Set up file and write need info to file
 
 // Open file for output
+
   fout.open(instance);
   fout.precision(4);  //  Set precision to 5 decimal places
 
+  std::string errMsg;
+
   if (!fout)
   {
-    std::cerr << "Trouble opening file for graphics output - Exiting \n";
-    CAMgraphicsExit();
+    errMsg = "Trouble opening file for graphics output - Exiting \n";
+    throw std::runtime_error(errMsg);
   }
 
     //  Get the time to add to the file
@@ -198,9 +195,7 @@ UCdriver_ps::~UCdriver_ps()
   fout << "%%EOF"  << std::endl;
   fout << "%%Pages: " << page << std::endl;
 
-  fout.close(); 
-
-  if (pres_font) delete [] pres_font;
+  fout.close();
 }
 //
 //******************************************************************************
@@ -209,7 +204,7 @@ UCdriver_ps::~UCdriver_ps()
 //
 void UCdriver_ps::lines (double *x, double *y, long npoints,
                           int dash_pattern, unsigned user_pattern,
-                          double width, int color, double *RGB)
+                          double width, int color, const std::vector<double>& RGB)
 {
   if (npoints < 2)             //  Not enough points
     return;
@@ -252,7 +247,7 @@ void UCdriver_ps::lines (double *x, double *y, long npoints,
 //
 void UCdriver_ps::line(double x1, double y1, double x2, double y2,
                         int dash_pattern, unsigned user_pattern, double width,
-                        int color, double *RGB)
+                        int color, const std::vector<double>& RGB)
 {
   if (page_not_setup)          //  set up defaults
     setup_page();
@@ -291,9 +286,9 @@ void UCdriver_ps::line(double x1, double y1, double x2, double y2,
 //                         TEXT
 //******************************************************************************
 //
-void UCdriver_ps::text(double x, double y, const char *s, const char *font,
+void UCdriver_ps::text(double x, double y, const std::string& s, const std::string& font,
                        double size, double rotation, double horiz_just,
-                       double vert_just, int color, double *RGB)
+                       double vert_just, int color, const std::vector<double>& RGB)
 {
   if (page_not_setup)          //  set up defaults
     setup_page();
@@ -329,8 +324,8 @@ void UCdriver_ps::text(double x, double y, const char *s, const char *font,
 //                        POINT
 //******************************************************************************
 //
-void UCdriver_ps::point(double x, double y, char p, const char *font,
-                           double size, int color, double *RGB)
+void UCdriver_ps::point(double x, double y, char p, const std::string& font,
+                           double size, int color, const std::vector<double>& RGB)
 {
   if (page_not_setup)          //  set up defaults
     setup_page();
@@ -352,7 +347,7 @@ void UCdriver_ps::point(double x, double y, char p, const char *font,
 //******************************************************************************
 //
 void UCdriver_ps::points(double *X, double *Y, long np, char p,
-                        const char *font, double size, int color, double *RGB)
+                        const std::string& font, double size, int color, const std::vector<double>& RGB)
 {
   if (page_not_setup)          //  set up defaults
     setup_page();
@@ -429,13 +424,8 @@ void UCdriver_ps::setup_page()
   pres_color = pres_dash = 0;
   pres_line_width = DEFAULT_LINE_WIDTH;
 
-  if (pres_font)
-  {
-    delete [] pres_font;
-    pres_font = 0;
-  }
+  pres_font.clear();
   pres_font_size = 0;
-
   page_not_setup = 0;     // set flag to false
   page_not_framed = 1;
 }
@@ -550,7 +540,7 @@ void UCdriver_ps::do_line_width(double width)
 //                         DO_COLOR
 //******************************************************************************
 //
-void UCdriver_ps::do_color(int color, double *RGB)
+void UCdriver_ps::do_color(int color, const std::vector<double>& RGB)
 {
   if (color == USER_RGB && RGB[0] == pres_RGB[0] && 
       RGB[1] == pres_RGB[1] && RGB[2] == pres_RGB[2])
@@ -635,41 +625,36 @@ void UCdriver_ps::do_color(int color, double *RGB)
 //                         DO_FONT
 //******************************************************************************
 //
-void UCdriver_ps::do_font(const char *f, double s)
+void UCdriver_ps::do_font(const std::string& f, double s)
 {
-  if(std::abs(s) < 10e-08) s = DEFAULT_FONT_SIZE;
-  if(f != 0) {if(strlen(f) == 0) f = 0;}
-  if(f)
+  if(std::abs(s) < 10e-08) {s = DEFAULT_FONT_SIZE;}
+
+  if(pres_font.empty())
+  {pres_font = DEFAULT_FONT;}
+
+  if(s != pres_font_size)
   {
-    if ( !pres_font || s != pres_font_size || (strcmp(f,pres_font)))
-    {
-      if(pres_font != 0) delete [] pres_font;
-      pres_font = new char[strlen(f)+1];
-
-      //strcpy(pres_font,f);
-      COPYSTR(pres_font,strlen(f)+1,f);
-
-      pres_font_size = s;
-
-      fout << "/" << f << " " << s << " fssf \n";
-    }
+	  pres_font_size = s;
+	  if(f.empty())
+	  {
+	  fout << "/" << pres_font << " " << pres_font_size << " fssf \n";
+	  }
+	  else
+	  {
+	  pres_font = f;
+	  fout << "/" << pres_font << " " << pres_font_size << " fssf \n";
+	  }
   }
-  else
+
+  if(not f.empty())
   {
-    if (pres_font)
-    {
-      delete [] pres_font;
-      pres_font = 0;
-      pres_font_size = s;
-
-      fout << "/" << DEFAULT_FONT << " " << s << " fssf \n";
-    }
-    else if (pres_font_size != s)
-    {
-      pres_font_size = s;
-      fout << "/" << DEFAULT_FONT << " " << s << " fssf \n";
-    }
+	  if(f != pres_font)
+	  {
+	  pres_font = f;
+	  fout << "/" << pres_font << " " << pres_font_size << " fssf \n";
+	  }
   }
+
 }
 //
 //******************************************************************************
@@ -686,7 +671,7 @@ void UCdriver_ps::stroke_line()
 //                          REGION
 //******************************************************************************
 //
-void UCdriver_ps::region(double *x, double *y, long npoints, int color, double *RGB)
+void UCdriver_ps::region(double *x, double *y, long npoints, int color, const std::vector<double>& RGB)
 {
   if (npoints < 2)             //  Not enough points
     return;

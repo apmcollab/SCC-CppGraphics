@@ -1,3 +1,9 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <vector>
+
+
 #ifndef CAMGRAPHICSPROCESS__
 #define CAMGRAPHICSPROCESS__
 //
@@ -12,23 +18,16 @@
 //
 //
 
-#include <iostream>
-#include <cstdlib>
-#include <cstring>
-
 #ifndef CAMGRAPHICSDRIVER__
 class CAMgraphicsDriver;
 #endif
 
-#include "camgraphimpexp.h"
-
-class __IMPEXP__ CAMgraphicsProcess
+class CAMgraphicsProcess
 {
 
 public :
 
 	CAMgraphicsProcess();
-
 
 	virtual ~CAMgraphicsProcess(){};
     
@@ -49,7 +48,7 @@ public :
     void  plot(double *x, double *y, long n, int p_arg, int p_style);
 
     void  region(double *x, double *y, long n);
-    void  region(double *x, double *y, long n, int color, double *rgb);
+    void  region(double *x, double *y, long n, int color, const std::vector<double>& rgb);
 
 	void contour();
 	void contour(double *z, long m, long n);
@@ -58,26 +57,26 @@ public :
 	void contour(double *z, long m, long n, double c_min, double c_max);
 	void contour(double *z, long m, long n, int n_c, double c_min, double c_max);
 	void contour(double* z, long m, long n, double c_inc, double c_min, double c_max);
-	void contour(double *z, long m, long n, double* c_values, int n_c);
+	void contour(double *z, long m, long n, const std::vector<double>&  c_values, int n_c);
 	void setContourLineColor(int colorIndex);
 
 	void surface();
 	void surface(double* z, long  m, long n);
 	void surface(double *z, long m, long n, double* x, double* y);
 
-	void drawString(double x, double y, const char* S);
-	void drawString(double x, double y, const char* S, double size);
+	void drawString(double x, double y, const std::string& S);
+	void drawString(double x, double y, const std::string& S, double size);
 
     void setTextColor(int iColor);
-    void setTextColor(double* rgb);
+    void setTextColor(const std::vector<double>& rgb);
     void setTextAlign(double horiz, double vert);
 
-	void title(const char* S);
-	void title(const char* S, double size);
-	void labelX(const char* S);
-	void labelX(const char* S, double size);
-	void labelY(const char* S);
-	void labelY(const char* S, double size);
+	void title(const std::string& S);
+	void title(const std::string& S, double size);
+	void labelX(const std::string& S);
+	void labelX(const std::string& S, double size);
+	void labelY(const std::string& S);
+	void labelY(const std::string& S, double size);
 
 
 	void setFrame(double left, double right, double bottom, double top);
@@ -111,7 +110,7 @@ public :
     void setXIntercept(double x);
     void setYIntercept(double y);
     void setAxisColor(int iColor);
-    void setAxisColor(double* rgb);
+    void setAxisColor(const std::vector<double>& rgb);
     void setAxisLabelType(int t);
     void setAxisLabelWidth(int w);
     void setAxisLabelPrecision(int  p);
@@ -120,12 +119,12 @@ public :
 
     void setPlotLineStyle(int s);
     void setPlotLineColor(int c);
-    void setPlotLineColor(double* rgb);
+    void setPlotLineColor(const std::vector<double>& rgb);
     void setPlotDashPattern(int d);
     void setPlotLineWidth(double w);
     void setPlotPointType(char p);
     void setPlotPointSize(double p);
-    void setPlotPointFont(const char* S);
+    void setPlotPointFont(const std::string& S);
 
     void restorePlotDefaults();
 
@@ -134,7 +133,7 @@ public :
     void setContourLevel(double c_min, double c_max);
     void setContourLevel(int n_c,double c_min, double c_max);
     void setContourLevel(double c_inc,double c_min, double c_max);
-    void setContourLevel(double* c_values, int n_c);
+    void setContourLevel(const std::vector<double>& c_values, int n_c);
     void autoContourOn();
     void autoContourOff();
     void contourLineLabelsOn();

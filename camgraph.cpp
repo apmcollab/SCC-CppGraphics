@@ -270,7 +270,7 @@ void  CAMgraphics::open(UCdriver* d)
     UCsurfacePointerArray[0] = new UCsurface(d);
 }
 
-void  CAMgraphics::open(const char* fileName)
+void CAMgraphics::open(const std::string& fileName)
 {
 //
 //  Set Defaults
@@ -509,19 +509,19 @@ void  CAMgraphics::drawAxis()
     (UCplotPointerArray[plotRegionIndex-1])->draw_axis();
 }
 
-void  CAMgraphics::title(const char*s, double size )
+void  CAMgraphics::title(const std::string& s, double size )
 {
     (UCplotPointerArray[plotRegionIndex-1])->title(s,size);
     (UCcontourPointerArray[plotRegionIndex-1])->title(s,size); 
     (UCsurfacePointerArray[plotRegionIndex-1])->title(s,size);
 }
 
-void  CAMgraphics::labelX(const char*s, double size )
+void  CAMgraphics::labelX(const std::string& s, double size )
 { 
     (UCplotPointerArray[plotRegionIndex-1])->label_x(s,size);
 }
 
-void  CAMgraphics::labelY(const char*s, double size )
+void  CAMgraphics::labelY(const std::string& s, double size )
 {  
     (UCplotPointerArray[plotRegionIndex-1])->label_y(s,size);
 }
@@ -747,9 +747,9 @@ void  CAMgraphics::setAxisColor(int c)
 {    (UCplotPointerArray[plotRegionIndex-1])->set_axis_color(c);
 }
 
-void  CAMgraphics::setAxisColor(double *rgb)
+void  CAMgraphics::setAxisColor(const std::vector<double>& rgb)
 {
-    (UCplotPointerArray[plotRegionIndex-1])->set_axis_color(rgb);
+    (UCplotPointerArray[plotRegionIndex-1])->set_axis_rgb(rgb);
 }
 
 void  CAMgraphics::setXAxisScaleType(int t)
@@ -785,14 +785,14 @@ void  CAMgraphics::setPlotLineColor(int c)
 }
 
 
-void  CAMgraphics::setLineColor(double *rgb)
+void  CAMgraphics::setLineColor(const std::vector<double>& rgb)
 {
-    (UCplotPointerArray[plotRegionIndex-1])->set_line_color(rgb);
+    (UCplotPointerArray[plotRegionIndex-1])->set_line_rgb(rgb);
 }
 
-void  CAMgraphics::setPlotLineColor(double *rgb)
+void  CAMgraphics::setPlotLineColor(const std::vector<double>& rgb)
 {
-    (UCplotPointerArray[plotRegionIndex-1])->set_line_color(rgb);
+    (UCplotPointerArray[plotRegionIndex-1])->set_line_rgb(rgb);
 }
 
 void  CAMgraphics::setDashPattern(int d)
@@ -846,12 +846,12 @@ void  CAMgraphics::setPlotPointSize(double s)
     (UCplotPointerArray[plotRegionIndex-1])->set_point_size(s);
 }
 
-void  CAMgraphics::setPointFont(const char*s)
+void  CAMgraphics::setPointFont(const std::string& s)
 {
     (UCplotPointerArray[plotRegionIndex-1])->set_point_font(s);
 }
 
-void  CAMgraphics::setPlotPointFont(const char*s)
+void  CAMgraphics::setPlotPointFont(const std::string& s)
 {
     (UCplotPointerArray[plotRegionIndex-1])->set_point_font(s);
 }
@@ -863,18 +863,18 @@ void  CAMgraphics::setPlotPointFont(const char*s)
 // 
 /* Note p_arg goes before p_style ... */
 
-void  CAMgraphics::drawString(double x, double y, const char*s, double size )
+void  CAMgraphics::drawString(double x, double y, const std::string& s, double size )
 {
     (UCplotPointerArray[plotRegionIndex-1])->draw_string(x,y,s,size);
 }
 
 void  CAMgraphics::setTextColor(int c)
-{    (UCplotPointerArray[plotRegionIndex-1])->set_text_color(c,0);
+{    (UCplotPointerArray[plotRegionIndex-1])->set_text_color(c);
 }
 
-void  CAMgraphics::setTextColor(double *rgb)
+void  CAMgraphics::setTextColor(const std::vector<double>& rgb)
 {
-    (UCplotPointerArray[plotRegionIndex-1])->set_text_color(USER_RGB,rgb);
+    (UCplotPointerArray[plotRegionIndex-1])->set_text_rgb(rgb);
 }
 
 void  CAMgraphics::setTextAlign(double horiz, double vert)
@@ -1015,7 +1015,7 @@ void  CAMgraphics::region(double *X, double *Y, long npoints)
     (UCplotPointerArray[plotRegionIndex-1])->region(X, Y, npoints);
 }
 
-void  CAMgraphics::region(double *X, double *Y, long npoints, int color, double *RGB)
+void  CAMgraphics::region(double *X, double *Y, long npoints, int color, const std::vector<double>& RGB)
 {
     (UCplotPointerArray[plotRegionIndex-1])->region(X, Y, npoints, color, RGB);
 }
@@ -1090,7 +1090,7 @@ void  CAMgraphics::contour(double *data_pointer, int n, int m, double increment,
     (UCcontourPointerArray[plotRegionIndex-1])->contour(data_pointer, n, m, increment, low_value, high_value);
 }
 
-void  CAMgraphics::contour(double *data_pointer, int n, int m, double* contour_values, int n_contour)
+void  CAMgraphics::contour(double *data_pointer, int n, int m, const std::vector<double>&  contour_values, int n_contour)
 {
     (UCcontourPointerArray[plotRegionIndex-1])->contour(data_pointer, n, m, contour_values, n_contour);
 }
@@ -1231,7 +1231,7 @@ void  CAMgraphics::setContourLevel(double increment, double low_value, double hi
     (UCcontourPointerArray[plotRegionIndex-1])->set_contour_level(increment, low_value, high_value);
 }
 
-void  CAMgraphics::setContourLevel(double* values, long n_contour)
+void  CAMgraphics::setContourLevel(const std::vector<double>&  values, long n_contour)
 {                                                 
     (UCcontourPointerArray[plotRegionIndex-1])->set_contour_level(values, n_contour);
 }

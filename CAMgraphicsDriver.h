@@ -1,3 +1,5 @@
+#include <string>
+
 #ifndef CAMGRAPHICSDRIVER__
 #define CAMGRAPHICSDRIVER__
 //
@@ -34,12 +36,11 @@ class CAMsetArguments;
 class CAMregionArguments;
 #endif
 
-#include "camgraphimpexp.h"
 
-class __IMPEXP__ CAMgraphicsDriver
+class CAMgraphicsDriver
 {
     public :
-    virtual ~CAMgraphicsDriver(){delete [] dTypeName;};
+    virtual ~CAMgraphicsDriver(){};
     virtual void accept(const  CAMplotArguments& /* P */) {};
     virtual void accept(const  CAMcontourArguments& /* C */) {};
     virtual void accept(const  CAMsurfaceArguments& /* S */) {};
@@ -51,9 +52,9 @@ class __IMPEXP__ CAMgraphicsDriver
     virtual void frame(){};
     virtual void reset(){};
 
-    virtual char* getDriverTypeName(){return dTypeName;}
+    virtual std::string getDriverTypeName() const {return dTypeName;}
 
-    char* dTypeName;
+    std::string dTypeName;
 };
 #endif
  

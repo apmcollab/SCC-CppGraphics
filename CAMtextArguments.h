@@ -1,3 +1,5 @@
+#include <string>
+
 #ifndef CAMTEXTARGUMENTS__
 #define CAMTEXTARGUMENTS__
 //
@@ -20,14 +22,14 @@ public :
     double     y;
     double  size;        // size of characters (-1 => use default size)
 
-    const char* s;
-    long s_Size;
+    std::string s;
 
     CAMtextArguments()
     {
     callType = 0;
-    x = 0.0;    y = 0.0; size = 0.0;
-    s = 0; s_Size = 0;
+    x    = 0.0;
+    y    = 0.0;
+    size = 0.0;
     };
 };
 #endif

@@ -12,9 +12,11 @@
 //********************************************************************************
 //
 #include "ucsurfac.h"
+#include "uc3dgrph.h"
 #include "camgraphexit.h"
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 //
 // define external flag array classes    cra 9/29/95
@@ -170,10 +172,10 @@ void UCsurface::draw_line(vertex *v, vertex *w)
              //  The last segment
          if (fliped)
            (*drv).line(frame_2_screen_x(w->x),frame_2_screen_y(w->y),
-                  frame_2_screen_x(x1),frame_2_screen_y(y1),0,0,0,c,0);
+                  frame_2_screen_x(x1),frame_2_screen_y(y1),0,0,0,c,line_rgb);
          else
            (*drv).line(frame_2_screen_x(x1),frame_2_screen_y(y1),
-              frame_2_screen_x(w->x),frame_2_screen_y(w->y),0,0,0,c,0);
+              frame_2_screen_x(w->x),frame_2_screen_y(w->y),0,0,0,c,line_rgb);
          done = 1;
       }
       else
@@ -185,10 +187,10 @@ void UCsurface::draw_line(vertex *v, vertex *w)
 
         if (fliped)
            (*drv).line(frame_2_screen_x(x2),frame_2_screen_y(y2),
-                 frame_2_screen_x(x1),frame_2_screen_y(y1),0,0,0,c,0);
+                 frame_2_screen_x(x1),frame_2_screen_y(y1),0,0,0,c,line_rgb);
         else
            (*drv).line(frame_2_screen_x(x1),frame_2_screen_y(y1),
-                 frame_2_screen_x(x2),frame_2_screen_y(y2),0,0,0,c,0);
+                 frame_2_screen_x(x2),frame_2_screen_y(y2),0,0,0,c,line_rgb);
 
          x1 = x2;     //  Advance segments
          y1 = y2;
@@ -201,7 +203,7 @@ void UCsurface::draw_line(vertex *v, vertex *w)
   }
   else    //  No color zones
     (*drv).line(frame_2_screen_x(v->x),frame_2_screen_y(v->y),
-           frame_2_screen_x(w->x),frame_2_screen_y(w->y),0,0,0,0,0);
+           frame_2_screen_x(w->x),frame_2_screen_y(w->y),0,0,0,0,line_rgb);
 }
 //
 //******************************************************************************

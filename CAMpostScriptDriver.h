@@ -44,9 +44,7 @@ class CAMgraphicsState;
 class CAMgraphics;
 #endif
 
-#include "camgraphimpexp.h"
-
-class __IMPEXP__ CAMpostScriptDriver : public CAMgraphicsDriver
+class CAMpostScriptDriver : public CAMgraphicsDriver
 {
 
 public  :

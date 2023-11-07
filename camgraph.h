@@ -21,6 +21,9 @@
 //
 //  
 //
+#include <vector>
+#include <string>
+
 #ifndef CAMGRAPHICS_
 #define CAMGRAPHICS_
 
@@ -112,7 +115,7 @@ public :
 //
     static void  open();
     static void  open(UCdriver* d);
-    static void  open(const char* fileName);
+    static void  open(const std::string& fileName);
     static void  close();
     static void  frame();
     static void  setFrame(double fLeft, double fRight, double fBottom, double fTop);
@@ -123,9 +126,9 @@ public :
 //  Title and Axis Label Manipulation
 //
     static void  drawAxis();
-    static void  title(const char*s, double size = 0);
-    static void  labelX(const char*s, double size = 0);
-    static void  labelY(const char*s, double size = 0);
+    static void  title(const std::string&  s, double size = 0);
+    static void  labelX(const std::string& s, double size = 0);
+    static void  labelY(const std::string& s, double size = 0);
     static void  setLabelFormat(int t, int w, int p);
     static void  setLabelType(int t);
     static void  setLabelWidth(int w);
@@ -175,7 +178,7 @@ public :
     static void  setXIntercept(double x);
     static void  setYIntercept(double y);
     static void  setAxisColor(int c);
-    static void  setAxisColor(double *rgb);
+    static void  setAxisColor(const std::vector<double>& rgb);
     static void  setXAxisScaleType(int s);
     static void  setYAxisScaleType(int s);
     static int   getXAxisScaleType();
@@ -185,29 +188,29 @@ public :
 //  Line and Point Style Manipulation
 //
     static void  setLineColor(int c);
-    static void  setLineColor(double *rgb);
+    static void  setLineColor(const std::vector<double>& rgb);
     static void  setDashPattern(int d);
     static void  setUserDashPattern(int d);
     static void  setLineWidth(double w);
     static void  setPointSize(double s);
-    static void  setPointFont(const char*s);
+    static void  setPointFont(const std::string& s);
 
     static void  setPlotLineColor(int c);
-    static void  setPlotLineColor(double *rgb);
+    static void  setPlotLineColor(const std::vector<double>& rgb);
     static void  setPlotDashPattern(int d);
     static void  setPlotLineWidth(double w);
     static void  setPlotPointSize(double s);
-    static void  setPlotPointFont(const char*s);
+    static void  setPlotPointFont(const std::string& s);
 
 
 
 //
 //  Text Drawing Routine
 //
-    static void  drawString(double x, double y, const char*s, double size = 0);
+    static void  drawString(double x, double y, const std::string& s, double size = 0);
 
     static void  setTextColor(int c);
-    static void  setTextColor(double *rgb);
+    static void  setTextColor(const std::vector<double>& rgb);
 
     static void  setTextAlign(double horiz, double vert);
 //
@@ -240,7 +243,7 @@ public :
     static void  plot(double (*f)(double x), double x_min, double x_max, double y_min, double y_max, int p_arg, int p_style);
 
     static void  region(double *X, double *Y, long npoints);
-    static void  region(double *X, double *Y, long npoints, int color, double *RGB);
+    static void  region(double *X, double *Y, long npoints, int color, const std::vector<double>& RGB);
 //
 //  Member Functions For Combined Surface and Contour Routines
 //
@@ -259,7 +262,7 @@ public :
     static void  contour(double *dataPointer, int n, int m, int nCountour, double low_value, double high_value);
     static void  contour(double *dataPointer, int n, int m, long nCountour, double low_value, double high_value);
     static void  contour(double *dataPointer, int n, int m, double increment, double low_value, double high_value);
-    static void  contour(double *dataPointer, int n, int m, double* contour_values, int nContour);
+    static void  contour(double *dataPointer, int n, int m, const std::vector<double>&  contour_values, int nContour);
     static void  autoContourOn();
     static void  autoContourOff();
     static void  lineLabelsOn();
@@ -289,7 +292,7 @@ public :
     static void  setContourLevel(int nContour, double low_value, double high_value);
     static void  setContourLevel(long nContour, double low_value, double high_value);
     static void  setContourLevel(double increment, double low_value, double high_value);
-    static void  setContourLevel(double* values, long nContour);
+    static void  setContourLevel(const std::vector<double>& values, long nContour);
     static void  setContourLineColor(int colorIndex);
 //
 //  Surface Plot Member Functions

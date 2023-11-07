@@ -144,7 +144,7 @@ void CAMgraphicsProcess::region(double *x, double *y, long n)
     ODriver->accept(Arg);
 }
 
-void CAMgraphicsProcess::region(double *x, double *y, long n, int color, double *rgb)
+void CAMgraphicsProcess::region(double *x, double *y, long n, int color,const std::vector<double>& rgb)
 {
 	if(ODriver == 0) return;
 	CAMregionArguments Arg;
@@ -255,7 +255,7 @@ void CAMgraphicsProcess::contour(double* z, long m, long n, double c_inc, double
 };
 
 
-void CAMgraphicsProcess::contour(double *z, long m, long n, double* c_values, int n_c)
+void CAMgraphicsProcess::contour(double *z, long m, long n, const std::vector<double>&  c_values, int n_c)
 {
 	if(ODriver == 0) return;
     CAMcontourArguments Arg;
@@ -326,13 +326,12 @@ void CAMgraphicsProcess::surface(double *z, long m, long n, double* x, double* y
 
 };
 
-void CAMgraphicsProcess::drawString(double x, double y, const char* S)
+void CAMgraphicsProcess::drawString(double x, double y,const std::string& S)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
     Arg.callType = 1;
 
-    Arg.s_Size   = (long)strlen(S)+1;
     Arg.s          = S;
 
     Arg.x        =       x;
@@ -341,13 +340,12 @@ void CAMgraphicsProcess::drawString(double x, double y, const char* S)
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::drawString(double x, double y, const char* S, double size)
+void CAMgraphicsProcess::drawString(double x, double y, const std::string& S, double size)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
     Arg.callType = 1;
 
-    Arg.s_Size     = (long)strlen(S)+1;
     Arg.s          = S;
 
     Arg.x        =       x;
@@ -356,74 +354,63 @@ void CAMgraphicsProcess::drawString(double x, double y, const char* S, double si
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::title(const char* S)
+void CAMgraphicsProcess::title(const std::string& S)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
-    Arg.callType = 2;
-
-    Arg.s_Size     = (long)strlen(S)+1;
+    Arg.callType   = 2;
     Arg.s          = S;
     Arg.size       =  -1.0;
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::title(const char* S, double size)
+void CAMgraphicsProcess::title(const std::string& S, double size)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
-    Arg.callType = 2;
-
-    Arg.s_Size     = (long)strlen(S)+1;
+    Arg.callType   = 2;
     Arg.s          = S;
     Arg.size       = size;
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::labelX(const char* S)
+void CAMgraphicsProcess::labelX(const std::string& S)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
     Arg.callType = 3;
 
-    Arg.s_Size     = (long)strlen(S)+1;
     Arg.s          = S;
     Arg.size       = -1.0;
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::labelX(const char* S, double size)
+void CAMgraphicsProcess::labelX(const std::string& S, double size)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
     Arg.callType = 3;
- 
-    Arg.s_Size     = (long)strlen(S)+1;
     Arg.s          = S;
     Arg.size       = size;
 
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::labelY(const char* S)
+void CAMgraphicsProcess::labelY(const std::string& S)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
-    Arg.callType = 4;
-
-    Arg.s_Size     = (long)strlen(S)+1;
+    Arg.callType   = 4;
     Arg.s          = S;
     Arg.size       = -1.0;
     ODriver->accept(Arg);
 };
 
-void CAMgraphicsProcess::labelY(const char* S, double size)
+void CAMgraphicsProcess::labelY(const std::string& S, double size)
 {
 	if(ODriver == 0) return;
     CAMtextArguments Arg;
-    Arg.callType = 4;
-
-    Arg.s_Size     = (long)strlen(S)+1;
+    Arg.callType   = 4;
     Arg.s          = S;
     Arg.size       = size;
     ODriver->accept(Arg);
@@ -442,14 +429,11 @@ void CAMgraphicsProcess::setFrame(double left, double right, double bottom, doub
     CAMsetArguments Arg;
     Arg.callType = 10;
 
-    Arg.d_Size   = 4;
-    double d[4];
-    d[0] = left;
-    d[1] = right;
-    d[2] = bottom;
-    d[3] = top;
-    Arg.d = d;
-
+    Arg.d.resize(4);
+    Arg.d[0] = left;
+    Arg.d[1] = right;
+    Arg.d[2] = bottom;
+    Arg.d[3] = top;
     ODriver->accept(Arg);
 }
 void CAMgraphicsProcess::subplotOn(long m, long n)
@@ -458,11 +442,9 @@ void CAMgraphicsProcess::subplotOn(long m, long n)
     CAMsetArguments Arg;
     Arg.callType = 11;
 
-    long i[2];
-    i[0] = m;
-    i[1] = n;
-    Arg.i_Size   = 2;
-    Arg.i        = i;
+    Arg.i.resize(2,0);
+    Arg.i[0] = m;
+    Arg.i[1] = n;
     ODriver->accept(Arg);
 }
 void CAMgraphicsProcess::subplot(long m, long n)
@@ -471,11 +453,9 @@ void CAMgraphicsProcess::subplot(long m, long n)
     CAMsetArguments Arg;
     Arg.callType = 12;
 
-    long i[2];
-    i[0] = m;
-    i[1] = n;
-    Arg.i_Size   = 2;
-    Arg.i        = i;
+    Arg.i.resize(2,0);
+    Arg.i[0] = m;
+    Arg.i[1] = n;
 
     ODriver->accept(Arg);
 }
@@ -506,13 +486,11 @@ void CAMgraphicsProcess::setAxisRange(double xmin, double xmax, double ymin, dou
    	CAMsetArguments Arg;
    	Arg.callType = 23;
 
-    Arg.d_Size   = 4;
-    double d[4];
-    d[0] = xmin;
-    d[1] = xmax;
-    d[2] = ymin;
-    d[3] = ymax;
-    Arg.d = d;
+    Arg.d.resize(4,0.0);
+    Arg.d[0] = xmin;
+    Arg.d[1] = xmax;
+    Arg.d[2] = ymin;
+    Arg.d[3] = ymax;
     ODriver->accept(Arg);
 }
 void CAMgraphicsProcess::drawAxis()
@@ -526,11 +504,10 @@ void CAMgraphicsProcess::setTicks(long Mx, long mx, long Nx, long nx)
    	CAMsetArguments Arg;
    	Arg.callType = 25;
 
-    Arg.i_Size   = 4;
-    long i[4];
-    i[0]  = Mx; i[1] = mx;
-    i[2]  = Nx; i[3] = nx;
-    Arg.i = i;
+    Arg.i.resize(4,0);
+
+    Arg.i[0]  = Mx; Arg.i[1] = mx;
+    Arg.i[2]  = Nx; Arg.i[3] = nx;
 
     ODriver->accept(Arg);
 }
@@ -540,10 +517,9 @@ void CAMgraphicsProcess::setXTicks(long Mx, long mx)
    	CAMsetArguments Arg;
    	Arg.callType = 26;
 
-    Arg.i_Size   = 2;
-    long i[2];
-    i[0]  = Mx; i[1] = mx;
-    Arg.i = i;
+    Arg.i.resize(2,0);
+    Arg.i[0] = Mx;
+    Arg.i[1] = mx;
 
     ODriver->accept(Arg);
 }
@@ -554,10 +530,9 @@ void CAMgraphicsProcess::setYTicks(long Nx, long nx)
    	CAMsetArguments Arg;
    	Arg.callType = 27;
 
-    Arg.i_Size   = 2;
-    long i[2];
-    i[0]  = Nx; i[1] = nx;
-    Arg.i = i;
+    Arg.i.resize(2,0);
+    Arg.i[0]  = Nx;
+    Arg.i[1] = nx;
 
     ODriver->accept(Arg);
 }
@@ -580,11 +555,8 @@ void CAMgraphicsProcess::setXAxisType(int t)
 	if(ODriver == 0) return;
 	CAMsetArguments Arg;
     Arg.callType = 40;
-
-    Arg.i_Size = 1;
-    long i[1];
-	i[0] = t;
-    Arg.i = i;
+    Arg.i.resize(1,0);
+	Arg.i[0] = t;
 
     ODriver->accept(Arg);
 }
@@ -593,11 +565,8 @@ void CAMgraphicsProcess::setYAxisType(int t)
 	if(ODriver == 0) return;
 	CAMsetArguments Arg;
     Arg.callType  = 41;
-
-    Arg.i_Size = 1;
-    long i[1];
-	i[0] = t;
-    Arg.i = i;
+    Arg.i.resize(1,0);
+	Arg.i[0] = t;
 
     ODriver->accept(Arg);
 }
@@ -606,12 +575,9 @@ void CAMgraphicsProcess::setIntercepts(double x, double y)
 	if(ODriver == 0) return;
     CAMsetArguments Arg;
    	Arg.callType = 42;
-
-    Arg.d_Size   = 2;
-    double d[2];
-    d[0] = x;
-    d[1] = y;
-    Arg.d = d;
+    Arg.d.resize(2,0.0);
+    Arg.d[0] = x;
+    Arg.d[1] = y;
 
     ODriver->accept(Arg);
 }
@@ -620,11 +586,8 @@ void CAMgraphicsProcess::setXIntercept(double x)
 	if(ODriver == 0) return;
     CAMsetArguments Arg;
    	Arg.callType = 43;
-
-    Arg.d_Size   = 1;
-    double d[1];
-    d[0] = x;
-    Arg.d = d;
+    Arg.d.resize(1,0.0);
+    Arg.d[0] = x;
 
     ODriver->accept(Arg);
 }
@@ -633,11 +596,8 @@ void CAMgraphicsProcess::setYIntercept(double y)
 	if(ODriver == 0) return;
     CAMsetArguments Arg;
    	Arg.callType = 44;
-
-    Arg.d_Size   = 1;
-    double d[1];
-    d[0] = y;
-    Arg.d = d;
+    Arg.d.resize(1,0.0);
+    Arg.d[0] = y;
 
     ODriver->accept(Arg);
 }
@@ -647,24 +607,18 @@ void CAMgraphicsProcess::setAxisColor(int iColor)
 	if(ODriver == 0) return;
     CAMsetArguments Arg;
     Arg.callType  = 45;
+    Arg.i.resize(1,0);
+	Arg.i[0] = iColor;
 
-    Arg.i_Size = 1;
-    long i[1];
-	i[0] = iColor;
-    Arg.i = i;
 
     ODriver->accept(Arg);
 }
-void CAMgraphicsProcess::setAxisColor(double* rgb)
+void CAMgraphicsProcess::setAxisColor(const std::vector<double>& rgb)
 {
 	if(ODriver == 0) return;
     CAMsetArguments Arg;
    	Arg.callType = 46;
-
-    Arg.d_Size   = 3;
-    double d[3];
-    d[0] = rgb[0]; d[1] = rgb[1]; d[2] = rgb[2];
-    Arg.d = d;
+    Arg.d        = rgb;
 
     ODriver->accept(Arg);
 }
@@ -675,10 +629,8 @@ void CAMgraphicsProcess::setAxisLabelType(int t)
 	CAMsetArguments Arg;
     Arg.callType  = 47;
 
-    Arg.i_Size = 1;
-    long i[1];
-	i[0] = t;
-    Arg.i = i;
+    Arg.i.resize(1,0);
+	Arg.i[0] = t;
 
     ODriver->accept(Arg);
 }
@@ -689,10 +641,8 @@ void CAMgraphicsProcess::setAxisLabelWidth(int w)
 	CAMsetArguments Arg;
     Arg.callType  = 48;
 
-    Arg.i_Size = 1;
-    long i[1];
-	i[0] = w;
-    Arg.i = i;
+    Arg.i.resize(1,0);
+	Arg.i[0] = w;
 
     ODriver->accept(Arg);
 }
@@ -702,10 +652,8 @@ void CAMgraphicsProcess::setAxisLabelPrecision(int p)
 	CAMsetArguments Arg;
     Arg.callType  = 49;
 
-    Arg.i_Size = 1;
-    long i[1];
-	i[0] = p;
-    Arg.i = i;
+    Arg.i.resize(1,0);
+	Arg.i[0] = p;
 
     ODriver->accept(Arg);
 }
@@ -715,10 +663,8 @@ void CAMgraphicsProcess::setAxisLabelCharSize(double size)
     CAMsetArguments Arg;
    	Arg.callType = 50;
 
-    Arg.d_Size   = 1;
-    double d[1];
-    d[0] = size;
-    Arg.d = d;
+    Arg.d.resize(1,0.0);
+    Arg.d[0] = size;
 
     ODriver->accept(Arg);
 }
@@ -728,10 +674,8 @@ void CAMgraphicsProcess::setAxisLabelFormat(int t , int w, int p)
     CAMsetArguments Arg;
    	Arg.callType = 51;
 
-    Arg.i_Size   = 3;
-    long i[3];
-    i[0] = t; i[1] = w; i[2] = p;
-    Arg.i = i;
+    Arg.i.resize(3,0);
+    Arg.i[0] = t; Arg.i[1] = w; Arg.i[2] = p;
 
     ODriver->accept(Arg);
 }
@@ -742,11 +686,8 @@ void CAMgraphicsProcess::setPlotLineStyle(int s)
 	 CAMsetArguments Arg;
     Arg.callType  = 71;
 
-    Arg.i_Size = 1;
-    long i[1];
-	 i[0] = s;
-    Arg.i = i;
-
+    Arg.i.resize(1,0);
+	Arg.i[0] = s;
     ODriver->accept(Arg);
  }
 
@@ -756,26 +697,19 @@ void CAMgraphicsProcess::setPlotLineColor(int c)
 	CAMsetArguments Arg;
     Arg.callType  = 72;
 
-    Arg.i_Size = 1;
-    long i[1];
-	i[0] = c;
-    Arg.i = i;
+    Arg.i.resize(1,0);
+	Arg.i[0] = c;
 
     ODriver->accept(Arg);
  }
 
-void CAMgraphicsProcess::setPlotLineColor(double* rgb)
+void CAMgraphicsProcess::setPlotLineColor(const std::vector<double>& rgb)
 {
 	if(ODriver == 0) return;
     CAMsetArguments Arg;
    	Arg.callType = 73;
 
-    Arg.d_Size   = 3;
-    double d[3];
-    d[0] = rgb[0]; d[1] = rgb[1]; d[2] = rgb[2];
-
-    std::cout << "CAMgraphicsProcess : " << d[0] << " " << d[1] << " " << d[2] << std::endl;
-    Arg.d = d;
+    Arg.d = rgb;
 
     ODriver->accept(Arg);
 }
@@ -786,10 +720,8 @@ void CAMgraphicsProcess::setPlotDashPattern(int d)
 	CAMsetArguments Arg;
     Arg.callType  = 74;
 
-    Arg.i_Size = 1;
-    long i[1];
-	i[0] = d;
-    Arg.i = i;
+    Arg.i.resize(1,0);
+	Arg.i[0] = d;
 
     ODriver->accept(Arg);
  }
@@ -799,10 +731,8 @@ void CAMgraphicsProcess::setPlotLineWidth(double w)
     CAMsetArguments Arg;
    	Arg.callType = 75;
 
-    Arg.d_Size   = 1;
-    double d[1];
-    d[0] = w;
-    Arg.d = d;
+    Arg.d.resize(1,0.0);
+    Arg.d[0] = w;
 
     ODriver->accept(Arg);
 }
@@ -812,14 +742,8 @@ void CAMgraphicsProcess::setPlotPointType(char p)
 	if(ODriver == 0) return;
     CAMsetArguments Arg;
    	Arg.callType = 76;
+    Arg.b = p;
 
-    Arg.b_Size   = 1;
-    char b[1];
-    b[0] = p;
-    Arg.b = b;
-
-
-	//Arg.b[0] = p;
     ODriver->accept(Arg);
  }
 
@@ -829,22 +753,19 @@ void CAMgraphicsProcess::setPlotPointType(char p)
     CAMsetArguments Arg;
     Arg.callType = 77;
 
-    Arg.d_Size   = 1;
-    double d[1];
-    d[0] = p;
-    Arg.d = d;
+    Arg.d.resize(1,0.0);
+    Arg.d[0] = p;
 
     ODriver->accept(Arg);
  }
 
- void CAMgraphicsProcess::setPlotPointFont(const char* S)
+ void CAMgraphicsProcess::setPlotPointFont(const std::string& S)
  {
  	if(ODriver == 0) return;
     CAMsetArguments Arg;
-    Arg.callType = 78;
 
-    Arg.b_Size     = (long)strlen(S)+1;
-    Arg.b          = S;
+    Arg.callType = 78;
+    Arg.b        = S;
 
     ODriver->accept(Arg);
  }
@@ -865,10 +786,8 @@ void CAMgraphicsProcess::setContourLevel(int n_c)
 	CAMsetArguments Arg;
     Arg.callType  = 91;
 
-    Arg.i_Size = 1;
-    long i[1];
-	 i[0] = n_c;
-    Arg.i = i;
+    Arg.i.resize(1,0);
+	Arg.i[0] = n_c;
     
     ODriver->accept(Arg);
  }
@@ -879,10 +798,8 @@ void CAMgraphicsProcess::setContourLevel(double c_inc)
     CAMsetArguments Arg;
    	Arg.callType = 92;
 
-    Arg.d_Size   = 1;
-    double d[1];
-    d[0] = c_inc;
-    Arg.d = d;
+    Arg.d.resize(1,0.0);
+    Arg.d[0] = c_inc;
 
     ODriver->accept(Arg);
  }
@@ -894,10 +811,8 @@ void CAMgraphicsProcess::setContourLevel(double c_min, double c_max)
     CAMsetArguments Arg;
    	Arg.callType = 93;
 
-    Arg.d_Size   = 2;
-    double d[2];
-    d[0] = c_min; d[1] = c_max;
-    Arg.d = d;
+    Arg.d.resize(2,0.0);
+    Arg.d[0] = c_min; Arg.d[1] = c_max;
 
     ODriver->accept(Arg);
 }
@@ -908,15 +823,11 @@ void CAMgraphicsProcess::setContourLevel(int n_c,double c_min, double c_max)
     CAMsetArguments Arg;
    	Arg.callType = 94;
 
-    Arg.i_Size   = 1;
-    long i[1];
-    i[0] = n_c;
-    Arg.i = i;
+    Arg.i.resize(1,0);
+    Arg.i[0] = n_c;
 
-    Arg.d_Size   = 2;
-    double d[2];
-    d[0] = c_min; d[1] = c_max;
-    Arg.d = d;
+    Arg.d.resize(2,0.0);
+    Arg.d[0] = c_min; Arg.d[1] = c_max;
 
     ODriver->accept(Arg);
 }
@@ -927,27 +838,21 @@ void CAMgraphicsProcess::setContourLevel(double c_inc,double c_min, double c_max
     CAMsetArguments Arg;
    	Arg.callType = 95;
 
-    Arg.d_Size   = 3;
-    double d[3];
-    d[0] = c_inc; d[1] = c_min; d[2] = c_max;
-    Arg.d = d;
+    Arg.d.resize(3,0.0);
+    Arg.d[0] = c_inc; Arg.d[1] = c_min; Arg.d[2] = c_max;
 
     ODriver->accept(Arg);
 }
 
-void CAMgraphicsProcess::setContourLevel(double* c_values, int n_c)
+void CAMgraphicsProcess::setContourLevel(const std::vector<double>& c_values, int n_c)
 {
 	if(ODriver == 0) return;
     CAMsetArguments Arg;
    	Arg.callType = 96;
 
-    Arg.d_Size   = n_c;
-    Arg.d        = c_values;
-
-    Arg.i_Size   = 1;
-    long i[1];
-    i[0]        = n_c;
-    Arg.i       = i;
+    Arg.d  = c_values;
+    Arg.i.resize(1,0);
+    Arg.i[0]  = n_c;
 
     ODriver->accept(Arg);
 }
@@ -971,11 +876,9 @@ void CAMgraphicsProcess::setSurfaceViewPoint(double vx, double vy ,double vz)
     CAMsetArguments Arg;
    	Arg.callType = 121;
 
-    Arg.d_Size   = 3;
-    double d[3];
-    d[0] = vx; d[1] = vy; d[2] = vz;
-    Arg.d = d;
-    
+    Arg.d.resize(3,0.0);
+    Arg.d[0] = vx; Arg.d[1] = vy; Arg.d[2] = vz;
+
     ODriver->accept(Arg);
 }
 void CAMgraphicsProcess::setSurfaceFocus(double fx, double fy ,double fz)
@@ -984,10 +887,8 @@ void CAMgraphicsProcess::setSurfaceFocus(double fx, double fy ,double fz)
     CAMsetArguments Arg;
    	Arg.callType = 122;
 
-    Arg.d_Size   = 3;
-    double d[3];
-    d[0] = fx; d[1] = fy; d[2] = fz;
-    Arg.d = d;
+    Arg.d.resize(3,0.0);
+    Arg.d[0] = fx; Arg.d[1] = fy; Arg.d[2] = fz;
 
     ODriver->accept(Arg);
 
@@ -998,10 +899,8 @@ void CAMgraphicsProcess::setSurfaceScaleFactor(double s)
     CAMsetArguments Arg;
    	Arg.callType = 123;
 
-    Arg.d_Size   = 1;
-    double d[1];
-    d[0] = s;
-    Arg.d = d;
+    Arg.d.resize(1,0.0);
+    Arg.d[0] = s;
 
     ODriver->accept(Arg);
 }
@@ -1012,23 +911,19 @@ void CAMgraphicsProcess::setTextColor(int iColor)
     CAMsetArguments Arg;
     Arg.callType  = 145;
 
-    Arg.i_Size = 1;
-    long i[1];
-	i[0] = iColor;
-    Arg.i = i;
+    Arg.i.resize(1,0);
+	Arg.i[0] = iColor;
 
     ODriver->accept(Arg);
 }
-void CAMgraphicsProcess::setTextColor(double* rgb)
+
+void CAMgraphicsProcess::setTextColor(const std::vector<double>& rgb)
 {
 	if(ODriver == 0) return;
     CAMsetArguments Arg;
    	Arg.callType = 146;
 
-    Arg.d_Size   = 3;
-    double d[3];
-    d[0] = rgb[0]; d[1] = rgb[1]; d[2] = rgb[2];
-    Arg.d = d;
+    Arg.d = rgb;
 
     ODriver->accept(Arg);
 }
@@ -1039,10 +934,8 @@ void CAMgraphicsProcess::setTextAlign(double horiz, double vert)
     CAMsetArguments Arg;
    	Arg.callType = 147;
 
-    Arg.d_Size   = 2;
-    double d[2];
-    d[0] = horiz; d[1] = vert; 
-    Arg.d = d;
+    Arg.d.resize(2,0.0);
+    Arg.d[0] = horiz; Arg.d[1] = vert;
 
     ODriver->accept(Arg);
 }

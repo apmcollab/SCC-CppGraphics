@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-
+#include <vector>
 
 #include "CAMpostScriptDriver.h"
 #include "CAMplotArguments.h"
@@ -17,12 +17,6 @@
 // strcpy_s is not implemented as part of C++11 (arrgh) so this macro
 // inserts strcpy calls.
 //
-
-#ifdef _MSC_VER
-#define COPYSTR(dst,count,src) strcpy_s(dst,count,src)
-#else
-#define COPYSTR(dst,count,src) strcpy(dst,src)
-#endif
 
 //######################################################################
 //
@@ -40,8 +34,7 @@ CAMpostScriptDriver::CAMpostScriptDriver()
 	S = new CAMgraphicsState();
     G = new CAMgraphics;
     outputFile = "graph.ps";
-    dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
-    COPYSTR(dTypeName,strlen("CAMpostScriptDriver") + 1,"CAMpostScriptDriver");
+    dTypeName  = "CAMpostScriptDriver";
     open();
 }
 
@@ -50,8 +43,7 @@ CAMpostScriptDriver::CAMpostScriptDriver(const std::string& fileName)
     S = new CAMgraphicsState();
     G = new CAMgraphics;
     outputFile = fileName;
-    dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
-    COPYSTR(dTypeName,strlen("CAMpostScriptDriver") + 1,"CAMpostScriptDriver");
+    dTypeName  = "CAMpostScriptDriver";
     open();
 }
 
@@ -69,14 +61,13 @@ void CAMpostScriptDriver::initialize(const std::string& outputFileName)
     delete S;
 	delete G;
     outputFile.clear();
-    delete [] dTypeName;
+    dTypeName.clear();
 
     S = new CAMgraphicsState();
     G = new CAMgraphics;
 
     outputFile = outputFileName;
-    dTypeName = new char[strlen("CAMpostScriptDriver") + 1];
-    COPYSTR(dTypeName,strlen("CAMpostScriptDriver") + 1,"CAMpostScriptDriver");
+    dTypeName  = "CAMpostScriptDriver";
     open();
 }
 void CAMpostScriptDriver::open()
@@ -143,10 +134,10 @@ void CAMpostScriptDriver::accept(const CAMcontourArguments& A)
 	double c_max             = A.c_max;
 	double c_inc             = A.c_inc;
 
-	double* z                = A.z;
-	double* c_values         = A.c_values;
+	double* z                      = A.z;
+	std::vector<double> c_values   = A.c_values;
 
-	int  colorIndex          = A.defaultColor;
+	int  colorIndex                  = A.defaultColor;
 
 	switch(callType)
 	{
@@ -192,10 +183,10 @@ void CAMpostScriptDriver::accept(const CAMtextArguments& A)
 
   	int callType            = int(A.callType);
 
-  	double    x             = A.x;
-  	double    y             = A.y;
-  	double   size           = A.size;
-  	const char* St          = A.s;
+  	double      x             = A.x;
+  	double      y             = A.y;
+  	double      size          = A.size;
+  	std::string St            = A.s;
 
   
   	switch(callType)
@@ -222,7 +213,7 @@ void CAMpostScriptDriver::accept(const CAMregionArguments& A)
 
 	long   n                = A.n;
 	int   col               = A.col;
-	double*rgb              = A.rgb;
+	std::vector<double> rgb = A.rgb;
 
 	std::cout << "CAMpostScriptDriver::accept callType, color, and USER_RGB " << callType << " " << col << " " << CAMgraphics::USER_RGB << std::endl;
 
@@ -248,9 +239,9 @@ void CAMpostScriptDriver::accept(const CAMsetArguments& A)
   	int callType            = int(A.callType);
 
 
-  	long* I                 = A.i;
-  	double* D               = A.d;
-  	const char* St          = A.b;
+  	std::vector<long>  I    = A.i;
+  	std::vector<double> D   = A.d;
+    std::string  St         = A.b;
 
  	 switch(callType)
  	{

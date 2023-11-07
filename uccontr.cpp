@@ -314,7 +314,7 @@ void UCcontour::contour(double *data_pointer, int n, int m, double increment, do
 
     if(auto_contour_flag == 0) restore_line_state();
 }
-void UCcontour::contour(double *data_pointer, int n, int m, double* contour_values, int n_contour)
+void UCcontour::contour(double *data_pointer, int n, int m,const std::vector<double>& contour_values, int n_contour)
 {
     data = data_pointer;
     rows    = n;
@@ -383,7 +383,7 @@ void UCcontour::set_contour_level(double increment, double low_value, double hi_
     step_hold         = 0.0;
     set_low_high(low_value, hi_value);
 }
-void UCcontour::set_contour_level(double* values, long n_contour)
+void UCcontour::set_contour_level(const std::vector<double>& values, long n_contour)
 { 
     auto_contour_flag = 0;
     nlines_hold       = 0;
@@ -1089,7 +1089,7 @@ void UCcontour::draw_lines(int level)
   switch (f)
   {
     case 1:   // draw just lines
-      drv->lines(X,Y,count,d,0,0,c,0);
+      drv->lines(X,Y,count,d,0,0,c,line_rgb);
       break;
 
     case 2:   // draw just labels
@@ -1101,7 +1101,7 @@ void UCcontour::draw_lines(int level)
         ang = 180*ang/3.14159265359;   // convert to degrees
 
         drv->text(X[cnt+2*mul],Y[cnt+2*mul],lab,0,(frame_r-frame_l)*0.02,
-                       int(ang),0,0,c,0);
+                       int(ang),0,0,c,line_rgb);
         
         cnt += 3*mul;
       }
@@ -1113,7 +1113,7 @@ void UCcontour::draw_lines(int level)
     {
       while ((count-cnt) > 6*mul)
       {
-        drv->lines(&X[cnt],&Y[cnt],4*mul+1,d,0,0,c,0);
+        drv->lines(&X[cnt],&Y[cnt],4*mul+1,d,0,0,c,line_rgb);
 
         x = (X[cnt+4*mul] + X[cnt+6*mul])/2;
 		y = (Y[cnt+4*mul] + Y[cnt+6*mul])/2;
@@ -1121,12 +1121,12 @@ void UCcontour::draw_lines(int level)
         ang = 180*ang/3.14159265359;   // convert to degrees
 
         drv->text(x,y,lab,0,(frame_r-frame_l)*0.02,
-                       int(ang),0,0,c,0);
+                       int(ang),0,0,c,line_rgb);
  
         cnt += 6*mul;
       }
 
-      drv->lines(&X[cnt],&Y[cnt],count-cnt,d,0,0,c,0);
+      drv->lines(&X[cnt],&Y[cnt],count-cnt,d,0,0,c,line_rgb);
       break;
     }
   }
@@ -1138,12 +1138,13 @@ void UCcontour::draw_lines(int level)
 //
 void UCcontour::draw_background()
 {
+	  std::vector<double> RGB(3,0.0);
                 // draw frame
 
   double A[5]; A[0] = A[1] = A[4] = frame_l; A[2] = A[3] = frame_r;
   double B[5]; B[0] = B[3] = B[4] = frame_b; B[1] = B[2] = frame_t;
 
-  drv->lines(A,B,5,0,0,0,0,0);
+  drv->lines(A,B,5,0,0,0,0,line_rgb);
 
 
                 // draw ticks
@@ -1154,14 +1155,14 @@ void UCcontour::draw_background()
   for (i = 1; i < rows-1; i++)
   {
     x = frame_2_screen_x(normalize_x(x_value(i)));
-    drv->line(x,frame_b,x,frame_b+len,0,0,0,0,0);
-    drv->line(x,frame_t,x,frame_t-len,0,0,0,0,0);
+    drv->line(x,frame_b,x,frame_b+len,0,0,0,0,line_rgb);
+    drv->line(x,frame_t,x,frame_t-len,0,0,0,0,line_rgb);
   }
   for (i = 1; i < columns-1; i++)
   {
     y = frame_2_screen_y(normalize_y(y_value(i)));
-    drv->line(frame_l,y,frame_l+len,y,0,0,0,0,0);
-    drv->line(frame_r,y,frame_r-len,y,0,0,0,0,0);
+    drv->line(frame_l,y,frame_l+len,y,0,0,0,0,line_rgb);
+    drv->line(frame_r,y,frame_r-len,y,0,0,0,0,line_rgb);
   }
 }
 //
@@ -1211,8 +1212,8 @@ void UCcontour::draw_high_low_labels()
         snprintf(format,bufSize,"%%%d.%df",field,dec);
         snprintf(lab,bufSize,format,val);
        
-        drv->text(x,y,"H",0,scale_to_frame_width(0.03),0,1,0,0,0);
-        drv->text(x,y,lab,0,scale_to_frame_width(0.02),0,-1,1,0,0);
+        drv->text(x,y,"H",0,scale_to_frame_width(0.03),0,1,0,0,line_rgb);
+        drv->text(x,y,lab,0,scale_to_frame_width(0.02),0,-1,1,0,line_rgb);
       }
       else if (val < value(r-1,c-1) && val < value(r-1,c) && 
                val < value(r-1,c+1) && val < value(r,c-1) &&
@@ -1243,8 +1244,8 @@ void UCcontour::draw_high_low_labels()
         snprintf(format,bufSize,"%%%d.%df",field,dec);
         snprintf(lab,bufSize,format,val);
 
-        drv->text(x,y,"L",0,scale_to_frame_width(0.03),0,1,0,0,0);
-        drv->text(x,y,lab,0,scale_to_frame_width(0.02),0,-1,1,0,0);
+        drv->text(x,y,"L",0,scale_to_frame_width(0.03),0,1,0,0,line_rgb);
+        drv->text(x,y,lab,0,scale_to_frame_width(0.02),0,-1,1,0,line_rgb);
       }
     }
 }

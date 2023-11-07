@@ -14,9 +14,10 @@
 //********************************************************************************
 //
 #include <cmath>
+#include "ucgraph.h"
+
 #ifndef UC3DGARPH_
 #define UC3DGARPH_
-#include "ucgraph.h"
 
 class UC3dgraph : public UCgraph
 {

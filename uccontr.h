@@ -26,6 +26,7 @@ public:
 //
 //  Copy Constructor
 //
+
     UCcontour(const UCcontour& A);
 //
     UCcontour(UCdriver *dr);
@@ -51,7 +52,7 @@ public:
     void contour(double *data_pointer, int n, int m, double low_value, double high_value);
     void contour(double *data_pointer, int n, int m, int n_countour, double low_value, double high_value);
     void contour(double *data_pointer, int n, int m, double increment, double low_value, double high_value);
-    void contour(double *data_pointer, int n, int m, double* contour_values, int n_contour);   
+    void contour(double *data_pointer, int n, int m, const std::vector<double>& contour_values, int n_contour);
 //
 //  Contour Format and Level Manipulation Routines
 //
@@ -95,7 +96,7 @@ public:
     void set_contour_level(double low_value, double high_value);
     void set_contour_level(long n_contour, double low_value, double high_value); 
     void set_contour_level(double increment, double low_value, double high_value);
-    void set_contour_level(double* values, long n_contour);  
+    void set_contour_level(const std::vector<double>&, long n_contour);
 
 
 

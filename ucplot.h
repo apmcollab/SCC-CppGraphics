@@ -13,9 +13,13 @@
 //                            (C) UCLA 1994, 1995
 //********************************************************************************
 //
+#include <vector>
+#include <string>
+
+#include "uc2dgrph.h"
+
 #ifndef UCPLOT_
 #define UCPLOT_
-#include "uc2dgrph.h"
 
 class UCplot : public UC2dgraph
 {
@@ -58,7 +62,7 @@ public:
 
 //
     void region(double *x, double *y, long npoints);
-    void region(double *x, double *y, long npoints, int color, double *RGB);
+    void region(double *x, double *y, long npoints, int color, const std::vector<double>& RGB);
 //
     void frame(){drv->frame();};
 //
@@ -164,37 +168,31 @@ public:
 //
 //  Access the axis color 
 //
-    void set_axis_color(int c) { axis_color = c; }
-    void set_axis_color(double *rgb)
-      { axis_rgb = rgb; axis_color = USER_RGB; }
+    void set_axis_color(int c) {axis_color = c;}
 
-    int get_axis_color() { return axis_color; }
-    int get_axis_color(double *&rgb)
-      { if (axis_color == USER_RGB) rgb = axis_rgb; else rgb = 0;
-        return axis_color;}
+    void set_axis_rgb(const std::vector<double>& rgb)
+    { axis_rgb = rgb; axis_color = USER_RGB;}
+
+    int get_axis_color() {return axis_color;}
+
+    std::vector<double>get_axis_rgb() {return axis_rgb;}
 //
 //  Access plotting variables
 //
-    void set_line_color(int c) {line_color = c;}
-    void set_line_color(double *rgb)
-      { std::cout << "UCPlot.h " << rgb[0] << " " << rgb[1] << " " << rgb[2] << std::endl;
-      line_rgb = rgb; line_color = USER_RGB; }
+
     void set_dash_pattern(int d) { line_dash_pattern = d;}
     void set_user_dash_pattern(int d)
        { user_dash_pattern = d; line_dash_pattern = USER_DASH;}
     void set_line_width(double w) { line_width = w; }
 //
-    int get_line_color() { return line_color;}
-    int get_line_color(double *&rgb)
-      { if (line_color == USER_RGB) rgb = line_rgb; else rgb = 0;
-        return line_color;}
+
     int get_dash_pattern() { return line_dash_pattern;}
     int get_user_dash_pattern() { return user_dash_pattern;}
     double get_line_width() { return line_width;}
 //
     void set_point_type(char p) { point_type = p;}
     void set_point_size(double s) { point_size = s;}
-    void set_point_font(const char* s);
+    void set_point_font(const std::string& s);
 
     int get_point_type() { return point_type;}
     double get_point_size() { return point_size;}
@@ -204,8 +202,8 @@ public:
        { if (s==CURVE || s==POINTS || s==CURVE_AND_POINTS) plot_style=s;}
     int get_plot_style() { return plot_style;}
 
-    void label_x(const char* s, double size = 0);
-    void label_y(const char* s, double size = 0);
+    void label_x(const std::string& s, double size = 0);
+    void label_y(const std::string& s, double size = 0);
 
     void set_function_evaluation_count(long n){n_fun_points = n;}
     long get_function_evaluation_count(){return n_fun_points;}
@@ -265,12 +263,9 @@ protected:
     double  y_intercept;
 
     short   axis_color;        // = 0 means default color
-    double* axis_rgb;
+    std::vector<double> axis_rgb;
 //
 //  Line Information
-//
-    short   line_color;        // = 0 means use default color (black
-    double* line_rgb;          //   with  UCdriver_ps module)
 
     short   line_dash_pattern; // = 0 means draw solid line
     int     user_dash_pattern;
@@ -284,10 +279,10 @@ protected:
 //
 //  Point  Information
 //
-    int     plot_style;        
-    char    point_type;       //  The character plotted for a point
-    char*   point_font;       //  The font of the character
-    double  point_size;
+    int           plot_style;
+    char          point_type;       //  The character plotted for a point
+    std::string   point_font;       //  The font of the character
+    double        point_size;
 //
 //  Helper functions
 //    
