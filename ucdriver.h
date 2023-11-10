@@ -54,6 +54,11 @@ public:
 //###########################################################################
 //                      CONSTRUCTOR       
 //###########################################################################
+/**
+    Default empty null constructor
+*/
+
+UCdriver(){};
 
 /** 
     Constructor, implements appropriate low level initialization for 
