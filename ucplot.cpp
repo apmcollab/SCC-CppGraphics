@@ -277,7 +277,7 @@ void UCplot::x_num_label(double x, double xpos, double ypos)
     drv->text(xpos, ypos-0.015*scale, s, font, label_char_size*scale,
             0, 0, 1, text_color, text_rgb);
   else
-    drv->text(xpos, frame_b-0.01*scale, s, font, label_char_size*scale,
+    drv->text(xpos, frame_b-0.02*scale, s, font, label_char_size*scale,
             0, 0, 1, text_color, text_rgb);
 
   delete [] s;
@@ -308,20 +308,20 @@ void UCplot::y_num_label(double y, double ypos, double xpos)
   (frame_r - frame_l) : (frame_t - frame_b);
 
   if (y_axis_type == FLOATING) 
-    drv->text(xpos-0.015*scale, ypos, s, font, label_char_size*scale,
-            0, 1, 0, text_color, text_rgb);
+    drv->text(xpos-0.02*scale, ypos, s, font, label_char_size*scale,
+            0, 1.0, 0.0, text_color, text_rgb);
 
   else
   {
     if (ypos == frame_b && x_axis_type != FLOATING && x_label_flag)
 	{         //  this is so labels don't overlap
-      drv->text(frame_l-0.005*scale, ypos, s, font, label_char_size*scale,
-              0, 1, -1, text_color, text_rgb);
+      drv->text(frame_l-0.02*scale, ypos, s, font, label_char_size*scale,
+              0, 1.0, 0.0, text_color, text_rgb);
     }
     else
     {
-      drv->text(frame_l-0.005*scale, ypos, s, font, label_char_size*scale,
-              0, 1, 0, text_color, text_rgb);
+      drv->text(frame_l-0.02*scale, ypos, s, font, label_char_size*scale,
+              0, 1.0, 0.0, text_color, text_rgb);
     }
   }
 
