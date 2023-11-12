@@ -14,7 +14,9 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "ucdriver.h"
 #include "uccontr.h"
+#include "uc2dgrph.h"
 #include "camgraphexit.h"
 //
 // changed atan(Y/X) to atan2(Y,X)  cra 9/29/95
@@ -1045,8 +1047,11 @@ void UCcontour::draw_lines(int level)
   char lab[bufSize];
   char format[bufSize];
 
+  std::string fontString;
+
+
   if (f == 2 || f == 3)           // Labels are going to be drawn.  Make 
-  {                               //   labels at least two sig digits
+  {                               // labels at least two sig digits
     int first_dig;
 //
 //  since labels in fixed precision - limit number of small digits
@@ -1079,9 +1084,10 @@ void UCcontour::draw_lines(int level)
 
     snprintf(format,bufSize,"%%%d.%df",field,dec);
     snprintf(lab,bufSize,format,line_value);
-       
     } 
   }
+
+
 
   int mul = int(std::floor(double(((rows+columns)/2 + 9)/15)));
   if (mul < 1) mul = 1;
@@ -1100,7 +1106,7 @@ void UCcontour::draw_lines(int level)
 		atan2((Y[cnt+3*mul] - Y[cnt+1*mul]),(X[cnt+3*mul] - X[cnt+1*mul]));
         ang = 180*ang/3.14159265359;   // convert to degrees
 
-        drv->text(X[cnt+2*mul],Y[cnt+2*mul],lab,0,(frame_r-frame_l)*0.02,
+        drv->text(X[cnt+2*mul],Y[cnt+2*mul],lab,fontString,(frame_r-frame_l)*0.02,
                        int(ang),0,0,c,line_rgb);
         
         cnt += 3*mul;
@@ -1120,7 +1126,7 @@ void UCcontour::draw_lines(int level)
 		ang = atan2((Y[cnt+4*mul]-Y[cnt+6*mul]),(X[cnt+4*mul]-X[cnt+6*mul]));
         ang = 180*ang/3.14159265359;   // convert to degrees
 
-        drv->text(x,y,lab,0,(frame_r-frame_l)*0.02,
+        drv->text(x,y,lab,fontString,(frame_r-frame_l)*0.02,
                        int(ang),0,0,c,line_rgb);
  
         cnt += 6*mul;
@@ -1175,6 +1181,7 @@ void UCcontour::draw_high_low_labels()
   double x,y,val;
   const size_t bufSize = 1024;
   char lab[bufSize], format[bufSize];
+  std::string nullString;
 
   for (int r = 1; r < rows - 1; r++)
     for (int c = 1; c < columns - 1; c++)
@@ -1212,8 +1219,8 @@ void UCcontour::draw_high_low_labels()
         snprintf(format,bufSize,"%%%d.%df",field,dec);
         snprintf(lab,bufSize,format,val);
        
-        drv->text(x,y,"H",0,scale_to_frame_width(0.03),0,1,0,0,line_rgb);
-        drv->text(x,y,lab,0,scale_to_frame_width(0.02),0,-1,1,0,line_rgb);
+        drv->text(x,y,"H",nullString,scale_to_frame_width(0.03),0,1,0,0,line_rgb);
+        drv->text(x,y,lab,nullString,scale_to_frame_width(0.02),0,-1,1,0,line_rgb);
       }
       else if (val < value(r-1,c-1) && val < value(r-1,c) && 
                val < value(r-1,c+1) && val < value(r,c-1) &&
@@ -1244,8 +1251,8 @@ void UCcontour::draw_high_low_labels()
         snprintf(format,bufSize,"%%%d.%df",field,dec);
         snprintf(lab,bufSize,format,val);
 
-        drv->text(x,y,"L",0,scale_to_frame_width(0.03),0,1,0,0,line_rgb);
-        drv->text(x,y,lab,0,scale_to_frame_width(0.02),0,-1,1,0,line_rgb);
+        drv->text(x,y,"L",nullString,scale_to_frame_width(0.03),0,1,0,0,line_rgb);
+        drv->text(x,y,lab,nullString,scale_to_frame_width(0.02),0,-1,1,0,line_rgb);
       }
     }
 }

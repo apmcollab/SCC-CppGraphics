@@ -4,8 +4,8 @@
 #include <vector>
 
 
-#ifndef CAMGRAPHICSPROCESS__
-#define CAMGRAPHICSPROCESS__
+#ifndef CAMGRAPHICSPROCESS_
+#define CAMGRAPHICSPROCESS_
 //
 //######################################################################
 //
