@@ -339,8 +339,8 @@ void UCsurface::do_facet(long r, long c, perimeter &p)
 void UCsurface::get_vertex_list(long r, long c, vertex *&v, vertex *&w)
 {
   //  Function returns two list of vertices.  v points to the list
-  //  that needs to be checked against the outside of the perimeter
-  //  while w points to the list to check against the inside.
+  //    that needs to be checked agains the outside of the perimeter
+  //    while w points to the list to check against the inside.
 
   enum {FACE_ON, EDGE_ON, CORNER_ON};
 
@@ -559,8 +559,6 @@ void UCsurface::get_vertex_list(long r, long c, vertex *&v, vertex *&w)
 void UCsurface::check_against_perimeter(vertex *f1, perimeter &per, int dir)
 {
 
-  return;
-
   //    Function checks the list of vertices against the perimeter,
   //    draws any lines that need to be drawn, and updates the
   //    perimeter.  If dir == 0, routine checks against the inner
@@ -583,11 +581,8 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per, int dir)
   vertex *I = p1;                // insertion points
 
   vertex *head, *tail, *nx2last; // for list of vertex to add to perim
-  vertex* vp   = 0;
-
 
   head = 0; tail = 0; nx2last = 0;
-
   vertex *m;                     // for random tranversing
 
   vertex *p2;
@@ -645,7 +640,7 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per, int dir)
         a = f1->a + s*(f2->a - f1->a);
 
                 // Add last segment
-        vp     = new vertex(x,y,z,a);
+        vertex* vp     = new vertex(x,y,z,a);
         tail->next     = vp;
         nx2last        = tail;
         tail           = vp;
@@ -739,7 +734,6 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per, int dir)
      }
 
   }
-
 }
 //
 //******************************************************************************
@@ -1288,6 +1282,7 @@ int operator==(UCsurface::vertex &v, UCsurface::vertex &v2)
 UCsurface::perimeter::~perimeter()
 {
   if (outer == 0) return;
+
   while (outer != 0) remove_next_vertex(outer);
 }
 //
