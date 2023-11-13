@@ -10,14 +10,17 @@
 //            Initial Version             : David Sansot
 //            Additions and Modifications : Chris Anderson 
 //
-//                            (C) UCLA 1994,1995
+//                            (C) UCLA 1994,2023
 //********************************************************************************
 // 
+// Nov. 13, 2023: The code in check_against_perimeter(..) and perimeter_initialie()
+// induces a memory leak and the routine needs to be further debugged, or rewritten.
+//
+#include "uc3dgrph.h"
+
 #ifndef UCSURFACE_
 #define UCSURFACE_
 
-#include "uc3dgrph.h"
-#include "camgraphimpexp.h"
 
 class UCsurface : public UC3dgraph
 {
@@ -98,12 +101,17 @@ class perimeter
       perimeter() { outer = inner = end = nullptr;}
       ~perimeter();
 
+
       void add_vertex_after(vertex *v, vertex *w);
       void add_segments_after(vertex *I, vertex *head, vertex *tail,
                                vertex *nx2last);
       void remove_next_vertex(vertex *v);
+
+      void deletePermiterData();
 };
 protected:
+
+    perimeter p;
 //
 //  Internal Data 
 //

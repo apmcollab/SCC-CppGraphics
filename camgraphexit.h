@@ -5,37 +5,28 @@
 //
 //********************************************************************************
 //
-//            Chris Anderson (C) UCLA 1997
-//            7/16/97
+//            Chris Anderson (C) UCLA 2023
 //
 //
 //********************************************************************************
 //
-#ifndef CAMGRAPHICSEXIT__
-#define CAMGRAPHICSEXIT__
-#include <cstdlib>
+#include <iostream>
+#include <string>
+#include <stdexcept>
 
-#include "camgraphimpexp.h"
+#ifndef CAMGRAPHICSEXIT_
+#define CAMGRAPHICSEXIT_
 
-void __IMPEXP__ CAMgraphicsExit();
-void __IMPEXP__ CAMgraphicsExit(char* ErrorMessage);
-
-#ifdef __BCPLUSPLUS__
-
-class __IMPEXP__ CAMgraphicsException
+static void CAMgraphicsExit()
 {
-	public :
-
-	CAMgraphicsException();
-	CAMgraphicsException(const CAMgraphicsException& C);
-	CAMgraphicsException(const char* msg);
-   ~CAMgraphicsException();
-    
-	char* getMessage() const {return errorMessage;};
-
-	private :
-
-	char* errorMessage;
+	throw std::runtime_error("\nCppGraphics Fatal Error : Program Stopped \n");
 };
-#endif
+
+static void CAMgraphicsExit(const std::string ErrorMessage)
+{
+	std::string errMsg = "\n";
+	errMsg            += ErrorMessage;
+	throw std::runtime_error(errMsg);
+};
+
 #endif 

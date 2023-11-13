@@ -12,7 +12,8 @@
 // ---- Modifications ----
 //
 // 01/02/03 :  Improved clipping in create_plot. Chris Anderson, UCLA
-// 04/14/03 :  Fixed bug in numerical label routine. Chris Anderson, UCLA                         
+// 04/14/03 :  Fixed bug in numerical label routine. Chris Anderson, UCLA
+// 11/12/23 :  Converted use of char* to std::string.  Chris Anderson, UCLA
 //        
 //********************************************************************************
 //
@@ -22,20 +23,15 @@
 #include <vector>
 #include <string>
 
-//
-// strcpy_s is not implemented as part of C++11 (arrgh) so this macro
-// inserts strcpy calls.
-//
 
 #include "ucplot.h"
 #include "ucclip.h"
-#include "camgraphexit.h"
+
 //
 //******************************************************************************
 //                         COPY CONSTRUCTOR
 //******************************************************************************
 // 
-
 
 
 UCplot::UCplot(const UCplot& A) : UC2dgraph(A)

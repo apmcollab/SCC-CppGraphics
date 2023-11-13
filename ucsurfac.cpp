@@ -11,6 +11,7 @@
 //            Chris Anderson                (C) UCLA 1996
 //********************************************************************************
 //
+#include "ucdriver.h"
 #include "ucsurfac.h"
 #include "uc3dgrph.h"
 #include "camgraphexit.h"
@@ -21,9 +22,6 @@
 //
 // define external flag array classes    cra 9/29/95
 //
-//#ifndef __BCPLUSPLUS__
-//#define __MPWcplusplus
-//#endif
 //******************************************************************************
 //                         COPY CONSTRUCTOR
 //******************************************************************************
@@ -240,7 +238,7 @@ void UCsurface::create_surface()
 
   vertex *v;
 
-  perimeter p;
+
   initialize_perimeter(p);
 
     //  Draw initial perimeter
@@ -639,7 +637,8 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per, int dir)
         z = f1->z + s*(f2->z - f1->z);
         a = f1->a + s*(f2->a - f1->a);
 
-                // Add last segment
+        // Add last segment
+
         vertex* vp     = new vertex(x,y,z,a);
         tail->next     = vp;
         nx2last        = tail;
@@ -657,7 +656,7 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per, int dir)
 // UPDATE PERIMETER
 // Remove past vertexes from perimeter
               
- // while (I->next != p2) per.remove_next_vertex(I);
+//   while (I->next != p2) per.remove_next_vertex(I);
  //
  //  CRA modification : changed above call to  the following. Essentially
  //  the same call as before, but I updated I->next in the
@@ -693,13 +692,15 @@ void UCsurface::check_against_perimeter(vertex *f1, perimeter &per, int dir)
          {
          if(per.inner == I->next) per.inner = I;
          vtest        = (I->next)->next;
-         //delete I->next;                          //  CRA 4.30.2020 - commented out this delete to stop valgrind access errors
-                                                    //  a logic problem. Leaving it till later -- this doesn't cause a memory leak.
+
+         // delete I->next;                        //  CRA 4.30.2020 - commented out this delete to stop valgrind access errors
+                                                    //  a logic problem. Leaving it till later.
                                                     //  The whole update perimeter segment needs to be reworked.
          I->next      = vtest;
          }
 
         }
+
  //
  //
  // Add new segments
@@ -1282,10 +1283,10 @@ int operator==(UCsurface::vertex &v, UCsurface::vertex &v2)
 UCsurface::perimeter::~perimeter()
 {
   if (outer == 0) return;
-
   while (outer != 0) remove_next_vertex(outer);
 }
-//
+
+
 //******************************************************************************
 //                      ADD_VERTEX_AFTER 
 //******************************************************************************

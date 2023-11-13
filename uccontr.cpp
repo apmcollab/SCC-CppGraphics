@@ -23,9 +23,6 @@
 // defined external flag array classes cra 9/29/95
 // changed exit(1) to CAMgraphicsExit() cra 9/24/97
 //
-//#ifndef __BCPLUSPLUS__
-//#define __MPWcplusplus
-//#endif
 //******************************************************************************
 //                         COPY CONSTRUCTOR
 //******************************************************************************

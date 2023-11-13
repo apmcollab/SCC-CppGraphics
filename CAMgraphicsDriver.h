@@ -1,7 +1,7 @@
 #include <string>
 
-#ifndef CAMGRAPHICSDRIVER__
-#define CAMGRAPHICSDRIVER__
+#ifndef CAMGRAPHICSDRIVER_
+#define CAMGRAPHICSDRIVER_
 //
 //######################################################################
 //
@@ -12,6 +12,7 @@
 // Jan. 25, 1999 :  Removed argument name from calling parameters
 //######################################################################
 //
+
 #ifndef CAMPLOTARGUMENTS__
 class CAMplotArguments;
 #endif

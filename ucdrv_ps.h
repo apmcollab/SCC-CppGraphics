@@ -21,12 +21,12 @@
 #ifndef UCDRIVER_PS_
 #define UCDRIVER_PS_
 
-#define DEFAULT_LINE_WIDTH  0.001
-#define DEFAULT_FONT  "Times-Roman"
-#define DEFAULT_FONT_SIZE .05
+#define PS_DEFAULT_LINE_WIDTH  0.001
+#define PS_DEFAULT_FONT  "Times-Roman"
+#define PS_DEFAULT_FONT_SIZE .05
 
-#define PICTURE_WIDTH   468 // in points -- 72 points = 1 inch
-#define PICTURE_HEIGHT  468
+#define PS_PICTURE_WIDTH   468 // in points -- 72 points = 1 inch
+#define PS_PICTURE_HEIGHT  468
 
 class UCdriver_ps : public UCdriver
 {
@@ -93,5 +93,6 @@ public:
     void do_font(const std::string& f, double s);
     void stroke_line();
 };
+
 #endif
  

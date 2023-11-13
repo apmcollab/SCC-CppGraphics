@@ -54,10 +54,10 @@ UCdriver_ps::UCdriver_ps(const std::string& s) : UCdriver(s)
   pres_RGB.resize(3,0.0);
 
   pres_user_pattern = 0;
-  pres_line_width = DEFAULT_LINE_WIDTH;
+  pres_line_width = PS_DEFAULT_LINE_WIDTH;
 
   pres_font.clear();
-  pres_font_size  = DEFAULT_FONT_SIZE;
+  pres_font_size  = PS_DEFAULT_FONT_SIZE;
 
 
 //  Set up file and write need info to file
@@ -81,8 +81,8 @@ UCdriver_ps::UCdriver_ps(const std::string& s) : UCdriver(s)
   t_ptr = localtime(&t);
 
     //  This stuff determines the bounding box
-  int lmarg = (612 - PICTURE_WIDTH)/2;
-  int bmarg = (792 - PICTURE_HEIGHT)/2;
+  int lmarg = (612 - PS_PICTURE_WIDTH)/2;
+  int bmarg = (792 - PS_PICTURE_HEIGHT)/2;
 
     //  Write header
   fout
@@ -97,8 +97,8 @@ UCdriver_ps::UCdriver_ps(const std::string& s) : UCdriver(s)
    // << "%%BoundingBox: " << lmarg << " " << bmarg << " "
 
    << "%%BoundingBox: " << 0 << " " << 0 << " "
-                        << int(lmarg + PICTURE_WIDTH) << " "
-                        << int(bmarg + PICTURE_HEIGHT) << std::endl;
+                        << int(lmarg + PS_PICTURE_WIDTH) << " "
+                        << int(bmarg + PS_PICTURE_HEIGHT) << std::endl;
   fout << "%%Orientation: Portrait" 
    << "%%Pages: (atend) \n"
    << "%%EndComments " << std::endl << std::endl; 
@@ -214,7 +214,7 @@ void UCdriver_ps::lines (double *x, double *y, long npoints,
 
   if (line_not_stroked) stroke_line();
 
-  if (width == 0) width = DEFAULT_LINE_WIDTH;
+  if (width == 0) width = PS_DEFAULT_LINE_WIDTH;
 
     // Set up dash pattern
   if (dash_pattern != pres_dash)   // dash_pattern == 0 means solid line
@@ -252,7 +252,7 @@ void UCdriver_ps::line(double x1, double y1, double x2, double y2,
   if (page_not_setup)          //  set up defaults
     setup_page();
 
-  if (width == 0) width = DEFAULT_LINE_WIDTH;
+  if (width == 0) width = PS_DEFAULT_LINE_WIDTH;
 
   if (dash_pattern != pres_dash || dash_pattern == USER_DASH)
     do_dash(dash_pattern, user_pattern);
@@ -396,14 +396,14 @@ void UCdriver_ps::frame()
 //
 void UCdriver_ps::setup_page()
 { 
-  int lmarg = (612 - PICTURE_WIDTH)/2;
-  int bmarg = (792 - PICTURE_HEIGHT)/2;
+  int lmarg = (612 - PS_PICTURE_WIDTH)/2;
+  int bmarg = (792 - PS_PICTURE_HEIGHT)/2;
   page++;
   fout << "%%Page: " << page << " " << page << std::endl;
   fout << "%%BeginPageSetup " << std::endl;
   fout << "UC_Page_Begin " << std::endl;
   fout << lmarg << " " << bmarg << " t " << std::endl;      // move origin
-  fout << int(PICTURE_WIDTH) << " " << int(PICTURE_HEIGHT) << " scale " << std::endl;  // normalize window
+  fout << int(PS_PICTURE_WIDTH) << " " << int(PS_PICTURE_HEIGHT) << " scale " << std::endl;  // normalize window
 
   fout << "0.004 slw" << std::endl;
 //
@@ -417,12 +417,12 @@ void UCdriver_ps::setup_page()
   line_not_stroked = 0;
 
   fout << "0 setlinecap 0 setlinejoin " << std::endl;
-  fout << DEFAULT_LINE_WIDTH << " slw " << std::endl;
+  fout << PS_DEFAULT_LINE_WIDTH << " slw " << std::endl;
 
   fout << "%%EndPageSetup " << std::endl << std::endl;
 
   pres_color = pres_dash = 0;
-  pres_line_width = DEFAULT_LINE_WIDTH;
+  pres_line_width = PS_DEFAULT_LINE_WIDTH;
 
   pres_font.clear();
   pres_font_size = 0;
@@ -627,10 +627,10 @@ void UCdriver_ps::do_color(int color, const std::vector<double>& RGB)
 //
 void UCdriver_ps::do_font(const std::string& f, double s)
 {
-  if(std::abs(s) < 10e-08) {s = DEFAULT_FONT_SIZE;}
+  if(std::abs(s) < 10e-08) {s = PS_DEFAULT_FONT_SIZE;}
 
   if(pres_font.empty())
-  {pres_font = DEFAULT_FONT;}
+  {pres_font = PS_DEFAULT_FONT;}
 
   if(s != pres_font_size)
   {
@@ -689,7 +689,7 @@ void UCdriver_ps::region(double *x, double *y, long npoints, int color, const st
   if (dash_pattern != pres_dash)   // dash_pattern == 0 means solid line
     {do_dash(dash_pattern, user_pattern);}
 
-  double width = DEFAULT_LINE_WIDTH;
+  double width = PS_DEFAULT_LINE_WIDTH;
 
   if (width != pres_line_width)
    {do_line_width(width);}

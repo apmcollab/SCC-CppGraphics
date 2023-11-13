@@ -13,10 +13,6 @@
 #include "camgraph.h"
 
 
-//
-// strcpy_s is not implemented as part of C++11 (arrgh) so this macro
-// inserts strcpy calls.
-//
 
 //######################################################################
 //
@@ -84,7 +80,7 @@ void CAMpostScriptDriver::close()
 
 void CAMpostScriptDriver::frame() 
 {
-	 G->setState(*S);
+	G->setState(*S);
     G->frame();
 }
 

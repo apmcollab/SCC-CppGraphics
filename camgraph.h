@@ -40,11 +40,9 @@ class UCcontour;
 class UCsurface;
 #endif
 
-#include "camgraphimpexp.h"
-
 class CAMgraphicsState;
 
-class __IMPEXP__ CAMgraphics
+class  CAMgraphics
 {
 
 public :
@@ -323,7 +321,7 @@ public :
 //
 //  Class to store CAMgraphics state
 //
-class __IMPEXP__ CAMgraphicsState
+class   CAMgraphicsState
 {
 
 public :

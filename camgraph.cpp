@@ -9,7 +9,6 @@
 #include "ucdriver.h"
 #include "ucdrv_ps.h"
 
-#include "camgraphimpexp.h"
 //
 //******************************************************************************
 //                          CAMGRAPH.CPP
@@ -197,7 +196,7 @@ void CAMgraphics::operator=(const CAMgraphics& S)
 //********************************************************************************
 //                    MEMBER_FUNCTIONS
 //********************************************************************************
-//
+
 void  CAMgraphics::open()
 {
 //
@@ -232,6 +231,7 @@ void  CAMgraphics::open()
     UCcontourPointerArray[0] = new UCcontour(OutputDeviceDriver);
     UCsurfacePointerArray[0] = new UCsurface(OutputDeviceDriver);
 }
+
 
 void  CAMgraphics::open(UCdriver* d)
 {
@@ -270,6 +270,7 @@ void  CAMgraphics::open(UCdriver* d)
     UCsurfacePointerArray[0] = new UCsurface(d);
 }
 
+
 void CAMgraphics::open(const std::string& fileName)
 {
 //
@@ -303,15 +304,6 @@ void CAMgraphics::open(const std::string& fileName)
     UCcontourPointerArray[0] = new UCcontour(OutputDeviceDriver);
     UCsurfacePointerArray[0] = new UCsurface(OutputDeviceDriver);
 
-/*
-    if(UCplotPointerArray    == 0)UCplotPointerArray    = new UCplot*[1];
-    if(UCcontourPointerArray == 0)UCcontourPointerArray = new UCcontour*[1];
-    if(UCsurfacePointerArray == 0)UCsurfacePointerArray = new UCsurface*[1];
-
-    UCplotPointerArray[0]    = new UCplot(OutputDeviceDriver);
-    UCcontourPointerArray[0] = new UCcontour(OutputDeviceDriver);
-    UCsurfacePointerArray[0] = new UCsurface(OutputDeviceDriver);
-*/
 }
 
 void  CAMgraphics::close()
