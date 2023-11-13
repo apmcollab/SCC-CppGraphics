@@ -63,14 +63,14 @@ class CAMgraphicsState;
 class CAMgraphics;
 #endif
 
-class CAMsvdDriver : public CAMgraphicsDriver
+class CAMsvgDriver : public CAMgraphicsDriver
 {
 
 public  :
 
-	CAMsvdDriver();
-    CAMsvdDriver(const std::string& outputFileName);
-    virtual ~CAMsvdDriver();
+	CAMsvgDriver();
+    CAMsvgDriver(const std::string& outputFileName,bool letterSize = false);
+    virtual ~CAMsvgDriver();
     
 	void open(bool letterSize = false);
 

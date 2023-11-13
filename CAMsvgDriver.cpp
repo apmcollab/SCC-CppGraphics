@@ -1,4 +1,4 @@
-#include "CAMsvdDriver.h"
+#include "CAMsvgDriver.h"
 
 #include <iostream>
 #include <string>
@@ -44,7 +44,7 @@
 #############################################################################
 */
 
-CAMsvdDriver::CAMsvdDriver()
+CAMsvgDriver::CAMsvgDriver()
 {
 	S = new CAMgraphicsState();
     G = new CAMgraphics;
@@ -54,17 +54,17 @@ CAMsvdDriver::CAMsvdDriver()
     open();
 }
 
-CAMsvdDriver::CAMsvdDriver(const std::string& fileName)
+CAMsvgDriver::CAMsvgDriver(const std::string& fileName,bool letterSize)
 {
     S = new CAMgraphicsState();
     G = new CAMgraphics;
     outputFile = fileName;
     dTypeName  = "CAMsvdDriver";
     svgDriver  = nullptr;
-    open();
+    open(letterSize);
 }
 
-CAMsvdDriver::~CAMsvdDriver()
+CAMsvgDriver::~CAMsvgDriver()
 {
     close();
     delete S;
@@ -78,7 +78,7 @@ CAMsvdDriver::~CAMsvdDriver()
 
 /*
 
-void CAMsvdDriver::initialize(const std::string& outputFileName)
+void CAMsvgDriver::initialize(const std::string& outputFileName)
 {
 	close();
     delete S;
@@ -95,7 +95,7 @@ void CAMsvdDriver::initialize(const std::string& outputFileName)
 }
 */
 
-void CAMsvdDriver::open(bool letterSize)
+void CAMsvgDriver::open(bool letterSize)
 {
     double pageWidth;
 	double pageHeight;
@@ -129,7 +129,7 @@ void CAMsvdDriver::open(bool letterSize)
     G->getState(*S);
 }
 
-void CAMsvdDriver::open(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin, long pageDPI,
+void CAMsvgDriver::open(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin, long pageDPI,
 int backgroundColor, bool multipleFrameFlag)
 {
 	if(svgDriver != nullptr) delete svgDriver;
@@ -143,20 +143,20 @@ int backgroundColor, bool multipleFrameFlag)
 
 
 
-void CAMsvdDriver::close()
+void CAMsvgDriver::close()
 {
     G->setState(*S);
     G->close();
 }
 
-void CAMsvdDriver::frame()
+void CAMsvgDriver::frame()
 {
 	 G->setState(*S);
     G->frame();
 }
 
 
-void CAMsvdDriver::accept(const CAMplotArguments& A)
+void CAMsvgDriver::accept(const CAMplotArguments& A)
 {
 	G->setState(*S);
 //
@@ -185,7 +185,7 @@ void CAMsvdDriver::accept(const CAMplotArguments& A)
 	G->getState(*S);
 }
 
-void CAMsvdDriver::accept(const CAMcontourArguments& A)
+void CAMsvgDriver::accept(const CAMcontourArguments& A)
 {
 	G->setState(*S);
 //
@@ -222,7 +222,7 @@ void CAMsvdDriver::accept(const CAMcontourArguments& A)
   G->getState(*S);
 }
 
-void CAMsvdDriver::accept(const CAMsurfaceArguments& A)
+void CAMsvgDriver::accept(const CAMsurfaceArguments& A)
 {
 	G->setState(*S);
     int callType            = int(A.callType);
@@ -244,7 +244,7 @@ void CAMsvdDriver::accept(const CAMsurfaceArguments& A)
 	G->getState(*S);
 }
 
-void CAMsvdDriver::accept(const CAMtextArguments& A)
+void CAMsvgDriver::accept(const CAMtextArguments& A)
 {
 	G->setState(*S);
 
@@ -270,7 +270,7 @@ void CAMsvdDriver::accept(const CAMtextArguments& A)
 	G->getState(*S);
 }
 
-void CAMsvdDriver::accept(const CAMregionArguments& A)
+void CAMsvgDriver::accept(const CAMregionArguments& A)
 {
 	G->setState(*S);
 //
@@ -282,7 +282,7 @@ void CAMsvdDriver::accept(const CAMregionArguments& A)
 	int   col               = A.col;
 	std::vector<double> rgb = A.rgb;
 
-	std::cout << "CAMsvdDriver::accept callType, color, and USER_RGB " << callType << " " << col << " " << CAMgraphics::USER_RGB << std::endl;
+	std::cout << "CAMsvgDriver::accept callType, color, and USER_RGB " << callType << " " << col << " " << CAMgraphics::USER_RGB << std::endl;
 
 	double* x                = A.x;
 	double* y                = A.y;
@@ -296,7 +296,7 @@ void CAMsvdDriver::accept(const CAMregionArguments& A)
 	G->getState(*S);
 }
 
-void CAMsvdDriver::accept(const CAMsetArguments& A)
+void CAMsvgDriver::accept(const CAMsetArguments& A)
 {
 	G->setState(*S);
 //
