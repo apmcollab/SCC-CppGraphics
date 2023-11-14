@@ -211,8 +211,6 @@ void CAMpostScriptDriver::accept(const CAMregionArguments& A)
 	int   col               = A.col;
 	std::vector<double> rgb = A.rgb;
 
-	std::cout << "CAMpostScriptDriver::accept callType, color, and USER_RGB " << callType << " " << col << " " << CAMgraphics::USER_RGB << std::endl;
-
 	double* x                = A.x;
 	double* y                = A.y;
 

@@ -600,12 +600,6 @@ void UCplot::create_region_plot()
 
     int c = get_graphics_low_color(line_color);
 
-    std::cout << " UCplot::create_region_plot c, line_color " << c << " " << line_color << std::endl;
-    if(c == UCplot::USER_RGB)
-    {
-    std::cout << line_rgb[0] << " " << line_rgb[1] <<  " " << line_rgb[2] << std::endl;
-    }
-
 	int i;
     for (i = 0; i < n_points; i++)
     {

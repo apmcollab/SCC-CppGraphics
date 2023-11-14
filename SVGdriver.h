@@ -125,6 +125,7 @@ public:
     	xyCoordSize = xCoordSize;
 
 
+
     	std::vector<double> RGB = {255.0,255.0,255.0};
     	if(backgroundColor != UCdriver::NONE)
     	{
@@ -272,7 +273,7 @@ double rotation, double horiz_just, double vert_just, int color, const std::vect
 
     double textScale;        // fractional size of text
     double hersheyHeight;    // height of font in Hershey plotting units
-    double hersheyWidth;     // widith of string in Hershey plotting units
+    double hersheyWidth;     // width of string in Hershey plotting units
     double alpha;            // scale factor between Hershey and [0,1]x[0,1] units
 
     double xCorner;

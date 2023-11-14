@@ -70,6 +70,9 @@ public  :
 
 	CAMsvgDriver();
     CAMsvgDriver(const std::string& outputFileName,bool letterSize = false);
+    CAMsvgDriver(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin,
+    long pageDPI,int backgroundColor, bool multipleFrameFlag);
+
     virtual ~CAMsvgDriver();
     
 	void open(bool letterSize = false);
@@ -85,6 +88,9 @@ public  :
 	void accept(const CAMsurfaceArguments& A);
 	void accept(const CAMtextArguments& A);
  	void accept(const CAMsetArguments& A);
+
+ 	SVGdriver* getDriver()
+ 	{return svgDriver;}
 
 
 private :

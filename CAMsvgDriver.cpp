@@ -64,6 +64,18 @@ CAMsvgDriver::CAMsvgDriver(const std::string& fileName,bool letterSize)
     open(letterSize);
 }
 
+CAMsvgDriver::CAMsvgDriver(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin,
+long pageDPI,int backgroundColor, bool multipleFrameFlag)
+{
+    S = new CAMgraphicsState();
+    G = new CAMgraphics;
+    outputFile = fileName;
+    dTypeName  = "CAMsvdDriver";
+    svgDriver  = nullptr;
+    open(fileName,pageWidth, pageHeight, pageMargin, pageDPI,backgroundColor,multipleFrameFlag);
+}
+
+
 CAMsvgDriver::~CAMsvgDriver()
 {
     close();
@@ -281,8 +293,6 @@ void CAMsvgDriver::accept(const CAMregionArguments& A)
 	long   n                = A.n;
 	int   col               = A.col;
 	std::vector<double> rgb = A.rgb;
-
-	std::cout << "CAMsvgDriver::accept callType, color, and USER_RGB " << callType << " " << col << " " << CAMgraphics::USER_RGB << std::endl;
 
 	double* x                = A.x;
 	double* y                = A.y;
