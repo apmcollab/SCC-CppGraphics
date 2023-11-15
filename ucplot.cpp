@@ -17,6 +17,8 @@
 //        
 //********************************************************************************
 //
+
+
 #include <cstdio>
 #include <cmath>
 #include <iostream>
@@ -27,6 +29,7 @@
 #include "ucplot.h"
 #include "ucclip.h"
 
+#include "camgraphexit.h"
 //
 //******************************************************************************
 //                         COPY CONSTRUCTOR

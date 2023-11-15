@@ -17,7 +17,6 @@
 #include <string>
 #include "ucdriver.h"
 #include "uc2dgrph.h"
-#include "camgraphexit.h"
 
 #ifndef UCPLOT_
 #define UCPLOT_
