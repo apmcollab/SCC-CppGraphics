@@ -74,6 +74,11 @@ public:
 	double           xyCoordSize;
 	double            marginSize;
 
+	double pageWidth;
+	double pageHeight;
+	double pageMargin;
+	long   pageDPI;
+
 	std::string               fileName;
 	std::string         rgbColorString;
 	std::string             dashString;
@@ -103,6 +108,13 @@ public:
     void initialize(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin, long pageDPI,
     int backgroundColor, bool multipleFrameFlag)
     {
+
+    	this->pageWidth  = pageWidth;
+    	this->pageHeight = pageHeight;
+		this->pageMargin = pageMargin;
+		this->pageDPI    = pageDPI;
+
+
     	this->fileName          = fileName;
     	this->backgroundColor   = backgroundColor;
     	this->multipleFrameFlag = multipleFrameFlag;
@@ -279,7 +291,7 @@ double rotation, double horiz_just, double vert_just, int color, const std::vect
     double xCorner;
     double yCorner;
 
-    if(std::abs(size) <= HERSHEY_FONT_SIZE) size = HERSHEY_FONT_SIZE;
+    if(std::abs(size) <= HERSHEY_FONT_SIZE) {size = HERSHEY_FONT_SIZE;}
     textScale     = size;
 
     hersheyHeight = Hf.getHersheyHeight();
