@@ -69,21 +69,23 @@ class CAMsvgDriver : public CAMgraphicsDriver
 public  :
 
 	CAMsvgDriver();
-    CAMsvgDriver(const std::string& outputFileName,bool letterSize = false);
-    CAMsvgDriver(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin,
-    long pageDPI,int backgroundColor, bool multipleFrameFlag);
-
     virtual ~CAMsvgDriver();
-    
+
     void initialize();
+	
+   // CAMsvgDriver(const std::string& outputFileName,bool letterSize = false);
+    
+   // CAMsvgDriver(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin,
+   // long pageDPI,int backgroundColor, bool multipleFrameFlag);
 
-	void open(bool letterSize = false);
-
-	void open(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin, long pageDPI,
-	int backgroundColor, bool multipleFrameFlag);
+    void open();
+	void open(const std::string& outputFileNamePrefix, bool letterSize = false);
+	void open(const std::string& fileNamePrefix,double pageWidth, double pageHeight, double pageMargin,
+	          long pageDPI, int backgroundColor, bool multipleFrameFlag);
 
 	void close();
 	void frame();
+	
 	void accept(const CAMplotArguments& A);
 	void accept(const CAMregionArguments& A);
 	void accept(const CAMcontourArguments& A);
@@ -91,16 +93,14 @@ public  :
 	void accept(const CAMtextArguments& A);
  	void accept(const CAMsetArguments& A);
 
- 	SVGdriver* getDriver()
- 	{return svgDriver;}
+ 	SVGdriver* getDriver() {return svgDriver;}
 
 
 private :
 
-   CAMgraphics* G;
-   CAMgraphicsState* S;
-   std::string outputFile;
-   SVGdriver*   svgDriver;
-
+   CAMgraphics*               G;
+   CAMgraphicsState*          S;
+   std::string outputFilePrefix;
+   SVGdriver*         svgDriver;
 };
 #endif 

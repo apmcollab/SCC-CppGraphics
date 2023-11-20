@@ -11,6 +11,7 @@
 #include "CAMsurfaceArguments.h"
 #include "CAMtextArguments.h"
 #include "CAMsetArguments.h"
+#include "ucdriver.h"
 #include "camgraph.h"
 
 
@@ -44,142 +45,114 @@
 #############################################################################
 */
 
+// The constructor creates a GraphicsProcess and a GraphicsState
+// the driver is not created until an open(...) member function
+// is called. This allows the same settings for graphical output to
+// be applied to multiple output files.
+//
+
 CAMsvgDriver::CAMsvgDriver()
 {
-	S = new CAMgraphicsState();
-    G = new CAMgraphics;
-    outputFile = "graph";
-    dTypeName  = "CAMsvdDriver";
+	S          = nullptr;
+    G          = nullptr;
     svgDriver  = nullptr;
-    open();
-}
-
-CAMsvgDriver::CAMsvgDriver(const std::string& fileName,bool letterSize)
-{
-    S = new CAMgraphicsState();
-    G = new CAMgraphics;
-    outputFile = fileName;
-    dTypeName  = "CAMsvdDriver";
-    svgDriver  = nullptr;
-    open(letterSize);
-}
+    initialize();
+} 
 
 void CAMsvgDriver::initialize()
 {
-	if((S != nullptr)&&(G != nullptr))
-	{
-		close();
-		delete S;
-		delete G;
-		S = nullptr;
-		G = nullptr;
-	}
-
-	if(svgDriver != nullptr) delete svgDriver;
-    outputFile.clear();
-}
-
-
-CAMsvgDriver::CAMsvgDriver(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin,
-long pageDPI,int backgroundColor, bool multipleFrameFlag)
-{
+    if(S         != nullptr) {delete S;}
+    if(G         != nullptr) {delete G;}
+	if(svgDriver != nullptr) {delete svgDriver;}
+	
     S = new CAMgraphicsState();
     G = new CAMgraphics;
-    outputFile = fileName;
+    
     dTypeName  = "CAMsvdDriver";
-    svgDriver  = nullptr;
-    open(fileName,pageWidth, pageHeight, pageMargin, pageDPI,backgroundColor,multipleFrameFlag);
+    outputFilePrefix.clear();
 }
 
 
 CAMsvgDriver::~CAMsvgDriver()
 {
-    close();
-    delete S;
-	delete G;
-
-	if(svgDriver != nullptr) delete svgDriver;
-    outputFile.clear();
+    if(S != nullptr)         {delete S;}
+    if(G != nullptr)         {delete G;}
+	if(svgDriver != nullptr) {delete svgDriver;}
 }                                            
 
-
-
-/*
-
-void CAMsvgDriver::initialize(const std::string& outputFileName)
+void CAMsvgDriver::open()
 {
-	close();
-    delete S;
-	delete G;
-    outputFile.clear();
-    dTypeName.clear();
-
-    S = new CAMgraphicsState();
-    G = new CAMgraphics;
-
-    outputFile = outputFileName;
-    dTypeName  = "CAMsvdDriver";
-    open();
+	std::string fileName = "graph";
+	bool letterSize      = true;
+	open(fileName,letterSize);
 }
-*/
 
-void CAMsvgDriver::open(bool letterSize)
+//
+// Open creates and attaches a SVG low level driver that outputs
+// to the file [fileNamePrefix].cif
+// 
+//
+// Convenience initialization
+//
+void CAMsvgDriver::open(const std::string& fileNamePrefix, bool letterSize)
 {
+    outputFilePrefix = fileNamePrefix;
+    
     double pageWidth;
 	double pageHeight;
 	long   pageDPI;
 	double pageMargin ;
 
-
 	if(letterSize)
 	{
     pageWidth  =   8.5;
 	pageHeight =  11.0;
-	pageDPI    =   300;
+	pageDPI    =   600;
 	pageMargin =   1.0;
 	}
 	else
 	{
 	pageWidth  =   6.0;
 	pageHeight =   6.0;
-	pageDPI    =   300;
+	pageDPI    =   600;
 	pageMargin =   0.0;
 	}
 
 	bool multipleFrameFlag = true;
 	int  backgroundColor   = UCdriver::NONE;
 
-	if(svgDriver != nullptr) delete svgDriver;
+	if(svgDriver != nullptr) {delete svgDriver;}
 
-    svgDriver = new SVGdriver(outputFile,pageWidth, pageHeight,pageMargin,pageDPI,backgroundColor,multipleFrameFlag);
+    svgDriver = new SVGdriver(outputFilePrefix,pageWidth, pageHeight,pageMargin,pageDPI,backgroundColor,multipleFrameFlag);
 
 	G->open(svgDriver);
     G->getState(*S);
 }
 
-void CAMsvgDriver::open(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin, long pageDPI,
+
+void CAMsvgDriver::open(const std::string& fileNamePrefix, double pageWidth, double pageHeight, double pageMargin, long pageDPI,
 int backgroundColor, bool multipleFrameFlag)
 {
-	if(svgDriver != nullptr) delete svgDriver;
+    outputFilePrefix = fileNamePrefix;
 
-	svgDriver = new SVGdriver(outputFile,pageWidth, pageHeight,pageMargin,pageDPI,backgroundColor,multipleFrameFlag);
+	if(svgDriver != nullptr) {delete svgDriver;}
+	
+	svgDriver = new SVGdriver(outputFilePrefix,pageWidth, pageHeight,pageMargin,pageDPI,backgroundColor,multipleFrameFlag);
 
 	G->open(svgDriver);
     G->getState(*S);
-
 }
-
-
 
 void CAMsvgDriver::close()
 {
     G->setState(*S);
     G->close();
+    if(svgDriver != nullptr) {delete svgDriver;}
 }
 
 void CAMsvgDriver::frame()
 {
-	 G->setState(*S);
+	G->setState(*S);
     G->frame();
 }
 

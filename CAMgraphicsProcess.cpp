@@ -21,7 +21,12 @@
 //
 //
 //
-CAMgraphicsProcess::CAMgraphicsProcess(){};
+CAMgraphicsProcess::CAMgraphicsProcess()
+{ODriver = nullptr;};
+
+
+void CAMgraphicsProcess::initialize()
+{ODriver = nullptr;};
 
 void CAMgraphicsProcess::attachDriver(CAMgraphicsDriver * Od)
 {

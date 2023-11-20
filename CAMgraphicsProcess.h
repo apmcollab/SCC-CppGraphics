@@ -28,8 +28,9 @@ class CAMgraphicsProcess
 public :
 
 	CAMgraphicsProcess();
-
 	virtual ~CAMgraphicsProcess(){};
+
+	virtual void initialize();
     
     virtual void attachDriver(CAMgraphicsDriver* O);
     virtual void attachDriver(CAMgraphicsDriver& O){attachDriver(&O);};

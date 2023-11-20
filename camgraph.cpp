@@ -66,12 +66,9 @@ CAMgraphics::CAMgraphics()
 //
 CAMgraphics::~CAMgraphics()
 {
-//
-//  Variables are reset to static initialization state.
-//
-    if(UCplotPointerArray != 0)       delete [] UCplotPointerArray;
-    if(UCcontourPointerArray != 0)    delete [] UCcontourPointerArray;
-    if(UCsurfacePointerArray != 0)    delete [] UCsurfacePointerArray;
+    if(UCplotPointerArray    != 0){delete UCplotPointerArray[0];    delete [] UCplotPointerArray;}
+    if(UCcontourPointerArray != 0){delete UCcontourPointerArray[0]; delete [] UCcontourPointerArray;}
+    if(UCsurfacePointerArray != 0){delete UCsurfacePointerArray[0]; delete [] UCsurfacePointerArray;}
 
     CAMgraphics::frameLeft             = 0.0;
     CAMgraphics::frameRight            = 0.0;
@@ -219,9 +216,10 @@ void  CAMgraphics::open()
 //
 //  Delete pointers to any existing instance ... and create new instances
 //
-    if(UCplotPointerArray    != 0)delete [] UCplotPointerArray;
-    if(UCcontourPointerArray != 0)delete [] UCcontourPointerArray;
-    if(UCsurfacePointerArray != 0)delete [] UCsurfacePointerArray;
+
+    if(UCplotPointerArray    != 0){delete UCplotPointerArray[0];    delete [] UCplotPointerArray;}
+    if(UCcontourPointerArray != 0){delete UCcontourPointerArray[0]; delete [] UCcontourPointerArray;}
+    if(UCsurfacePointerArray != 0){delete UCsurfacePointerArray[0]; delete [] UCsurfacePointerArray;}
 
     UCplotPointerArray    = new UCplot*[1];
     UCcontourPointerArray = new UCcontour*[1];
@@ -252,9 +250,10 @@ void  CAMgraphics::open(UCdriver* d)
 //
 //  Delete pointers to any existing instance ... and create new instances
 //
-    if(UCplotPointerArray    != 0)delete [] UCplotPointerArray;
-    if(UCcontourPointerArray != 0)delete [] UCcontourPointerArray;
-    if(UCsurfacePointerArray != 0)delete [] UCsurfacePointerArray;
+
+    if(UCplotPointerArray    != 0){delete UCplotPointerArray[0];    delete [] UCplotPointerArray;}
+    if(UCcontourPointerArray != 0){delete UCcontourPointerArray[0]; delete [] UCcontourPointerArray;}
+    if(UCsurfacePointerArray != 0){delete UCsurfacePointerArray[0]; delete [] UCsurfacePointerArray;}
 
     UCplotPointerArray    = new UCplot*[1];
     UCcontourPointerArray = new UCcontour*[1];

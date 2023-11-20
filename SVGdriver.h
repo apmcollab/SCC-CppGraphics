@@ -162,6 +162,8 @@ public:
     void lines(double *x, double *y, long npoints, int dash_pattern,
     unsigned user_pattern, double width, int iColor, const std::vector<double>& RGB)
     {
+        pageOpen = true;
+
     	setRGBcolorValue(iColor,RGB,rgbColorString);
     	if(width < HERSHEY_LINE_WIDTH) {width = HERSHEY_LINE_WIDTH;}
 
@@ -195,6 +197,8 @@ public:
             int dash_pattern, unsigned user_pattern, double width,
             int iColor, const std::vector<double>& RGB)
     {
+        pageOpen = true;
+
     	setRGBcolorValue(iColor,RGB,rgbColorString);
 
     	if(width < HERSHEY_LINE_WIDTH) {width = HERSHEY_LINE_WIDTH;}
@@ -233,6 +237,8 @@ public:
 
 void point(double x,double y, char chr, const std::string& font,double size, int color, const std::vector<double>& rgb)
 {
+    pageOpen = true;
+
     std::string s;
     s.push_back(chr);
     double horiz_just = 0.0;
@@ -243,6 +249,8 @@ void point(double x,double y, char chr, const std::string& font,double size, int
 };
 void points(double *X,double *Y,long npoints, char chr,const std::string& font, double size, int color,const std::vector<double>& rgb)
 {
+    pageOpen = true;
+
     std::string s;
     s.push_back(chr);
     double horiz_just = 0.0;
@@ -261,6 +269,8 @@ void text(double x,double y,const std::string& s,const std::string&  font,double
 		double horiz_just,double vert_just,
 		int color,const std::vector<double>& rgb)
 {
+    pageOpen = true;
+
     plotHersheyText(x,y, s, font, size,rotation,horiz_just,vert_just, color,rgb);
 }
 
@@ -405,7 +415,7 @@ double rotation, double horiz_just, double vert_just, int color, const std::vect
     */
     void region(double *x, double *y, long npoints, int iColor, const std::vector<double>& RGB)
     {
-
+        pageOpen = true;
     	setRGBcolorValue(iColor,RGB,rgbColorString);
     	int lineWidth = 1;
 
@@ -425,7 +435,6 @@ double rotation, double horiz_just, double vert_just, int color, const std::vect
     page.str("");
     pageCount++;
     page << pageHeader.str();
-    pageOpen = true;
     }
     void output()
     {
