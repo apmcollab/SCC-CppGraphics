@@ -75,6 +75,8 @@ public  :
 
     virtual ~CAMsvgDriver();
     
+    void initialize();
+
 	void open(bool letterSize = false);
 
 	void open(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin, long pageDPI,

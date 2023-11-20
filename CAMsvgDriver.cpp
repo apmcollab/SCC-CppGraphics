@@ -64,6 +64,22 @@ CAMsvgDriver::CAMsvgDriver(const std::string& fileName,bool letterSize)
     open(letterSize);
 }
 
+void CAMsvgDriver::initialize()
+{
+	if((S != nullptr)&&(G != nullptr))
+	{
+		close();
+		delete S;
+		delete G;
+		S = nullptr;
+		G = nullptr;
+	}
+
+	if(svgDriver != nullptr) delete svgDriver;
+    outputFile.clear();
+}
+
+
 CAMsvgDriver::CAMsvgDriver(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin,
 long pageDPI,int backgroundColor, bool multipleFrameFlag)
 {
