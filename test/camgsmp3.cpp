@@ -9,10 +9,10 @@
 /*
   	Creation of a contour plot
 */
-#include "camgraph.h"
 #include <cmath>
 #include <cstdio>
 #include <iostream>
+#include "../CAMgraphics.h"
 
 //
 // Function to be contoured
@@ -32,7 +32,7 @@ int main()
     double c  = -3.0;
     double d =   3.0;
 
-    long   n  =  20;
+    long   n  =  40;
 
     double hx  = (b-a)/double(n-1);
     double hy  = (d-c)/double(n-1);
@@ -58,14 +58,18 @@ int main()
                                         // a variable sized array
     }}
 
-    CAMgraphics::open("graph.ps");            // open file graph.ps for output
-  
-    CAMgraphics::title("Sample Contour Plot");      // label the plot
+    CAMgraphics camGraphics;
+    
+    camGraphics.open("ContourPlot");            // open file graph.ps for output
+    camGraphics.clearMultiPageFlag();           // suppress indexing of separate pages output since
+                                                // a single plot.
 
-    CAMgraphics::contour(z,n,n);                    // create the contour plot
-    CAMgraphics::frame();                           // "frame" the plot
+    camGraphics.title("Sample Contour Plot");      // label the plot
 
-    CAMgraphics::close();                      // detach the driver
+    camGraphics.contour(z,n,n);                    // create the contour plot
+    camGraphics.frame();                           // "frame" the plot
+
+    camGraphics.close();                      // detach the driver
 
     delete [] x;                         // clean up
     delete [] y;

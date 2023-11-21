@@ -1,13 +1,16 @@
-#include "camgraph.h"
-#include "ucdriver.h"
-#include "ucgraph.h"
-#include "uc2dgrph.h"
-#include "uc3dgrph.h"
-#include "ucplot.h"
-#include "uccontr.h"
-#include "ucsurfac.h"
-#include "ucdriver.h"
-#include "ucdrv_ps.h"
+#include "CAMgraphics.h"
+#include "UC2dgraph.h"
+#include "UC3dgraph.h"
+#include "UCcontour.h"
+#include "UCdriver.h"
+#include "UCdriver.h"
+
+#include "UCgraph.h"
+#include "UCplot.h"
+#include "UCsurface.h"
+
+#include "SVGdriver.h"
+#include "UCdriver_ps.h"
 
 //
 //******************************************************************************
@@ -19,21 +22,7 @@
 //********************************************************************************
 //
 //********************************************************************************
-//                       STATIC INITIALIZATION
-//********************************************************************************
-//
-    double     CAMgraphics::frameLeft               = 0.0;
-    double     CAMgraphics::frameRight              = 0.0;
-    double     CAMgraphics::frameBottom             = 0.0;
-    double     CAMgraphics::frameTop                = 0.0;
-    int        CAMgraphics::plotRegionIndex         = 0;
-    int        CAMgraphics::plotRegionRows          = 0;
-    int        CAMgraphics::plotRegionIndexBound    = 0;
-    int        CAMgraphics::defaultDriverFlag       = 0;
-    UCdriver*  CAMgraphics::OutputDeviceDriver      = 0;
-    UCplot**     CAMgraphics::UCplotPointerArray    = 0;
-    UCcontour**  CAMgraphics::UCcontourPointerArray = 0;
-    UCsurface**  CAMgraphics::UCsurfacePointerArray = 0;
+
 //
 //********************************************************************************
 //               
@@ -41,23 +30,58 @@
 //
 CAMgraphics::CAMgraphics()
 {
-    CAMgraphics::frameLeft             = 0.0;
-    CAMgraphics::frameRight            = 0.0;
-    CAMgraphics::frameBottom           = 0.0;
-    CAMgraphics::frameTop              = 0.0;
-    CAMgraphics::plotRegionIndex       = 0;
-    CAMgraphics::plotRegionRows        = 0;
-    CAMgraphics::plotRegionIndexBound  = 0;
-    CAMgraphics::defaultDriverFlag     = 0;
-    CAMgraphics::OutputDeviceDriver    = 0;
+    frameLeft             = 0.0;
+    frameRight            = 0.0;
+    frameBottom           = 0.0;
+    frameTop              = 0.0;
+    plotRegionIndex       = 0;
+    plotRegionRows        = 0;
+    plotRegionIndexBound  = 0;
+    defaultDriverFlag     = 0;
+    OutputDeviceDriver    = nullptr;
 
-    if(UCplotPointerArray    != 0)delete [] UCplotPointerArray;
-    if(UCcontourPointerArray != 0)delete [] UCcontourPointerArray;
-    if(UCsurfacePointerArray != 0)delete [] UCsurfacePointerArray;
+    UCplotPointerArray.clear();
+    UCcontourPointerArray.clear();
+    UCsurfacePointerArray.clear();
+}
 
-    CAMgraphics::UCplotPointerArray    = 0;
-    CAMgraphics::UCcontourPointerArray = 0;
-    CAMgraphics::UCsurfacePointerArray = 0;
+void CAMgraphics::initialize()
+{
+	if(UCplotPointerArray.size() != 0)
+	{
+		for(size_t k = 0; k < UCplotPointerArray.size(); k++)
+		{delete UCplotPointerArray[k];}
+		UCplotPointerArray.clear();
+	}
+
+    if(UCcontourPointerArray.size() != 0)
+	{
+		for(size_t k = 0; k < UCcontourPointerArray.size(); k++)
+		{delete UCcontourPointerArray[k];}
+		UCcontourPointerArray.clear();
+	}
+
+    if(UCsurfacePointerArray.size() != 0)
+	{
+		for(size_t k = 0; k < UCsurfacePointerArray.size(); k++)
+		{delete UCsurfacePointerArray[k];}
+		UCsurfacePointerArray.clear();
+	}
+
+    if(defaultDriverFlag == 1)
+    {
+    delete OutputDeviceDriver;
+    OutputDeviceDriver    = nullptr;
+    }
+
+    frameLeft             = 0.0;
+    frameRight            = 0.0;
+    frameBottom           = 0.0;
+    frameTop              = 0.0;
+    plotRegionIndex       = 0;
+    plotRegionRows        = 0;
+    plotRegionIndexBound  = 0;
+    defaultDriverFlag     = 0;
 }
 //
 //********************************************************************************
@@ -66,64 +90,47 @@ CAMgraphics::CAMgraphics()
 //
 CAMgraphics::~CAMgraphics()
 {
-    if(UCplotPointerArray    != 0){delete UCplotPointerArray[0];    delete [] UCplotPointerArray;}
-    if(UCcontourPointerArray != 0){delete UCcontourPointerArray[0]; delete [] UCcontourPointerArray;}
-    if(UCsurfacePointerArray != 0){delete UCsurfacePointerArray[0]; delete [] UCsurfacePointerArray;}
+	if(UCplotPointerArray.size() != 0)
+	{
+		for(size_t k = 0; k < UCplotPointerArray.size(); k++)
+		{delete UCplotPointerArray[k];}
+	}
 
-    CAMgraphics::frameLeft             = 0.0;
-    CAMgraphics::frameRight            = 0.0;
-    CAMgraphics::frameBottom           = 0.0;
-    CAMgraphics::frameTop              = 0.0;
-    CAMgraphics::plotRegionIndex       = 0;
-    CAMgraphics::plotRegionRows        = 0;
-    CAMgraphics::plotRegionIndexBound  = 0;
-    CAMgraphics::defaultDriverFlag     = 0;
-    CAMgraphics::OutputDeviceDriver    = 0;
-    CAMgraphics::UCplotPointerArray    = 0;
-    CAMgraphics::UCcontourPointerArray = 0;
-    CAMgraphics::UCsurfacePointerArray = 0;
+    if(UCcontourPointerArray.size() != 0)
+	{
+		for(size_t k = 0; k < UCcontourPointerArray.size(); k++)
+		{delete UCcontourPointerArray[k];}
+	}
+
+
+    if(UCsurfacePointerArray.size() != 0)
+	{
+		for(size_t k = 0; k < UCsurfacePointerArray.size(); k++)
+		{delete UCsurfacePointerArray[k];}
+	}
+
+    if(defaultDriverFlag == 1)
+    {
+    delete OutputDeviceDriver;
+    }
 }
+
 
 CAMgraphics::CAMgraphics(const CAMgraphics& S)
 {
 //
 //  Pointers to plot/contour/surface instances
-//  are copied; instances are not duplicated.
+//  and associated driver are copied; instances are not
+//  duplicated.
 //
-    int i;
-//
-//  delete *this entries
-//
-    if(plotRegionIndexBound > 0)
-    {
-      delete [] UCplotPointerArray;
-      delete [] UCcontourPointerArray;
-      delete [] UCsurfacePointerArray;
+    UCplotPointerArray.clear();
+    UCcontourPointerArray.clear();
+    UCsurfacePointerArray.clear();
 
-      frameLeft             = 0.0;
-      frameRight            = 0.0;
-      frameBottom           = 0.0;
-      frameTop              = 0.0;
-      plotRegionIndex       = 0;
-      plotRegionRows        = 0;
-      defaultDriverFlag     = 0;
-      OutputDeviceDriver    = 0;
-    }
-    plotRegionIndexBound  = 0;
-//
-//  Allocate and Copy
-//
-    if(S.plotRegionIndexBound > 0)
-    {
-    UCplotPointerArray    = new UCplot*[S.plotRegionIndexBound];
-    UCcontourPointerArray = new UCcontour*[S.plotRegionIndexBound];
-    UCsurfacePointerArray = new UCsurface*[S.plotRegionIndexBound];
-    for(i = 0; i < S.plotRegionIndexBound; i++)
-    {
-    UCplotPointerArray[i]    = S.UCplotPointerArray[i];
-    UCcontourPointerArray[i] = S.UCcontourPointerArray[i];
-    UCsurfacePointerArray[i] = S.UCsurfacePointerArray[i];
-    }
+    UCplotPointerArray    = S.UCplotPointerArray;
+    UCcontourPointerArray = S.UCcontourPointerArray;
+    UCsurfacePointerArray = S.UCsurfacePointerArray;
+
     frameLeft             = S.frameLeft;
     frameRight            = S.frameRight;
     frameBottom           = S.frameBottom;
@@ -131,52 +138,30 @@ CAMgraphics::CAMgraphics(const CAMgraphics& S)
     plotRegionIndexBound  = S.plotRegionIndexBound;
     plotRegionIndex       = S.plotRegionIndex ;
     plotRegionRows        = S.plotRegionRows;
-    defaultDriverFlag     = S.defaultDriverFlag;
+
+    if(S.OutputDeviceDriver != nullptr)
+    {
+    defaultDriverFlag     = 0;
     OutputDeviceDriver    = S.OutputDeviceDriver;
     }
-
 }
+
 
 void CAMgraphics::operator=(const CAMgraphics& S)
 {
 //
 //  Pointers to plot/contour/surface instances
-//  are copied; instances are not duplicated.
+//  and associated driver are copied; instances are not
+//  duplicated.
 //
-    int i;
-//
-//  delete *this entries
-//
-    if(plotRegionIndexBound > 0)
-    {
-      delete [] UCplotPointerArray;
-      delete [] UCcontourPointerArray;
-      delete [] UCsurfacePointerArray;
+    UCplotPointerArray.clear();
+    UCcontourPointerArray.clear();
+    UCsurfacePointerArray.clear();
 
-      frameLeft             = 0.0;
-      frameRight            = 0.0;
-      frameBottom           = 0.0;
-      frameTop              = 0.0;
-      plotRegionIndex       = 0;
-      plotRegionRows        = 0;
-      defaultDriverFlag     = 0;
-      OutputDeviceDriver    = 0;
-    }
-    plotRegionIndexBound  = 0;
-//
-//  Allocate and Copy
-//
-    if(S.plotRegionIndexBound > 0)
-    {
-    UCplotPointerArray    = new UCplot*[S.plotRegionIndexBound];
-    UCcontourPointerArray = new UCcontour*[S.plotRegionIndexBound];
-    UCsurfacePointerArray = new UCsurface*[S.plotRegionIndexBound];
-    for(i = 0; i < S.plotRegionIndexBound; i++)
-    {
-    UCplotPointerArray[i]    = S.UCplotPointerArray[i];
-    UCcontourPointerArray[i] = S.UCcontourPointerArray[i];
-    UCsurfacePointerArray[i] = S.UCsurfacePointerArray[i];
-    }
+    UCplotPointerArray    = S.UCplotPointerArray;
+    UCcontourPointerArray = S.UCcontourPointerArray;
+    UCsurfacePointerArray = S.UCsurfacePointerArray;
+
     frameLeft             = S.frameLeft;
     frameRight            = S.frameRight;
     frameBottom           = S.frameBottom;
@@ -184,10 +169,12 @@ void CAMgraphics::operator=(const CAMgraphics& S)
     plotRegionIndexBound  = S.plotRegionIndexBound;
     plotRegionIndex       = S.plotRegionIndex ;
     plotRegionRows        = S.plotRegionRows;
-    defaultDriverFlag     = S.defaultDriverFlag;
+
+    if(S.OutputDeviceDriver != nullptr)
+    {
+    defaultDriverFlag     = 0;
     OutputDeviceDriver    = S.OutputDeviceDriver;
     }
-
 }
 //
 //********************************************************************************
@@ -196,154 +183,136 @@ void CAMgraphics::operator=(const CAMgraphics& S)
 
 void  CAMgraphics::open()
 {
+	initialize();
 //
 //  Set Defaults
 //
-    CAMgraphics::frameLeft             = 0.14;
-    CAMgraphics::frameRight            = 0.94;
-    CAMgraphics::frameBottom           = 0.1;
-    CAMgraphics::frameTop              = 0.9;
-    CAMgraphics::plotRegionIndex       = 1;
-    CAMgraphics::plotRegionRows        = 1;
-    CAMgraphics::plotRegionIndexBound  = 1;
+    frameLeft             = 0.14;
+    frameRight            = 0.94;
+    frameBottom           = 0.1;
+    frameTop              = 0.9;
+    plotRegionIndex       = 1;
+    plotRegionRows        = 1;
+    plotRegionIndexBound  = 1;
 
-//
-//  Set Default to PostScript
-//
-    CAMgraphics::defaultDriverFlag     = 1;
-    OutputDeviceDriver     = new UCdriver_ps("graph.ps");
+//  Set default to scalable vector graphics driver (SVGdriver)
 
-//
-//  Delete pointers to any existing instance ... and create new instances
-//
+    defaultDriverFlag     = 1;
+    OutputDeviceDriver    = new SVGdriver("graph",true);
 
-    if(UCplotPointerArray    != 0){delete UCplotPointerArray[0];    delete [] UCplotPointerArray;}
-    if(UCcontourPointerArray != 0){delete UCcontourPointerArray[0]; delete [] UCcontourPointerArray;}
-    if(UCsurfacePointerArray != 0){delete UCsurfacePointerArray[0]; delete [] UCsurfacePointerArray;}
-
-    UCplotPointerArray    = new UCplot*[1];
-    UCcontourPointerArray = new UCcontour*[1];
-    UCsurfacePointerArray = new UCsurface*[1];
+    UCplotPointerArray.resize(plotRegionIndexBound);
+    UCcontourPointerArray.resize(plotRegionIndexBound);
+    UCsurfacePointerArray.resize(plotRegionIndexBound);
 
     UCplotPointerArray[0]    = new UCplot(OutputDeviceDriver);
     UCcontourPointerArray[0] = new UCcontour(OutputDeviceDriver);
     UCsurfacePointerArray[0] = new UCsurface(OutputDeviceDriver);
+
+    setFrame(frameLeft,frameRight,frameBottom,frameTop);
 }
 
 
 void  CAMgraphics::open(UCdriver* d)
 {
+    initialize();
 //
 //  Set Defaults
 //
-    CAMgraphics::frameLeft             = 0.14;
-    CAMgraphics::frameRight            = 0.94;
-    CAMgraphics::frameBottom           = 0.1;
-    CAMgraphics::frameTop              = 0.9;
-    CAMgraphics::plotRegionIndex       = 1;
-    CAMgraphics::plotRegionRows        = 1;
-    CAMgraphics::plotRegionIndexBound  = 1;
+    frameLeft             = 0.14;
+    frameRight            = 0.94;
+    frameBottom           = 0.1;
+    frameTop              = 0.9;
+    plotRegionIndex       = 1;
+    plotRegionRows        = 1;
+    plotRegionIndexBound  = 1;
 
-    CAMgraphics::defaultDriverFlag = 0;
-    OutputDeviceDriver             = d;
+    defaultDriverFlag     = 0;
+    OutputDeviceDriver    = d;
 
-//
-//  Delete pointers to any existing instance ... and create new instances
-//
-
-    if(UCplotPointerArray    != 0){delete UCplotPointerArray[0];    delete [] UCplotPointerArray;}
-    if(UCcontourPointerArray != 0){delete UCcontourPointerArray[0]; delete [] UCcontourPointerArray;}
-    if(UCsurfacePointerArray != 0){delete UCsurfacePointerArray[0]; delete [] UCsurfacePointerArray;}
-
-    UCplotPointerArray    = new UCplot*[1];
-    UCcontourPointerArray = new UCcontour*[1];
-    UCsurfacePointerArray = new UCsurface*[1];
-
-/*
-    if(UCplotPointerArray    == 0)UCplotPointerArray    = new UCplot*[1];
-    if(UCcontourPointerArray == 0)UCcontourPointerArray = new UCcontour*[1];
-    if(UCsurfacePointerArray == 0)UCsurfacePointerArray = new UCsurface*[1];
-*/
-    UCplotPointerArray[0]    = new UCplot(d);
-    UCcontourPointerArray[0] = new UCcontour(d);
-    UCsurfacePointerArray[0] = new UCsurface(d);
-}
-
-
-void CAMgraphics::open(const std::string& fileName)
-{
-//
-//  Set Defaults
-//
-    CAMgraphics::frameLeft             = 0.14;
-    CAMgraphics::frameRight            = 0.94;
-    CAMgraphics::frameBottom           = 0.1;
-    CAMgraphics::frameTop              = 0.9;
-    CAMgraphics::plotRegionIndex       = 1;
-    CAMgraphics::plotRegionRows        = 1;
-    CAMgraphics::plotRegionIndexBound  = 1;
-//
-//  Set Default to PostScript associated with file fileName
-//
-    CAMgraphics::defaultDriverFlag     = 1;
-    OutputDeviceDriver     = new UCdriver_ps(fileName);
-
-//
-//  Delete pointers to any existing instance ... and create new instances
-//
-    if(UCplotPointerArray    != 0)delete [] UCplotPointerArray;
-    if(UCcontourPointerArray != 0)delete [] UCcontourPointerArray;
-    if(UCsurfacePointerArray != 0)delete [] UCsurfacePointerArray;
-
-    UCplotPointerArray    = new UCplot*[1];
-    UCcontourPointerArray = new UCcontour*[1];
-    UCsurfacePointerArray = new UCsurface*[1];
+    UCplotPointerArray.resize(plotRegionIndexBound);
+    UCcontourPointerArray.resize(plotRegionIndexBound);
+    UCsurfacePointerArray.resize(plotRegionIndexBound);
 
     UCplotPointerArray[0]    = new UCplot(OutputDeviceDriver);
     UCcontourPointerArray[0] = new UCcontour(OutputDeviceDriver);
     UCsurfacePointerArray[0] = new UCsurface(OutputDeviceDriver);
 
+    setFrame(frameLeft,frameRight,frameBottom,frameTop);
 }
+
+
+void CAMgraphics::open(const std::string& fileName)
+{
+	initialize();
+//
+//  Set Defaults
+//
+    frameLeft             = 0.14;
+    frameRight            = 0.94;
+    frameBottom           = 0.1;
+    frameTop              = 0.9;
+    plotRegionIndex       = 1;
+    plotRegionRows        = 1;
+    plotRegionIndexBound  = 1;
+//
+//  Set Default to PostScript associated with file fileName
+//
+//  defaultDriverFlag     = 1;
+//  OutputDeviceDriver     = new UCdriver_ps(fileName);
+
+//
+//  Set default to scalable vector graphics driver (SVGdriver)
+//
+    defaultDriverFlag     = 1;
+    OutputDeviceDriver    = new SVGdriver(fileName);
+
+    UCplotPointerArray.resize(plotRegionIndexBound);
+    UCcontourPointerArray.resize(plotRegionIndexBound);
+    UCsurfacePointerArray.resize(plotRegionIndexBound);
+#include "SVGdriver.h"
+    UCplotPointerArray[0]    = new UCplot(OutputDeviceDriver);
+    UCcontourPointerArray[0] = new UCcontour(OutputDeviceDriver);
+    UCsurfacePointerArray[0] = new UCsurface(OutputDeviceDriver);
+
+    setFrame(frameLeft,frameRight,frameBottom,frameTop);
+}
+
+std::string CAMgraphics::getDriverTypeName()
+{
+    	if(this->OutputDeviceDriver != nullptr)
+    	{
+    		return this->OutputDeviceDriver->getDriverTypeName();
+    	}
+    	else
+    	{
+    		return std::string();
+    	}
+}
+
+void  CAMgraphics::clearMultiPageFlag()
+{
+	if(OutputDeviceDriver->getDriverTypeName() == "SVGdriver")
+	{
+		((SVGdriver*)OutputDeviceDriver)->clearMultipleFrameFlag();
+	}
+}
+
+void  CAMgraphics::setMultiPageFlag(bool val)
+{
+	((SVGdriver*)OutputDeviceDriver)->setMultipleFrameFlag(val);
+}
+
 
 void  CAMgraphics::close()
 {
-//
-//  Variables are reset static initialization state.
-//
-    if(plotRegionIndexBound != 1) subplotOff();
-//
-//  Delete Output Device Driver in Case of default Driver Flag
-//  (Since the driver is new'd internally
-//
-    if(CAMgraphics::defaultDriverFlag != 0)
-    delete OutputDeviceDriver;
-       
-    delete UCplotPointerArray[0];
-    delete [] UCplotPointerArray;
-    UCplotPointerArray = 0;
-    
-    delete UCcontourPointerArray[0];
-    delete [] UCcontourPointerArray;
-    UCcontourPointerArray = 0;
-
-    delete UCsurfacePointerArray[0];
-    delete [] UCsurfacePointerArray;
-    UCsurfacePointerArray = 0;
-
-    CAMgraphics::frameLeft             = 0.0;
-    CAMgraphics::frameRight            = 0.0;
-    CAMgraphics::frameBottom           = 0.0;
-    CAMgraphics::frameTop              = 0.0;
-
-    CAMgraphics::plotRegionIndex       = 0;
-    CAMgraphics::plotRegionRows        = 0;
-    CAMgraphics::plotRegionIndexBound  = 0;
+	 initialize();
 }
 
 void  CAMgraphics::frame()
 { 
     OutputDeviceDriver->frame();
 }
+
 void  CAMgraphics::setFrame(double fLeft, double fRight, double fBottom, double fTop)
 {    
     if(plotRegionIndexBound == 1)
@@ -378,38 +347,25 @@ void  CAMgraphics::setFrame(double fLeft, double fRight, double fBottom, double 
 
 void  CAMgraphics::subplotOn(int m, int n)
 {  
-// 
-    if(plotRegionIndexBound != 1) subplotOff();
+    if(plotRegionIndexBound != 1) {subplotOff();}
 //
 //  Create the Array of Plot Type Pointers 
 //
     plotRegionIndexBound = m*n;
     plotRegionRows       = m;  
-//
-//  Save Instances 
-//
-    UCplot    UCplotBase    = *(UCplotPointerArray[0]); 
-    UCcontour UCcontourBase = *(UCcontourPointerArray[0]);
-    UCsurface UCsurfaceBase = *(UCsurfacePointerArray[0]);
-//
-//  Delete Current Instances
-// 
-    delete UCplotPointerArray[0]; 
-    delete [] UCplotPointerArray; 
     
-    delete UCcontourPointerArray[0]; 
-    delete [] UCcontourPointerArray;
+    UCplotPointerArray.resize(plotRegionIndexBound);
+    UCcontourPointerArray.resize(plotRegionIndexBound);
+    UCsurfacePointerArray.resize(plotRegionIndexBound);
     
-    delete UCsurfacePointerArray[0]; 
-    delete [] UCsurfacePointerArray;
+    for(size_t i = 1; i < plotRegionIndexBound; i++)
+    {
+    UCplotPointerArray[i]    = new UCplot(*UCplotPointerArray[0]);
+    UCcontourPointerArray[i] = new UCcontour(*UCcontourPointerArray[0]);
+    UCsurfacePointerArray[i] = new UCsurface(*UCsurfacePointerArray[0]);
+    }
 //
-//  Allocate Pointers  for Each Region
-//
-    UCplotPointerArray    = new UCplot*[plotRegionIndexBound];
-    UCcontourPointerArray = new UCcontour*[plotRegionIndexBound];
-    UCsurfacePointerArray = new UCsurface*[plotRegionIndexBound];
-//
-//  Initialize
+//  Initialize frames for each subplot
 //  
     double fLeft,fRight,fTop,fBottom;
     double hx = (frameRight - frameLeft)/double(n);
@@ -428,35 +384,18 @@ void  CAMgraphics::subplotOn(int m, int n)
     fRight    = frameLeft   + (j-1)*hx + frameRight*hx; 
     fBottom   = frameBottom + (m-i)*hy + frameBottom*hy;
     fTop      = frameBottom + (m-i)*hy + frameTop*hy; 
-//    
-    UCplotPointerArray[index-1] = new UCplot(UCplotBase);
+
     UCplotPointerArray[index-1]->set_frame(fLeft,fRight,fBottom,fTop); 
-    
-    UCcontourPointerArray[index-1] = new UCcontour(UCcontourBase);
     UCcontourPointerArray[index-1]->set_frame(fLeft,fRight,fBottom,fTop);
-      
-    UCsurfacePointerArray[index-1] = new UCsurface(UCsurfaceBase);
     UCsurfacePointerArray[index-1]->set_frame(fLeft,fRight,fBottom,fTop);  
     }
-//
+
     plotRegionIndex = 1;
-//     
 }
 void  CAMgraphics::subplotOff()
-{  
+{
 //
-//  Save Instance Associated with First Region
-//
-    UCplot UCplotBase = *(UCplotPointerArray[0]);
-    UCplotBase.set_frame(frameLeft,frameRight,frameBottom,frameTop);
-    
-    UCcontour UCcontourBase = *(UCcontourPointerArray[0]);
-    UCcontourBase.set_frame(frameLeft,frameRight,frameBottom,frameTop);
-    
-    UCsurface UCsurfaceBase = *(UCsurfacePointerArray[0]);
-    UCsurfaceBase.set_frame(frameLeft,frameRight,frameBottom,frameTop);    
-//
-//  Remove Plot Instances Bound to All Regions
+//  Delete all but the first plot instances
 //
     for(int i = 1; i<= plotRegionIndexBound; i++)
     {
@@ -465,21 +404,18 @@ void  CAMgraphics::subplotOff()
     delete UCsurfacePointerArray[i-1];
     }
 //
-//  Clean Up and Re-initialize
+//  Reset arrays
 //
-    delete [] UCplotPointerArray;
-    delete [] UCcontourPointerArray;
-    delete [] UCsurfacePointerArray;
+    UCplotPointerArray.resize(1);
+    UCcontourPointerArray.resize(1);
+    UCsurfacePointerArray.resize(1);
     
-    UCplotPointerArray    = new UCplot*[1];
-    UCplotPointerArray[0] = new UCplot(UCplotBase);  
-    
-    UCcontourPointerArray    = new UCcontour*[1];
-    UCcontourPointerArray[0] = new UCcontour(UCcontourBase);
-    
-    UCsurfacePointerArray    = new UCsurface*[1];
-    UCsurfacePointerArray[0] = new UCsurface(UCsurfaceBase);
-// 
+//  Reset frame
+
+    UCplotPointerArray[0]->set_frame(frameLeft,frameRight,frameBottom,frameTop);
+    UCcontourPointerArray[0]->set_frame(frameLeft,frameRight,frameBottom,frameTop);
+    UCsurfacePointerArray[0]->set_frame(frameLeft,frameRight,frameBottom,frameTop);
+
     plotRegionIndexBound = 1;
     plotRegionRows       = 1;
     plotRegionIndex      = 1;
@@ -1309,64 +1245,39 @@ void  CAMgraphics::setYOffset(double yo)
 //******************************************************************************
 //                        GRAPHICS STATE MANIPULATIOIN
 //******************************************************************************
-//
+/*
 void CAMgraphics::setState(const CAMgraphicsState& S)
 {
-//
-// Sets the current static variables to the values contained in S
-//
-    int i;
-//
-//  delete *this entries
-//
-    if(plotRegionIndexBound > 0)
-    {
-      delete [] UCplotPointerArray;
-      delete [] UCcontourPointerArray;
-      delete [] UCsurfacePointerArray;
-
-      frameLeft             = 0.0;
-      frameRight            = 0.0;
-      frameBottom           = 0.0;
-      frameTop              = 0.0;
-      plotRegionIndex       = 0;
-      plotRegionRows        = 0;
-      defaultDriverFlag     = 0;
-      OutputDeviceDriver    = 0;
-    }
-    plotRegionIndexBound  = 0;
+    initialize();
 //
 //  Allocate and Copy
 //
     if(S.plotRegionIndexBound > 0)
     {
-    UCplotPointerArray    = new UCplot*[S.plotRegionIndexBound];
-    UCcontourPointerArray = new UCcontour*[S.plotRegionIndexBound];
-    UCsurfacePointerArray = new UCsurface*[S.plotRegionIndexBound];
-    for(i = 0; i < S.plotRegionIndexBound; i++)
+    UCplotPointerArray.resize(S.plotRegionIndexBound);
+    UCcontourPointerArray.resize(S.plotRegionIndexBound);
+    UCsurfacePointerArray.resize(S.plotRegionIndexBound);
+
+    for(int i = 0; i < S.plotRegionIndexBound; i++)
     {
     UCplotPointerArray[i]    = S.UCplotPointerArray[i];
     UCcontourPointerArray[i] = S.UCcontourPointerArray[i];
     UCsurfacePointerArray[i] = S.UCsurfacePointerArray[i];
     }
+
     frameLeft             = S.frameLeft;
     frameRight            = S.frameRight;
     frameBottom           = S.frameBottom;
     frameTop              = S.frameTop;
     plotRegionIndexBound  = S.plotRegionIndexBound;
-    plotRegionIndex       = S.plotRegionIndex ;
+    plotRegionIndex       = S.plotRegionIndex;
     plotRegionRows        = S.plotRegionRows;
     defaultDriverFlag     = S.defaultDriverFlag;
     OutputDeviceDriver    = S.OutputDeviceDriver;
     }
-
 }
 void CAMgraphics::getState(CAMgraphicsState& S)
 {
-//
-// Retrieves the current static variables and stores them in S
-//
-    int i;
 //
 //  delete S entries
 //
@@ -1394,7 +1305,7 @@ void CAMgraphics::getState(CAMgraphicsState& S)
     S.UCplotPointerArray    = new UCplot*[plotRegionIndexBound];
     S.UCcontourPointerArray = new UCcontour*[plotRegionIndexBound];
     S.UCsurfacePointerArray = new UCsurface*[plotRegionIndexBound];
-    for(i = 0; i < plotRegionIndexBound; i++)
+    for(int i = 0; i < plotRegionIndexBound; i++)
     {
     S.UCplotPointerArray[i]    = UCplotPointerArray[i];
     S.UCcontourPointerArray[i] = UCcontourPointerArray[i];
@@ -1411,141 +1322,7 @@ void CAMgraphics::getState(CAMgraphicsState& S)
     S.OutputDeviceDriver    = OutputDeviceDriver;
     }
 }
-//
-//******************************************************************************
-//                          CAMGRAPHICSSTATE.CPP
-//******************************************************************************
-//
-CAMgraphicsState::CAMgraphicsState()
-{
-    frameLeft             = 0.14;
-    frameRight            = 0.94;
-    frameBottom           = 0.1;
-    frameTop              = 0.9;
-    plotRegionIndex       = 1;
-    plotRegionRows        = 1;
-    plotRegionIndexBound  = 1;
-    defaultDriverFlag     = 0;
-    OutputDeviceDriver    = 0;
-    UCplotPointerArray    = new UCplot*[1];
-    UCcontourPointerArray = new UCcontour*[1];
-    UCsurfacePointerArray = new UCsurface*[1];
-};
-
-CAMgraphicsState::~CAMgraphicsState()
-{
-    if(plotRegionIndexBound > 0)
-    {
-      delete [] UCplotPointerArray;
-      delete [] UCcontourPointerArray;
-      delete [] UCsurfacePointerArray;
-    }
-};
-
-CAMgraphicsState::CAMgraphicsState(const CAMgraphicsState& S)
-{
-    int i;
-//
-//  delete *this entries
-//
-    if(plotRegionIndexBound > 0)
-    {
-      delete [] UCplotPointerArray;
-      delete [] UCcontourPointerArray;
-      delete [] UCsurfacePointerArray;
-
-      frameLeft             = 0.0;
-      frameRight            = 0.0;
-      frameBottom           = 0.0;
-      frameTop              = 0.0;
-      plotRegionIndex       = 0;
-      plotRegionRows        = 0;
-      defaultDriverFlag     = 0;
-      OutputDeviceDriver    = 0;
-    }
-    plotRegionIndexBound  = 0;
-//
-//  Allocate and Copy
-//
-    if(S.plotRegionIndexBound > 0)
-    {
-    UCplotPointerArray    = new UCplot*[S.plotRegionIndexBound];
-    UCcontourPointerArray = new UCcontour*[S.plotRegionIndexBound];
-    UCsurfacePointerArray = new UCsurface*[S.plotRegionIndexBound];
-    for(i = 0; i < S.plotRegionIndexBound; i++)
-    {
-    UCplotPointerArray[i]    = S.UCplotPointerArray[i];
-    UCcontourPointerArray[i] = S.UCcontourPointerArray[i];
-    UCsurfacePointerArray[i] = S.UCsurfacePointerArray[i];
-    }
-    frameLeft             = S.frameLeft;
-    frameRight            = S.frameRight;
-    frameBottom           = S.frameBottom;
-    frameTop              = S.frameTop;
-    plotRegionIndexBound  = S.plotRegionIndexBound;
-    plotRegionIndex       = S.plotRegionIndex ;
-    plotRegionRows        = S.plotRegionRows;
-    defaultDriverFlag     = S.defaultDriverFlag;
-    OutputDeviceDriver    = S.OutputDeviceDriver;
-    }
-
-};
-
-void CAMgraphicsState::operator=(const CAMgraphicsState& S)
-{
-    int i;
-//
-//  delete *this entries
-//
-    if(plotRegionIndexBound > 0)
-    {
-      delete [] UCplotPointerArray;
-      delete [] UCcontourPointerArray;
-      delete [] UCsurfacePointerArray;
-
-      frameLeft             = 0.0;
-      frameRight            = 0.0;
-      frameBottom           = 0.0;
-      frameTop              = 0.0;
-      plotRegionIndex       = 0;
-      plotRegionRows        = 0;
-      defaultDriverFlag     = 0;
-      OutputDeviceDriver    = 0;
-    }
-    plotRegionIndexBound  = 0;
-//
-//  Allocate and Copy
-//
-    if(S.plotRegionIndexBound > 0)
-    {
-    UCplotPointerArray    = new UCplot*[S.plotRegionIndexBound];
-    UCcontourPointerArray = new UCcontour*[S.plotRegionIndexBound];
-    UCsurfacePointerArray = new UCsurface*[S.plotRegionIndexBound];
-    for(i = 0; i < S.plotRegionIndexBound; i++)
-    {
-    UCplotPointerArray[i]    = S.UCplotPointerArray[i];
-    UCcontourPointerArray[i] = S.UCcontourPointerArray[i];
-    UCsurfacePointerArray[i] = S.UCsurfacePointerArray[i];
-    }
-    frameLeft             = S.frameLeft;
-    frameRight            = S.frameRight;
-    frameBottom           = S.frameBottom;
-    frameTop              = S.frameTop;
-    plotRegionIndexBound  = S.plotRegionIndexBound;
-    plotRegionIndex       = S.plotRegionIndex ;
-    plotRegionRows        = S.plotRegionRows;
-    defaultDriverFlag     = S.defaultDriverFlag;
-    OutputDeviceDriver    = S.OutputDeviceDriver;
-    }
-
-};
-
-
-void CAMgraphicsState::setDriver(UCdriver* D)
-{
-    OutputDeviceDriver = D;
-    defaultDriverFlag  = 0;
-}
+*/
 
 //
 //********************************************************************************

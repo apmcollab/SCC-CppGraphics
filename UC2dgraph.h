@@ -13,7 +13,7 @@
 //                            (C) UCLA 1994, 1995
 //********************************************************************************
 //
-#include "ucgraph.h"
+#include "UCgraph.h"
 
 #ifndef UC2DGRAPH_
 #define UC2DGRAPH_

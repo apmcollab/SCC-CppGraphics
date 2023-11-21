@@ -12,7 +12,8 @@
 //
 #include <cmath>
 #include <iostream>
-#include "uc2dgrph.h"
+
+#include "UC2dgraph.h"
 //
 //******************************************************************************
 //                          NORMALIZE_X

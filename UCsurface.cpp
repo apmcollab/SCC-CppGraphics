@@ -11,13 +11,13 @@
 //            Chris Anderson                (C) UCLA 1996
 //********************************************************************************
 //
-#include "ucdriver.h"
-#include "ucsurfac.h"
-#include "uc3dgrph.h"
-#include "camgraphexit.h"
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include "UC3dgraph.h"
+#include "UCdriver.h"
+#include "UCsurface.h"
+#include "CAMgraphicsExit.h"
 
 //
 // define external flag array classes    cra 9/29/95

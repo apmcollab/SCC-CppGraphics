@@ -10,10 +10,10 @@
 	Plots various trigonometric functions over [-3.3] using
     different plot and line styles.
 */
-#include "camgraph.h"
 #include <cmath>
 #include <stdio.h>
 #include <iostream>
+#include "../CAMgraphics.h"
 
 //
 // Functions to be plotted
@@ -43,46 +43,50 @@ int main()
     y3[i] = f3(x[i]);
     }
 
-    CAMgraphics::open("graph.ps");              // open file graph.ps for output
+    CAMgraphics camGraphics;
+    
+    camGraphics.open("PlotStyleSample");              // open file graph.ps for output
     //
     // First frame;  using different plot "styles"
     //
-    CAMgraphics::setAxisRange(-3.0,3.0,-2.0,2.0);             // set plotting ranges
-    CAMgraphics::title("Plots Using Different Plot Styles");  // label the plot
-    CAMgraphics::labelX(" X ");
-    CAMgraphics::labelY(" Y ");
+    camGraphics.setAxisRange(-3.0,3.0,-2.0,2.0);             // set plotting ranges
+    camGraphics.title("Plots Using Different Plot Styles");  // label the plot
+    camGraphics.labelX(" X ");
+    camGraphics.labelY(" Y ");
 
-    CAMgraphics::plot(x,y1,n);                    // solid line (default)
-    CAMgraphics::plot(x,y2,n,'+');                // + markers
+    camGraphics.plot(x,y1,n);                    // solid line (default)
+    camGraphics.plot(x,y2,n,'+');                // + markers
 
                                               // + markers and solid line
 
-    CAMgraphics::plot(x,y3,n,'+',CAMgraphics::CURVE_AND_POINTS);
+    camGraphics.plot(x,y3,n,'+',camGraphics.CURVE_AND_POINTS);
 
-    CAMgraphics::frame();                           // "frame" the plot
+    camGraphics.frame();                           // "frame" the plot
     //
     // Second frame; using different plot line "styles"
     //
-    CAMgraphics::setAxisRange(-3.0,3.0,-2.0,2.0);            // set plotting ranges
-    CAMgraphics::title("Plots Using Different Line Styles"); // label the plot
-    CAMgraphics::labelX(" X ");
-    CAMgraphics::labelY(" Y ");
+    camGraphics.setAxisRange(-3.0,3.0,-2.0,2.0);            // set plotting ranges
+    camGraphics.title("Plots Using Different Line Styles"); // label the plot
+    camGraphics.labelX(" X ");
+    camGraphics.labelY(" Y ");
 
-    CAMgraphics::setLineColor(CAMgraphics::RED);     // Red line
-    CAMgraphics::plot(x,y1,n);
+    camGraphics.setLineColor(camGraphics.RED);     // Red line
+    camGraphics.plot(x,y1,n);
 
-    CAMgraphics::setLineColor(CAMgraphics::BLACK);   // Black dashed line
-    CAMgraphics::setDashPattern(CAMgraphics::DASH);
-    CAMgraphics::plot(x,y2,n);
+    camGraphics.setLineWidth(0.004);
+    camGraphics.setLineColor(camGraphics.BLACK);   // Black dashed line
+    camGraphics.setDashPattern(camGraphics.DASH);
+    camGraphics.plot(x,y2,n);
 
-    CAMgraphics::setLineColor(CAMgraphics::BLUE);   // Blue dash-dot line
-    CAMgraphics::setDashPattern(CAMgraphics::DASH_DOT);
-    CAMgraphics::plot(x,y3,n);
+    camGraphics.setLineWidth(0.004);
+    camGraphics.setLineColor(camGraphics.BLUE);   // Blue dash-dot line
+    camGraphics.setDashPattern(camGraphics.DASH_DOT);
+    camGraphics.plot(x,y3,n);
 
-    CAMgraphics::frame();                           // "frame" the plot
+    camGraphics.frame();                           // "frame" the plot
 
 
-    CAMgraphics::close();                            // close
+    camGraphics.close();                            // close
 
     delete [] x;                         // clean up
     delete [] y1;

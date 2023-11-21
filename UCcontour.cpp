@@ -14,10 +14,11 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "ucdriver.h"
-#include "uccontr.h"
-#include "uc2dgrph.h"
-#include "camgraphexit.h"
+#include "UC2dgraph.h"
+#include "UCcontour.h"
+
+#include "CAMgraphicsExit.h"
+#include "UCdriver.h"
 //
 // changed atan(Y/X) to atan2(Y,X)  cra 9/29/95
 // defined external flag array classes cra 9/29/95

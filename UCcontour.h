@@ -16,7 +16,7 @@
 #ifndef UCCONTOUR_
 #define UCCONTOUR_
 
-#include "uc2dgrph.h"  
+#include "UC2dgraph.h"
 
 class UCcontour : public UC2dgraph
 {

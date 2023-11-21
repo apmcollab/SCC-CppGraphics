@@ -9,10 +9,11 @@
 /*
   	Creation of a surface plot
 */
-#include "camgraph.h"
 #include <cmath>
 #include <cstdio>
 #include <iostream>
+#include "../CAMgraphics.h"
+#include "../SVGdriver.h"
 
 //
 // Target Function 
@@ -32,7 +33,7 @@ int main()
     double c  = -3.0;
     double d =   3.0;
 
-    long   n  =  20;
+    long   n  =  50;
 
     double hx  = (b-a)/double(n-1);
     double hy  = (d-c)/double(n-1);
@@ -58,14 +59,28 @@ int main()
                                         // a variable sized array
     }}
 
-    CAMgraphics::open("graph.ps");             // Open a file for output
 
-    CAMgraphics::title("Sample Surface Plot"); // label the plot
+    bool multiFrameFlag = false;
+    SVGdriver svgDriver("subPlotSample", multiFrameFlag);
 
-    CAMgraphics::surface(z,n,n);                // create the contour plot
-    CAMgraphics::frame();                       // "frame" the plot
+    CAMgraphics camGraphics;
+    camGraphics.open(&svgDriver);     // Attach svg driver to CAM graphics
 
-    CAMgraphics::close();                       // close
+    camGraphics.subplotOn(2, 1);
+    camGraphics.subplot(1,1);
+
+    camGraphics.title("Sample Contour Plot"); // label the plot
+
+    camGraphics.contour(z,n,n);                // create the contour plot
+
+    camGraphics.subplot(2,1);
+
+    camGraphics.title("Sample Surface Plot"); // label the plot
+
+    camGraphics.surface(z,n,n);                // create the contour plot
+    camGraphics.frame();                       // "frame" the plot
+
+    camGraphics.close();                       // close
 
     delete [] x;                         // clean up
     delete [] y;

@@ -9,10 +9,11 @@
 /*
 	Plots the function sin(x*x) over the interval [-3,3]
 */
-#include "camgraph.h"
 #include <cmath>
 #include <iostream>
 #include <stdio.h>
+
+#include "../CAMgraphics.h"
 //
 // Function to be plotted
 //
@@ -35,17 +36,22 @@ int main()
     y[i] = f(x[i]);
     }
 
-    CAMgraphics::open("graph.ps");                   // open file graph.ps for output
+    CAMgraphics camGraphics;
+    
+    camGraphics.open("PlotSample");                 // open file graph.ps for output
+    camGraphics.clearMultiPageFlag();               // suppress indexing of separate pages output since
+                                                    // a single plot.
 
-    CAMgraphics::setAxisRange(-3.0,3.0,-2.0,2.0);    // set plotting ranges
-    CAMgraphics::title("Plot of function sin(x*x)"); // label the plot
-    CAMgraphics::labelX(" X ");
-    CAMgraphics::labelY(" Y ");
+    camGraphics.setAxisRange(-3.0,3.0,-2.0,2.0);    // set plotting ranges
+    camGraphics.title("Plot of function sin(x*x)"); // label the plot
+    camGraphics.labelX(" X ");
+    camGraphics.labelY(" Y ");
 
-    CAMgraphics::plot(x,y,n);                       // do the plotting
-    CAMgraphics::frame();                           // "frame" the plot
+    camGraphics.setLineWidth(0.004);
+    camGraphics.plot(x,y,n);                       // do the plotting
+    camGraphics.frame();                           // "frame" the plot
 
-    CAMgraphics::close();                           // close
+    camGraphics.close();                           // close
 
     delete [] x;                         // clean up
     delete [] y;

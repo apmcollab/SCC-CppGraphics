@@ -15,9 +15,10 @@
 //       
 //********************************************************************************
 //
-#include <math.h>
-#ifndef UCclip__
-#define UCclip__
+#include <cmath>
+
+#ifndef UCclip_
+#define UCclip_
 
 class UCclip
 {

@@ -10,4 +10,6 @@ build64
 .DS_Store
 test/.DS_Store
 test/Release/
+test/Debug
+test/Testing
 

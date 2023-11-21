@@ -9,10 +9,11 @@
 /*
         Demonstrate the use of several contour plot command options.
 */
-#include "camgraph.h"
 #include <cmath>
 #include <stdio.h>
 #include <iostream>
+
+#include "../CAMgraphics.h"
 //
 // Function to be contoured
 //
@@ -31,7 +32,7 @@ int main()
     double c  = -3.0;
     double d =   3.0;
 
-    long   n  =  20;
+    long   n  =  40;
 
     double hx  = (b-a)/double(n-1);
     double hy  = (d-c)/double(n-1);
@@ -57,28 +58,30 @@ int main()
                                         // a variable sized array
     }}
 
-    CAMgraphics::open("graph.ps");       // open file graph.ps for output
+    CAMgraphics camGraphics;
+    
+    camGraphics.open("ContourPlotStyle");       // open file graph.ps for output
 
-    CAMgraphics::title("Contour Plot 1 : Default Style");
+    camGraphics.title("Contour Plot 1 : Default Style");
 
-    CAMgraphics::contour(z,n,n);                    // create the contour plot
-    CAMgraphics::frame();                           // "frame" the plot
+    camGraphics.contour(z,n,n);                    // create the contour plot
+    camGraphics.frame();                           // "frame" the plot
 
-    CAMgraphics::title("Contour Plot 2 : Fixed # of Contours");
+    camGraphics.title("Contour Plot 2 : Fixed # of Contours");
 
     int nContour = 8;                    // use 8 contours
-    CAMgraphics::lineLabelsOn();             // Turn on line labels
-    CAMgraphics::contour(z,n,n,nContour);           // create the contour plot
-    CAMgraphics::frame();                           // "frame" the plot
+    camGraphics.lineLabelsOn();             // Turn on line labels
+    camGraphics.contour(z,n,n,nContour);           // create the contour plot
+    camGraphics.frame();                           // "frame" the plot
 
-    CAMgraphics::title("Contour Plot 3 : Fixed Contour Increment");
+    camGraphics.title("Contour Plot 3 : Fixed Contour Increment");
 
     double    cIncrement = .5;           // contour increment of .5
-    CAMgraphics::lineLabelsOff();            // Turn off line labels
-    CAMgraphics::contour(z,n,n,cIncrement);         // create the contour plot
-    CAMgraphics::frame();                           // "frame" the plot
+    camGraphics.lineLabelsOff();            // Turn off line labels
+    camGraphics.contour(z,n,n,cIncrement);         // create the contour plot
+    camGraphics.frame();                           // "frame" the plot
 
-    CAMgraphics::close();                    // detach the driver
+    camGraphics.close();                    // detach the driver
 
     delete [] x;                         // clean up
     delete [] y;

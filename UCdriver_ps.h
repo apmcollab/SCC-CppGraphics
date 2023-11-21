@@ -13,10 +13,10 @@
 //                            (C) UCLA 1994, 1995
 //********************************************************************************
 //
-#include "ucdriver.h"
 #include <fstream>
 #include <string>
 #include <vector>
+#include "UCdriver.h"
 
 #ifndef UCDRIVER_PS_
 #define UCDRIVER_PS_

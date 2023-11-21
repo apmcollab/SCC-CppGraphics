@@ -14,7 +14,8 @@
 //********************************************************************************
 //
 #include <cmath>
-#include "ucgraph.h"
+
+#include "UCgraph.h"
 
 #ifndef UC3DGARPH_
 #define UC3DGARPH_

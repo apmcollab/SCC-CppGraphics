@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<CMakeCreator_ParameterLists>
+
+<Common>
+
+  <required_cmake> 3.15 </required_cmake>
+  <project>CPPgraphicsTest</project>
+
+
+  <AdditionalDebugOptions>
+    <linuxOption>        -Wall,  -Wno-pessimizing-move,-D _DEBUG,  -D EXTERNAL_LAPACK</linuxOption>
+    <visualStudioOption> /W3, /wd"4458"   ,-D EXTERNAL_LAPACK , -D _DEBUG  </visualStudioOption>
+    <macOption>         -Wall,  -Wno-pessimizing-move  ,-D _DEBUG,  -D EXTERNAL_LAPACK</macOption>
+  </AdditionalDebugOptions>
+  
+   <AdditionalReleaseOptions>
+    <linuxOption>   -D EXTERNAL_LAPACK   </linuxOption>
+    <visualStudioOption>  -D EXTERNAL_LAPACK </visualStudioOption>
+    <macOption> -D EXTERNAL_LAPACK       </macOption>
+  </AdditionalReleaseOptions>
+  
+
+  
+   <Library>
+    <libName> CppGraphics  </libName>
+    <libDir>  ../ </libDir>
+  </Library>
+  
+
+</Common>
+
+<Options>
+  <USE_MEMCHECK> ON </USE_MEMCHECK> <!-- ON allows use of ctest -T memcheck --> 
+</Options>
+
+
+<BuildTargets>
+<Target>
+    <main> camgsmp1.cpp  </main>   
+    <ctest> true              </ctest>   
+</Target>
+
+
+<Target>
+    <main> camgsmp2.cpp  </main>   
+    <ctest> true              </ctest>   
+</Target>
+
+<Target>
+    <main> camgsmp3.cpp  </main>   
+    <ctest> true              </ctest>   
+</Target>
+
+<Target>
+    <main> camgsmp4.cpp  </main>   
+    <ctest> true              </ctest>   
+</Target>
+
+<Target>
+    <main> camgsmp5.cpp  </main>   
+    <ctest> true              </ctest>   
+</Target>
+
+
+</BuildTargets>
+
+
+
+
+
+</CMakeCreator_ParameterLists>

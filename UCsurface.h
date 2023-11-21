@@ -16,7 +16,7 @@
 // Nov. 13, 2023: The code in check_against_perimeter(..) and perimeter_initialie()
 // induces a memory leak and the routine needs to be further debugged, or rewritten.
 //
-#include "uc3dgrph.h"
+#include "UC3dgraph.h"
 
 #ifndef UCSURFACE_
 #define UCSURFACE_

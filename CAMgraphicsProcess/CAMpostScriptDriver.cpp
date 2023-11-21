@@ -1,163 +1,91 @@
-#include "CAMsvgDriver.h"
-
 #include <iostream>
 #include <string>
 #include <cstring>
 #include <vector>
 
+#include "CAMpostScriptDriver.h"
 #include "CAMplotArguments.h"
 #include "CAMregionArguments.h"
 #include "CAMcontourArguments.h"
+#include "CAMgraphics.h"
 #include "CAMsurfaceArguments.h"
 #include "CAMtextArguments.h"
 #include "CAMsetArguments.h"
-#include "ucdriver.h"
-#include "camgraph.h"
+
 
 
 //######################################################################
 //
 //            Chris Anderson (C) UCLA
 //
-//                 Nov. 12, 2023
+//                 Sept. 17, 1996
 //
 //######################################################################
 //
 //
-/*
-#############################################################################
-#
-# Copyright  2023- Chris Anderson
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the Lesser GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# For a copy of the GNU General Public License see
-# <http://www.gnu.org/licenses/>.
-#
-#############################################################################
-*/
-
-// The constructor creates a GraphicsProcess and a GraphicsState
-// the driver is not created until an open(...) member function
-// is called. This allows the same settings for graphical output to
-// be applied to multiple output files.
 //
 
-CAMsvgDriver::CAMsvgDriver()
+CAMpostScriptDriver::CAMpostScriptDriver()
 {
-	S          = nullptr;
-    G          = nullptr;
-    svgDriver  = nullptr;
-    initialize();
-} 
+	S = new CAMgraphicsState();
+    G = new CAMgraphics;
+    outputFile = "graph.ps";
+    dTypeName  = "CAMpostScriptDriver";
+    open();
+}
 
-void CAMsvgDriver::initialize()
+CAMpostScriptDriver::CAMpostScriptDriver(const std::string& fileName)
 {
-    if(S         != nullptr) {delete S;}
-    if(G         != nullptr) {delete G;}
-	if(svgDriver != nullptr) {delete svgDriver;}
-	
     S = new CAMgraphicsState();
     G = new CAMgraphics;
-    
-    dTypeName  = "CAMsvdDriver";
-    outputFilePrefix.clear();
+    outputFile = fileName;
+    dTypeName  = "CAMpostScriptDriver";
+    open();
 }
 
-
-CAMsvgDriver::~CAMsvgDriver()
+CAMpostScriptDriver::~CAMpostScriptDriver()
 {
-    if(S != nullptr)         {delete S;}
-    if(G != nullptr)         {delete G;}
-	if(svgDriver != nullptr) {delete svgDriver;}
+    close();
+    delete S;
+	delete G;
+    outputFile.clear();
 }                                            
 
-void CAMsvgDriver::open()
+void CAMpostScriptDriver::initialize(const std::string& outputFileName)
 {
-	std::string fileName = "graph";
-	bool letterSize      = true;
-	open(fileName,letterSize);
+	close();
+    delete S;
+	delete G;
+    outputFile.clear();
+    dTypeName.clear();
+
+    S = new CAMgraphicsState();
+    G = new CAMgraphics;
+
+    outputFile = outputFileName;
+    dTypeName  = "CAMpostScriptDriver";
+    open();
 }
-
-//
-// Open creates and attaches a SVG low level driver that outputs
-// to the file [fileNamePrefix].cif
-// 
-//
-// Convenience initialization
-//
-void CAMsvgDriver::open(const std::string& fileNamePrefix, bool letterSize)
+void CAMpostScriptDriver::open()
 {
-    outputFilePrefix = fileNamePrefix;
-    
-    double pageWidth;
-	double pageHeight;
-	long   pageDPI;
-	double pageMargin ;
-
-	if(letterSize)
-	{
-    pageWidth  =   8.5;
-	pageHeight =  11.0;
-	pageDPI    =   600;
-	pageMargin =   1.0;
-	}
-	else
-	{
-	pageWidth  =   6.0;
-	pageHeight =   6.0;
-	pageDPI    =   600;
-	pageMargin =   0.0;
-	}
-
-	bool multipleFrameFlag = true;
-	int  backgroundColor   = UCdriver::NONE;
-
-	if(svgDriver != nullptr) {delete svgDriver;}
-
-    svgDriver = new SVGdriver(outputFilePrefix,pageWidth, pageHeight,pageMargin,pageDPI,backgroundColor,multipleFrameFlag);
-
-	G->open(svgDriver);
+	G->open(outputFile.c_str());
     G->getState(*S);
 }
 
-
-void CAMsvgDriver::open(const std::string& fileNamePrefix, double pageWidth, double pageHeight, double pageMargin, long pageDPI,
-int backgroundColor, bool multipleFrameFlag)
-{
-    outputFilePrefix = fileNamePrefix;
-
-	if(svgDriver != nullptr) {delete svgDriver;}
-	
-	svgDriver = new SVGdriver(outputFilePrefix,pageWidth, pageHeight,pageMargin,pageDPI,backgroundColor,multipleFrameFlag);
-
-	G->open(svgDriver);
-    G->getState(*S);
-}
-
-void CAMsvgDriver::close()
+void CAMpostScriptDriver::close()
 {
     G->setState(*S);
     G->close();
-    if(svgDriver != nullptr) {delete svgDriver;}
 }
 
-void CAMsvgDriver::frame()
+void CAMpostScriptDriver::frame() 
 {
 	G->setState(*S);
     G->frame();
 }
 
 
-void CAMsvgDriver::accept(const CAMplotArguments& A)
+void CAMpostScriptDriver::accept(const CAMplotArguments& A)
 {
 	G->setState(*S);
 //
@@ -186,7 +114,7 @@ void CAMsvgDriver::accept(const CAMplotArguments& A)
 	G->getState(*S);
 }
 
-void CAMsvgDriver::accept(const CAMcontourArguments& A)
+void CAMpostScriptDriver::accept(const CAMcontourArguments& A)
 {
 	G->setState(*S);
 //
@@ -223,7 +151,7 @@ void CAMsvgDriver::accept(const CAMcontourArguments& A)
   G->getState(*S);
 }
 
-void CAMsvgDriver::accept(const CAMsurfaceArguments& A)
+void CAMpostScriptDriver::accept(const CAMsurfaceArguments& A)
 {
 	G->setState(*S);
     int callType            = int(A.callType);
@@ -245,7 +173,7 @@ void CAMsvgDriver::accept(const CAMsurfaceArguments& A)
 	G->getState(*S);
 }
 
-void CAMsvgDriver::accept(const CAMtextArguments& A)
+void CAMpostScriptDriver::accept(const CAMtextArguments& A)
 {
 	G->setState(*S);
 
@@ -259,7 +187,7 @@ void CAMsvgDriver::accept(const CAMtextArguments& A)
   
   	switch(callType)
   	{
-  	case 1  : if(size <= 0.0) {CAMgraphics::drawString(x,y,St);}
+  	case 1  : if(size <= 0.0) {G->drawString(x,y,St);}
            	  else            {G->drawString(x,y,St,size);} break;
   	case 2  : if(size <= 0.0) {G->title(St);}
            	  else            {G->title(St,size); }break;
@@ -271,7 +199,7 @@ void CAMsvgDriver::accept(const CAMtextArguments& A)
 	G->getState(*S);
 }
 
-void CAMsvgDriver::accept(const CAMregionArguments& A)
+void CAMpostScriptDriver::accept(const CAMregionArguments& A)
 {
 	G->setState(*S);
 //
@@ -295,7 +223,7 @@ void CAMsvgDriver::accept(const CAMregionArguments& A)
 	G->getState(*S);
 }
 
-void CAMsvgDriver::accept(const CAMsetArguments& A)
+void CAMpostScriptDriver::accept(const CAMsetArguments& A)
 {
 	G->setState(*S);
 //
@@ -403,6 +331,17 @@ void CAMsvgDriver::accept(const CAMsetArguments& A)
 	G->getState(*S);
 }
 
-
+void CAMpostScriptDriver::AddBackSlash(const char* in, char* out)
+{
+    unsigned int k;
+    long i = 0;
+    for(k = 0; k < strlen(in); k++)
+    {
+        if((int)in[k] == 92)
+        {out[i] = char(92); i++;}
+        out[i]= in[k];
+        i++;
+    }
+}
 
  

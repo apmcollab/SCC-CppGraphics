@@ -31,7 +31,6 @@
 #
 #############################################################################
 */
-#include "ucdriver.h"
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -40,6 +39,7 @@
 #include <vector>
 
 #include "HersheyFont.h"
+#include "UCdriver.h"
 
 #ifndef SVG_DRIVER_
 #define SVG_DRIVER_
@@ -87,13 +87,13 @@ public:
 
 	SVGdriver() : UCdriver()
 	{
-	initialize(HERSHEY_FILENAME,HERSHEY_PAGE_WIDTH,HERSHEY_PAGE_HEIGHT,HERSHEY_PAGE_DPI,HERSHEY_PAGE_MARGIN,UCdriver::NONE,true);
+	initialize(HERSHEY_FILENAME,HERSHEY_PAGE_WIDTH,HERSHEY_PAGE_HEIGHT,HERSHEY_PAGE_MARGIN,HERSHEY_PAGE_DPI,UCdriver::WHITE,true);
     }
 
 
     SVGdriver(const std::string& fileName, bool multipleFrameFlag = true) : UCdriver(fileName)
     {
-    initialize(fileName,HERSHEY_PAGE_WIDTH,HERSHEY_PAGE_HEIGHT,HERSHEY_PAGE_DPI,HERSHEY_PAGE_MARGIN,UCdriver::NONE,multipleFrameFlag);
+    initialize(fileName,HERSHEY_PAGE_WIDTH,HERSHEY_PAGE_HEIGHT,HERSHEY_PAGE_MARGIN,HERSHEY_PAGE_DPI,UCdriver::WHITE,multipleFrameFlag);
     }
 
 
@@ -109,6 +109,8 @@ public:
     int backgroundColor, bool multipleFrameFlag)
     {
 
+    	setDriverTypeName("SVGdriver");
+
     	this->pageWidth  = pageWidth;
     	this->pageHeight = pageHeight;
 		this->pageMargin = pageMargin;
@@ -122,7 +124,7 @@ public:
 
     	marginSize = pageDPI*pageMargin;
 
-    	page.clear();
+    	page.str("");
     	pageCount = 0;
     	pageOpen = true;
 
@@ -136,8 +138,6 @@ public:
     	yCoordSize  = pageDPI*pageHeight - 2*marginSize;
     	xyCoordSize = xCoordSize;
 
-
-
     	std::vector<double> RGB = {255.0,255.0,255.0};
     	if(backgroundColor != UCdriver::NONE)
     	{
@@ -150,13 +150,21 @@ public:
 
         // Capture page header for multiple frame output
 
-        pageHeader.clear();
+        pageHeader.str("");
     	pageHeader << page.str();
-
-
 
         //page << "<rect x=\""<< marginSize << "\" y=\"" << marginSize << "\" width=\"" << xCoordSize << "\" height=\"" << xCoordSize<< "\"\n";
         //page << "fill=\"white\" stroke=\"red\" stroke-width=\"8\" /> \n";
+    }
+
+    void setMultipleFrameFlag(bool val = true)
+    {
+    	this->multipleFrameFlag = true;
+    }
+
+    void clearMultipleFrameFlag()
+    {
+    	this->multipleFrameFlag = false;
     }
 
     void lines(double *x, double *y, long npoints, int dash_pattern,

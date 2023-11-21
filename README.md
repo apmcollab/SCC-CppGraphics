@@ -1,5 +1,5 @@
 ## CppGraphics
-Beta revision of classes supporting the construction of graphical output. These classes are based on the CAM graphics classes.
+Refactored version of classes supporting the construction of graphical output. These classes are based on the CAM graphics classes. 
 
 
 ### Prerequisites
@@ -7,9 +7,9 @@ Beta revision of classes supporting the construction of graphical output. These 
 GNU make
 
 ### Versioning
-Release : 1.0.1
+Release : 2.0.1
 ### Date
-April 30, 2020
+Nov 30, 2023
 ### Authors
 
 Chris Anderson

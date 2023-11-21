@@ -19,17 +19,17 @@
 //
 
 
+#include "UCplot.h"
+
 #include <cstdio>
 #include <cmath>
 #include <iostream>
 #include <vector>
 #include <string>
 
+#include "CAMgraphicsExit.h"
 
-#include "ucplot.h"
-#include "ucclip.h"
-
-#include "camgraphexit.h"
+#include "UCclip.h"
 //
 //******************************************************************************
 //                         COPY CONSTRUCTOR

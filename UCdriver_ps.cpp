@@ -26,7 +26,6 @@
 //
 //********************************************************************************
 //  
-#include "ucdrv_ps.h"
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -34,6 +33,7 @@
 #include <cmath>
 #include <vector>
 #include <stdexcept>
+#include "UCdriver_ps.h"
 
 
 //
@@ -43,6 +43,7 @@
 //
 UCdriver_ps::UCdriver_ps(const std::string& s) : UCdriver(s)
 {
+  setDriverTypeName("UCdriver_ps");
   //  Initialize internally used variables
   page = 0;
   page_not_setup = 1;

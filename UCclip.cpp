@@ -15,7 +15,8 @@
 //********************************************************************************
 //
 #include <math.h>
-#include "ucclip.h"
+
+#include "UCclip.h"
 
 //
 // This routine determines the number of points that need to

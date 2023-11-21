@@ -15,8 +15,8 @@
 //
 #include <vector>
 #include <string>
-#include "ucdriver.h"
-#include "uc2dgrph.h"
+#include "UC2dgraph.h"
+#include "UCdriver.h"
 
 #ifndef UCPLOT_
 #define UCPLOT_
