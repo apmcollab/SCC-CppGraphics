@@ -3,7 +3,7 @@
 #
 #  Generator      : CMakeCreator 
 #  XML data file  : CMakeGraphicsTest.xml
-#  Date           : 2023-11-20 
+#  Date           : 2023-12-12 
 #
 
 cmake_minimum_required (VERSION 3.15)
@@ -77,7 +77,6 @@ UNSET(USE_MEMCHECK     CACHE)
 #
 
 list(APPEND IncludeDirs "${CMAKE_SOURCE_DIR}")
-list(APPEND IncludeDirs "${CMAKE_SOURCE_DIR}/../")
 
 #####################################################
 # Collecting data for components specified by options 
@@ -106,7 +105,7 @@ endif()
 
 include_directories(${IncludeDirs})
 
-add_subdirectory("${CMAKE_SOURCE_DIR}/../" "${CMAKE_SOURCE_DIR}/..//build")
+add_subdirectory("${CMAKE_SOURCE_DIR}/../" "${CMAKE_SOURCE_DIR}/..//build" EXCLUDE_FROM_ALL )
 list(APPEND ExternalLibs "CppGraphics")
 
 #

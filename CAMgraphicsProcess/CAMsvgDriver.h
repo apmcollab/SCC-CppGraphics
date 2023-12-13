@@ -31,6 +31,7 @@
 */
 #include <string>
 #include "CAMgraphicsDriver.h"
+#include "CAMgraphicsState.h"
 #include "SVGdriver.h"
 
 

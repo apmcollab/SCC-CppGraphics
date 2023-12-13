@@ -24,6 +24,7 @@
    <Library>
     <libName> CppGraphics  </libName>
     <libDir>  ../ </libDir>
+    <libParameters> EXCLUDE_FROM_ALL </libParameters> 
   </Library>
   
 

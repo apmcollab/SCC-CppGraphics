@@ -1,5 +1,5 @@
 ## CppGraphics
-Refactored version of classes supporting the construction of graphical output. These classes are based on the CAM graphics classes. 
+Refactored version of classes supporting the construction of graphical output. These classes are based on the CAM graphics classes. The CAMgraphicsProcess classes are deprecated. 
 
 
 ### Prerequisites

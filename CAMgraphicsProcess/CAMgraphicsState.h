@@ -4,10 +4,10 @@
  *  Created on: Nov 20, 2023
  *      Author: anderson
  */
-#include "UCdriver.h"
-#include "UCcontour.h"
-#include "UCplot.h"
-#include "UCsurface.h"
+#include "../UCdriver.h"
+#include "../UCcontour.h"
+#include "../UCplot.h"
+#include "../UCsurface.h"
 
 #ifndef CAM_GRAPHICS_STATE_
 #define CAM_GRAPHICS_STATE_

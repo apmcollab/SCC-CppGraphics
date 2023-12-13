@@ -3,14 +3,15 @@
 #include <cstring>
 #include <vector>
 
+#include "CAMgraphicsState.h"
 #include "CAMpostScriptDriver.h"
 #include "CAMplotArguments.h"
 #include "CAMregionArguments.h"
 #include "CAMcontourArguments.h"
-#include "CAMgraphics.h"
 #include "CAMsurfaceArguments.h"
 #include "CAMtextArguments.h"
 #include "CAMsetArguments.h"
+#include "../CAMgraphics.h"
 
 
 
