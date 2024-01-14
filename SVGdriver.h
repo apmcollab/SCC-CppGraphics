@@ -105,6 +105,11 @@ public:
 
     ~SVGdriver(){}
 
+    void initialize(const std::string& fileName, bool multipleFrameFlag = true)
+    {
+    initialize(fileName,HERSHEY_PAGE_WIDTH,HERSHEY_PAGE_HEIGHT,HERSHEY_PAGE_MARGIN,HERSHEY_PAGE_DPI,UCdriver::WHITE,multipleFrameFlag);
+    }
+
     void initialize(const std::string& fileName,double pageWidth, double pageHeight, double pageMargin, long pageDPI,
     int backgroundColor, bool multipleFrameFlag)
     {
