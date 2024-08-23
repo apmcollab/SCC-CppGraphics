@@ -698,11 +698,6 @@ void UCdriver_ps::region(double *x, double *y, long npoints, int color, const st
   if (color != pres_color || color == USER_RGB)
     {do_color(color, RGB);}
 
-  if(color == USER_RGB)
-  {
-  std::cout << "XZZZZ RGB " << RGB[0] << " " << RGB[1] << " " << RGB[2] << std::endl;
-  }
-
   fout << "n \n";
   fout << *x << " " << *y << " m \n";
   x++;

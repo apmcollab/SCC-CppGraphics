@@ -235,7 +235,6 @@ std::string get_font()             {return font;}
     void   set_text_angle(int a) { text_angle = a; }
     int    get_text_angle()      { return text_angle; }
 
-    /////////////////////ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 
     void  set_text_color(int c)
     {

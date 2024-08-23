@@ -1266,11 +1266,6 @@ void UCplot::plot(double (*f)(double x), double x_min, double x_max, double y_mi
    {
     short   line_color_save = line_color;        // = 0 means use default color (black
 
-   if(line_color == UCplot::USER_RGB)
-   {
-   std::cout << "ZZZ UCplot line_color RGB " << std::endl;
-   }
-
    line_color          = color;
    std::vector<double> line_rgb_save = line_rgb;
 
